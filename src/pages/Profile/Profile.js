@@ -1,0 +1,638 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import moment from "moment";
+import {
+  CardWrapper,
+  FormWrapper,
+  ProfileCard,
+  ProfileCardBody,
+  ProfileSidebar,
+} from "./Profile.style";
+import FormikControl from "containers/FormikContainer/FormikControl";
+import { useStickyDispatch } from "contexts/app/app.provider";
+import { useAppState } from "contexts/app/app.provider";
+import {
+  axiosInstance,
+  formTokenConfig,
+  // tokenConfig,
+} from "utils/axios";
+import { addObjectToLocalStorageObject } from "utils";
+import Button from "components/Button/Button";
+import { AuthContext } from "contexts/auth/auth.context";
+// import LogoImage from "images/logo.png";
+import { openModal } from "@redq/reuse-modal";
+import EmailVerificationModal from "containers/Authentication/emailVerificationModal";
+import Loader from "components/Loader/Loader";
+import Error500 from "components/Error/Error500";
+import ProfileView from "./ProfileView";
+import { Br } from "styles/pages.style";
+import { useAlert } from "react-alert";
+
+function Profile() {
+  const {
+    authState: { profile },
+  } = useContext(AuthContext);
+  const [initialValues, setInitialValues] = useState();
+  const [initialTeacherValues, setInitialTeacherValues] = useState();
+  const [initialStudentValues, setInitialStudentValues] = useState();
+  // const [editting, setEditting] = useState(false);
+  const useDispatch = useStickyDispatch();
+  const setView = useCallback(() => useDispatch({ type: "VIEW" }), [
+    useDispatch,
+  ]);
+  const setEdit = useCallback(() => useDispatch({ type: "EDIT" }), [
+    useDispatch,
+  ]);
+  const currentForm = useAppState("currentForm");
+  const isEdit = currentForm === "edit";
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [editting, setEditting] = useState(true);
+
+  const alert = useAlert();
+  useEffect(() => {
+    setView();
+    setEditting(true);
+    setTimeout(() => {
+      setInitialValues({
+        avatar: profile.avatar,
+        date_of_birth: profile.date_of_birth,
+        email: profile.email,
+        gender: profile.gender,
+        other_names: profile.other_names,
+        phone_number: profile.phone_number,
+        surname: profile.surname,
+      });
+      if (localStorage.getItem("darasa_teacher_profile")) {
+        setInitialTeacherValues(
+          JSON.parse(localStorage.getItem("darasa_teacher_profile"))
+        );
+        console.log(
+          "teacher initial values",
+          JSON.parse(localStorage.getItem("darasa_teacher_profile"))
+        );
+      } else {
+        setInitialTeacherValues({
+          national_id: "",
+          tsc_id: "",
+          honorofic_title: "",
+          user: localStorage.getItem("darasa_auth_profile") ? profile.id : "",
+        });
+      }
+      if (localStorage.getItem("darasa_student_profile")) {
+        setInitialStudentValues(
+          JSON.parse(localStorage.getItem("darasa_student_profile"))
+        );
+      } else {
+        setInitialStudentValues({
+          hobby: [],
+          grade_level: "",
+          student_id: "",
+          user: profile.id,
+        });
+      }
+      setLoading(false);
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const genderOptions = [
+    { value: "", key: "Select Gender" },
+    { value: "Male", key: "Male" },
+    { value: "Female", key: "Female" },
+  ];
+  const honorificTitleOptions = [
+    { value: "", key: "Select Title" },
+    { value: "Mr", key: "Mr" },
+    { value: "Mrs", key: "Mrs" },
+    { value: "Ms", key: "Ms" },
+    { value: "Dr", key: "Dr" },
+  ];
+  const gradeLevelOptions = [
+    { value: "", key: "Select Options" },
+    { value: 1, key: "1" },
+    { value: 2, key: "2" },
+    { value: 3, key: "3" },
+    { value: 4, key: "4" },
+    { value: 5, key: "5" },
+    { value: 6, key: "6" },
+    { value: 7, key: "7" },
+    { value: 8, key: "8" },
+    { value: 9, key: "9" },
+    { value: 10, key: "10" },
+    { value: 11, key: "11" },
+    { value: 12, key: "12" },
+  ];
+
+  const emailNotLongEnough = "email must be at least 3 characters";
+  const emailRequired = "Please enter an email address";
+  const invalidEmail = "email must be a valid email";
+
+  const validationSchema = Yup.object({
+    surname: Yup.string().required("Required"),
+    other_names: Yup.string().required("Required"),
+    email: Yup.string()
+      .min(3, emailNotLongEnough)
+      .max(100)
+      .email(invalidEmail)
+      .required(emailRequired),
+    gender: Yup.mixed().required("Required"),
+    avatar: Yup.mixed()
+      // .test("should not be blank", " Should not be blank", function (value) {
+      //   if (
+      //     typeof value !== "string" &&
+      //     typeof value !== undefined &&
+      //     value !== null
+      //   ) {
+      //     return true;
+      //   }
+      //   return false;
+      // })
+      .required("Profile Image is Required"),
+    date_of_birth: Yup.date()
+      .test(
+        "Date of Birth",
+        "Should be greather than 13 years",
+        function (value) {
+          return moment().diff(moment(value), "years") >= 13;
+        }
+      )
+      .required("Required")
+      .nullable(),
+    phone_number: Yup.string()
+      .max(15, "Phone Number too long")
+      .min(12, "Phone Number is invalid")
+      .required("Phone Number is Required"),
+  });
+  const teacherValidationSchema = Yup.object({
+    honorific_title: Yup.string().required("Required"),
+    id_number: Yup.number()
+      .max(2147483647, "Id Number too long")
+      .min(10101010, "Id Number is invalid")
+      .required("Required"),
+    tsc_id: Yup.string().required("Required"),
+  });
+  const studentValidationSchema = Yup.object({
+    grade_level: Yup.string().required("Required"),
+    student_id: Yup.string().required("Required"),
+  });
+  const handleModal = (text, subtext) => {
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: true,
+      component: () => EmailVerificationModal(text, subtext),
+      closeComponent: "",
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
+  const onSubmit = (values, { setErrors, setSubmitting }) => {
+    console.log(values);
+    const {
+      avatar,
+      date_of_birth,
+      email,
+      gender,
+      other_names,
+      phone_number,
+      surname,
+    } = values;
+    let formData = new FormData();
+    console.log("type of image", typeof avatar);
+    if (
+      typeof avatar !== "string" &&
+      typeof avatar !== undefined &&
+      avatar !== null
+    ) {
+      formData.append("avatar", avatar[0]);
+    }
+    formData.append("surname", surname);
+    formData.append("other_names", other_names);
+    formData.append("email", email);
+    formData.append("gender", gender);
+    formData.append(
+      "date_of_birth",
+      moment(date_of_birth).format("YYYY-MM-DD")
+    );
+    formData.append(
+      "phone_number",
+      phone_number.replace(/[*?^${}()]|[-]|[ ]/g, "")
+    );
+
+    console.log("body values ", formData, values);
+
+    setSubmitting(true);
+    setLoading(true);
+    try {
+      axiosInstance
+        .patch(`/auth/profile/`, formData, formTokenConfig())
+        .then((res) => {
+          setSubmitting(false);
+          console.log("res", res.data);
+          addObjectToLocalStorageObject("darasa_auth_profile", res.data);
+          handleModal("Profile Edited Successfully ✔", "");
+          alert.success("Profile Edited Successfully ✔");
+          setLoading(false);
+        })
+        .catch((err) => {
+          if (err.response) {
+            setErrors(err.response.data);
+          } else {
+            setError(err);
+          }
+          console.log(JSON.stringify(err, 4, null));
+          setSubmitting(false);
+          setLoading(false);
+        });
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const onTeacherAddSubmit = async (values, { setErrors, setSubmitting }) => {
+    setSubmitting(true);
+    try {
+      axiosInstance
+        .post(`/teachers/`, values)
+        .then((res) => {
+          setSubmitting(false);
+          console.log("res", res.data);
+          handleModal("Profile Updated Successfully ✔", "");
+          addObjectToLocalStorageObject("darasa_teacher_profile", res.data);
+        })
+        .catch((err) => {
+          if (err.response) {
+            setErrors(err.response.data);
+            console.log("errors za data");
+          } else {
+            setError(err);
+            console.log("errors general");
+          }
+          console.log(err.response.data);
+          setSubmitting(false);
+        });
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const onTeacherChangeSubmit = (values, { setErrors, setSubmitting }) => {
+    setSubmitting(true);
+    setLoading(true);
+    try {
+      axiosInstance
+        .patch(`/teachers/profile/`, values)
+        .then((res) => {
+          setSubmitting(false);
+          console.log("res", res.data);
+          handleModal("Profile Created Successfully ✔", "");
+          addObjectToLocalStorageObject("darasa_teacher_profile", res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log("res errors", err.response.data);
+          if (err.response) {
+            if (err.response.data.user) {
+              if (err.response.data.user[0] === "This field must be unique.") {
+                handleModal(
+                  "You Already registered a company under your account",
+                  `(Only one teacher can be registered under an account)`
+                );
+              } else {
+                setErrors(err.response.data);
+              }
+            }
+            setErrors(err.response.data);
+          } else {
+            setError(err);
+          }
+          console.log(err.response.data);
+          setSubmitting(false);
+          setLoading(false);
+        });
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const onStudentAddSubmit = (values, { setErrors, setSubmitting }) => {
+    setSubmitting(true);
+    setLoading(true);
+    try {
+      axiosInstance
+        .post(`/students/`, values)
+        .then((res) => {
+          setSubmitting(false);
+          console.log("res", res.data);
+          handleModal("Profile Created Successfully ✔", "");
+          addObjectToLocalStorageObject("darasa_student_profile", res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log("res errors", err.response.data);
+          if (err.response) {
+            if (err.response.data.user) {
+              if (err.response.data.user[0] === "This field must be unique.") {
+                handleModal(
+                  "You Already registered a company under your account",
+                  `(Only one student can be registered under an account)`
+                );
+              } else {
+                setErrors(err.response.data);
+              }
+            }
+            setErrors(err.response.data);
+          } else {
+            setError(err);
+          }
+          console.log(err.response.data);
+          setSubmitting(false);
+          setLoading(false);
+        });
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const onStudentChangeSubmit = async (
+    values,
+    { setErrors, setSubmitting }
+  ) => {
+    setSubmitting(true);
+    try {
+      axiosInstance
+        .patch(`/students/profile/`, values)
+        .then((res) => {
+          setSubmitting(false);
+          console.log("res", res.data);
+          handleModal("Profile Updated Successfully ✔", "");
+          addObjectToLocalStorageObject("darasa_student_profile", res.data);
+        })
+        .catch((err) => {
+          if (err.response) {
+            setErrors(err.response.data);
+            console.log("errors za data");
+          } else {
+            setError(err);
+            console.log("errors general");
+          }
+          console.log(err.response.data);
+          setSubmitting(false);
+        });
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  if (error) {
+    return <Error500 err={error} />;
+  }
+
+  return (
+    <>
+      <CardWrapper>
+        <h4>
+          Profile{" "}
+          <Button
+            onClick={isEdit ? setView : setEdit}
+            size="small"
+            title={isEdit ? `View Profile` : `Edit Profile`}
+            style={{
+              fontSize: 15,
+              color: "#652e8d",
+              backgroundColor: "#ec7623",
+              float: "right",
+            }}
+          />
+        </h4>
+      </CardWrapper>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {currentForm === "edit" && (
+            <>
+              <ProfileSidebar>
+                <ProfileCard className="card-topline">
+                  <ProfileCardBody>
+                    <FormWrapper>
+                      {profile.is_teacher && (
+                        <Formik
+                          initialValues={initialTeacherValues}
+                          validationSchema={teacherValidationSchema}
+                          onSubmit={
+                            editting
+                              ? onTeacherChangeSubmit
+                              : onTeacherAddSubmit
+                          }
+                        >
+                          {(formik) => {
+                            return (
+                              <Form>
+                                <FormikControl
+                                  control="select"
+                                  label="Honorific Title"
+                                  name="honorific_title"
+                                  options={honorificTitleOptions}
+                                />
+                                <FormikControl
+                                  control="input"
+                                  type="text"
+                                  label="ID Number"
+                                  name="national_id"
+                                />
+                                <FormikControl
+                                  control="input"
+                                  type="text"
+                                  label="TSC Number"
+                                  name="tsc_id"
+                                />
+                                <Br />
+                                <Br />
+                                <Button
+                                  type="submit"
+                                  size="small"
+                                  title={
+                                    formik.isSubmitting ? "Adding... " : "Done"
+                                  }
+                                  style={{ fontSize: 15, color: "#fff" }}
+                                  // disabled={!formik.isValid}
+                                />
+                              </Form>
+                            );
+                          }}
+                        </Formik>
+                      )}
+                      {profile.is_student && (
+                        <Formik
+                          initialValues={initialStudentValues}
+                          validationSchema={studentValidationSchema}
+                          onSubmit={
+                            editting
+                              ? onStudentChangeSubmit
+                              : onStudentAddSubmit
+                          }
+                        >
+                          {(formik) => {
+                            return (
+                              <Form>
+                                <FormikControl
+                                  control="select"
+                                  label="Grade Level"
+                                  name="grade_level"
+                                  options={gradeLevelOptions}
+                                />
+                                <FormikControl
+                                  control="input"
+                                  type="text"
+                                  label="NEMIS Number"
+                                  name="student_id"
+                                />
+                                <Br />
+                                <Br />
+                                <Button
+                                  type="submit"
+                                  size="small"
+                                  title={
+                                    formik.isSubmitting
+                                      ? "Creating Profile... "
+                                      : "Done"
+                                  }
+                                  style={{ fontSize: 15, color: "#fff" }}
+                                  disabled={!formik.isValid}
+                                />
+                              </Form>
+                            );
+                          }}
+                        </Formik>
+                      )}
+                    </FormWrapper>
+                  </ProfileCardBody>
+                </ProfileCard>
+              </ProfileSidebar>
+
+              <ProfileCard className="card-topline">
+                <ProfileCardBody>
+                  <FormWrapper>
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      onSubmit={onSubmit}
+                    >
+                      {(formik) => {
+                        return (
+                          <Form>
+                            <FormikControl
+                              control="input"
+                              type="email"
+                              label="Email"
+                              name="email"
+                              onClick={
+                                profile.is_email_verified
+                                  ? () =>
+                                      handleModal(
+                                        "Oops!",
+                                        "Sorry, cant edit email after verification"
+                                      )
+                                  : null
+                              }
+                              readOnly={
+                                profile.is_email_verified ? true : false
+                              }
+                            />
+
+                            <FormikControl
+                              control="input"
+                              type="text"
+                              label="Surname"
+                              name="surname"
+                            />
+                            <FormikControl
+                              control="input"
+                              type="text"
+                              label="Other Names"
+                              name="other_names"
+                            />
+                            <FormikControl
+                              control="date"
+                              label="Birth Date"
+                              name="date_of_birth"
+                              type="date"
+                              // setFieldValue={formik.setFieldValue}
+                            />
+                            <FormikControl
+                              control="select"
+                              label="Gender"
+                              name="gender"
+                              options={genderOptions}
+                            />
+                            <FormikControl
+                              control="input"
+                              type="phone"
+                              label="Phone Number"
+                              placeholder="e.g. +254 722-123123"
+                              name="phone_number"
+                              onClick={
+                                profile.is_phone_verified
+                                  ? () =>
+                                      handleModal(
+                                        "Oops!",
+                                        "Sorry, cant edit phone after verification"
+                                      )
+                                  : null
+                              }
+                              readOnly={
+                                profile.is_phone_verified ? true : false
+                              }
+                            />
+
+                            <FormikControl
+                              control="input"
+                              type="file"
+                              setFieldValue={formik.setFieldValue}
+                              label="Profile Image"
+                              name="avatar"
+                            />
+                            <FormikControl
+                              control="textarea"
+                              label="About Yourself"
+                              name="about"
+                              rte={true}
+                              fullWidth
+                            />
+
+                            <Br />
+                            <Button
+                              type="submit"
+                              size="small"
+                              title={
+                                formik.isSubmitting ? "Changing... " : "Change"
+                              }
+                              isSubmitting={formik.isSubmitting}
+                              style={{
+                                fontSize: 15,
+                                color: "#fff",
+                              }}
+                              // disabled={!formik.isValid}
+                            />
+                          </Form>
+                        );
+                      }}
+                    </Formik>
+                  </FormWrapper>
+                </ProfileCardBody>
+              </ProfileCard>
+            </>
+          )}
+        </>
+      )}
+      {currentForm === "view" && <ProfileView profileID={profile.id} />}
+    </>
+  );
+}
+export default Profile;
