@@ -5,23 +5,18 @@ import { millisecondsToDaysHoursMinutesSeconds } from "utils";
 
 const checkAuth = async () => {
   const payload = JSON.parse(localStorage.getItem("darasa_auth_payload"));
-  console.log("payload should return true", payload);
   if (payload === undefined || payload === null) {
-    console.log("first false");
     return false;
   }
   const accessToken = payload.token.access;
   const refreshToken = payload.token.refresh;
 
   if (!accessToken || !refreshToken) {
-    console.log("showing false here : checking tokens");
     return false;
   }
 
   try {
     const { exp } = decode(accessToken);
-
-    console.log("exp", exp);
 
     const {
       days,

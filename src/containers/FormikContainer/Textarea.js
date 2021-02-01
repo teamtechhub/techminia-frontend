@@ -8,7 +8,6 @@ import EditorField from "./EditorField";
 
 function Textarea(props) {
   const { label, name, rte, value, ...rest } = props;
-  console.log("rte", rte);
   return (
     <FormInput className="form-control">
       <label htmlFor={name}>{label}</label>
@@ -67,7 +66,7 @@ const FormInput = styled.div`
     border: 1px solid #f1f1f1;
     display: flex;
     justify-content: flex-start;
-    background: #21277fad;
+    // background: #21277fad;
     flex-wrap: wrap;
     font-size: ${themeGet("fontSizes.base", "15")}px;
     margin-bottom: 5px;

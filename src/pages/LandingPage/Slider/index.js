@@ -36,97 +36,24 @@ export const StyledAwesomeSlider = styled(AwesomeSlider)`
 const AutoplaySlider = withAutoplay(StyledAwesomeSlider);
 
 function Slider() {
-  const { authDispatch } = useContext(AuthContext);
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = useContext(AuthContext);
+
   const history = useHistory();
   const handleGetStarted = () => {
-    authDispatch({
-      type: "SIGNUP",
-    });
+    if (!isAuthenticated) {
+      authDispatch({
+        type: "SIGNUP",
+      });
 
-    history.push("/auth/");
+      history.push("/auth/");
+    } else {
+      history.push("/dashboard/");
+    }
   };
   const sections = [
-    {
-      heading: " The Coolest",
-      subHeading: "Study Buddy!",
-      bannerCaption: (
-        <div>
-          Darasa is the first of its kind in Kenya!
-          <br />
-          You deserve high-quility, affordable and easily accessible education
-          <br /> to help you maximize your academic achievement <br />
-          and be the very best you can be as your journey towards
-          <br /> the future that awaits you beyond school.
-        </div>
-      ),
-      cta: (
-        <Button
-          title="Get Started"
-          onClick={handleGetStarted}
-          style={{
-            fontWeight: "500",
-            fontSize: 15,
-            color: "#fff",
-            background:
-              "linear-gradient(90deg, rgba(236,118,35,1) 0%, rgba(101,46,141,1) 100%)",
-          }}
-        />
-      ),
-    },
-    {
-      heading: " The Coolest",
-      subHeading: "Study Buddy!",
-      bannerCaption: (
-        <div>
-          Darasa is the first of its kind in Kenya!
-          <br />
-          You deserve high-quility, affordable and easily accessible education
-          <br /> to help you maximize your academic achievement <br />
-          and be the very best you can be as your journey towards
-          <br /> the future that awaits you beyond school.
-        </div>
-      ),
-      cta: (
-        <Button
-          title="Get Started"
-          onClick={handleGetStarted}
-          style={{
-            fontWeight: "500",
-            fontSize: 15,
-            color: "#fff",
-            background:
-              "linear-gradient(90deg, rgba(236,118,35,1) 0%, rgba(101,46,141,1) 100%)",
-          }}
-        />
-      ),
-    },
-    {
-      heading: " The Coolest",
-      subHeading: "Study Buddy!",
-      bannerCaption: (
-        <div>
-          Darasa is the first of its kind in Kenya!
-          <br />
-          You deserve high-quility, affordable and easily accessible education
-          <br /> to help you maximize your academic achievement <br />
-          and be the very best you can be as your journey towards
-          <br /> the future that awaits you beyond school.
-        </div>
-      ),
-      cta: (
-        <Button
-          title="Get Started"
-          onClick={handleGetStarted}
-          style={{
-            fontWeight: "500",
-            fontSize: 15,
-            color: "#fff",
-            background:
-              "linear-gradient(90deg, rgba(236,118,35,1) 0%, rgba(101,46,141,1) 100%)",
-          }}
-        />
-      ),
-    },
     {
       heading: " The Coolest",
       subHeading: "Study Buddy!",
@@ -163,11 +90,14 @@ function Slider() {
           backgroundImage: `linear-gradient(to right, #ffffff14, #ffffff14), url(${blob})`,
         }}
       >
-        <FloatingImage src={boy} alt="pics" />
+        <div style={{ position: "relative" }}>
+          <FloatingImage src={boy} alt="pics" />
+        </div>
+
         <AutoplaySlider
           play={true}
           cancelOnInteraction={false} // should stop playing on user interaction
-          interval={10000}
+          interval={20000}
           style={{ width: "100%" }}
         >
           {sections.map((section, i) => (

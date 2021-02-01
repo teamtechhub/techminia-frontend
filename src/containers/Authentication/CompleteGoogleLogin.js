@@ -15,6 +15,8 @@ import { addObjectToLocalStorageObject } from "utils";
 import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import * as Yup from "yup";
+import StudentForm from "pages/Profile/StudentForm";
+import TeacherForm from "pages/Profile/TeacherForm";
 import {
   Button,
   Container,
@@ -43,9 +45,28 @@ export default function CompleteGoogleLogin() {
   const [params, setParams] = useState({});
   const [update, setUpdate] = useState(false);
   const [name, setName] = useState();
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
   // const [updateValues, setUpdateValues] = useState({});
 
   console.log("update", update);
+
+  useEffect(() => {
+    if (redirect) {
+      authDispatch({
+        type: "EMAILCONFIRM",
+      });
+      history.push("/dashboard");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [redirect]);
+
+  const handleRedirect = () => {
+    setRedirect(!redirect);
+  };
+
   useEffect(() => {
     setName(localStorage.getItem("darasa_name"));
     const email = localStorage.getItem("darasa_email");
@@ -122,7 +143,7 @@ export default function CompleteGoogleLogin() {
   });
 
   const validationSchema = Yup.object().shape({
-    is_student: Yup.boolean().required("Select an Option"),
+    is_student: Yup.bool().oneOf([true], "Select an Option"),
     email: Yup.string()
       .min(3, emailNotLongEnough)
       .max(100)
@@ -250,9 +271,11 @@ export default function CompleteGoogleLogin() {
         )
         .then(async (res) => {
           console.log("data received", res);
+          setUserProfile(res.data);
           const roles = [];
           if (res.data.is_student) {
             roles.push("student");
+            setIsStudent(true);
             localStorage.removeItem("darasa_auth_roles");
             addArrayToLocalStorage("darasa_auth_roles", roles);
           }
@@ -262,6 +285,7 @@ export default function CompleteGoogleLogin() {
             addArrayToLocalStorage("darasa_auth_roles", roles);
           }
           if (res.data.is_teacher) {
+            setIsTeacher(true);
             roles.push("teacher");
             localStorage.removeItem("darasa_auth_roles");
             addArrayToLocalStorage("darasa_auth_roles", roles);
@@ -456,6 +480,12 @@ export default function CompleteGoogleLogin() {
               </>
             )}
           </>
+        )}
+        {isTeacher && (
+          <TeacherForm profile={userProfile} handleRedirect={handleRedirect} />
+        )}
+        {isStudent && (
+          <StudentForm profile={userProfile} handleRedirect={handleRedirect} />
         )}
       </Container>
     </Wrapper>

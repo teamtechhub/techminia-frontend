@@ -122,7 +122,7 @@ export const Ratio = styled.div`
 `;
 
 export const RatioInner = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;

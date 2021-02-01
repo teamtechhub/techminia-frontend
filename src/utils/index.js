@@ -2,6 +2,37 @@ import { useEffect, useState } from "react";
 import _ from "lodash";
 import CryptoJS from "crypto-js";
 import AES from "crypto-js/aes";
+import { Base64 } from "js-base64";
+
+export const getDBIdFromGraphqlId = (graphqlId, schema) => {
+  // This is temporary solution, we will use slugs in the future
+  const rawId = Base64.decode(graphqlId);
+  const regexp = /(\w+):(\d+)/;
+  const arr = regexp.exec(rawId);
+  if (schema && schema !== arr[1]) {
+    throw new Error("Schema is not correct");
+  }
+  return parseInt(arr[2], 10);
+};
+
+export const generateProductUrl = (id, name) =>
+  `/product/${slugify(name)}/${getDBIdFromGraphqlId(id, "Product")}/`;
+
+export const generateCategoryUrl = (id, name) =>
+  `/category/${slugify(name)}/${getDBIdFromGraphqlId(id, "Category")}/`;
+
+export const generateCollectionUrl = (id, name) =>
+  `/collection/${slugify(name)}/${getDBIdFromGraphqlId(id, "Collection")}/`;
+
+export const slugify = (text) =>
+  text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(/&/g, "-and-") // Replace & with 'and'
+    .replace(/[^\w\\-]+/g, "") // Remove all non-word chars
+    .replace(/\\-\\-+/g, "-"); // Replace multiple - with single -
 
 export const parseJwt = (token) => {
   var base64Url = token.split(".")[1];

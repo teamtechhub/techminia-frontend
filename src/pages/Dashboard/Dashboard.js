@@ -1,11 +1,17 @@
-import React from "react";
-import { CardWrapper } from "./Dashboard.style";
+import React, { useContext } from "react";
+import { AuthContext } from "contexts/auth/auth.context";
+import StudentDashboard from "./StudentDashboard";
+import TeacherDashboard from "./TeacherDashboard";
 
 function Dashboard() {
+  const {
+    authState: { profile },
+  } = useContext(AuthContext);
   return (
-    <CardWrapper>
-      <h4>Dashboard</h4>
-    </CardWrapper>
+    <>
+      {profile.is_student && <StudentDashboard profile={profile} />}
+      {profile.is_teacher && <TeacherDashboard profile={profile} />}
+    </>
   );
 }
 

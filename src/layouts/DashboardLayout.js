@@ -40,7 +40,7 @@ const DashboardLayout = (props) => {
                   height: `calc(100vh - ${height}px)`,
                 }}
                 path={props.path}
-                routes={props.routes}
+                {...props}
               />
             </SidedbarDesktop>
             <ContentWrapper

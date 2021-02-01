@@ -1,18 +1,21 @@
 import React, { useReducer } from "react";
 import { AuthContext } from "./auth.context";
 const isBrowser = typeof window !== "undefined";
+
 const INITIAL_STATE = {
   isAuthenticated: isBrowser && !!localStorage.getItem("access_token"),
   currentForm: "signIn",
   profile: localStorage.getItem("darasa_auth_profile")
     ? JSON.parse(localStorage.getItem("darasa_auth_profile"))
     : {},
-  extendedProfile: {},
+  extendedProfile: localStorage.getItem("darasa_auth_profile")
+    ? JSON.parse(localStorage.getItem("darasa_auth_profile"))[
+        "extended_profile"
+      ]
+    : {},
 };
 
 function reducer(state, action) {
-  console.log("auth", state);
-
   switch (action.type) {
     case "SIGNIN":
       return {
@@ -41,7 +44,6 @@ function reducer(state, action) {
       return {
         ...state,
         profile: action.payload.profile,
-        isAuthenticated: true,
       };
     case "SIGNIN_SUCCESS":
       return {

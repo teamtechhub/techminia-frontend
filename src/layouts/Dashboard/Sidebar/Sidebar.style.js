@@ -9,7 +9,8 @@ export const SidebarWrapper = styled.div`
   height: auto;
   display: flex;
   flex-shrink: 0;
-  background-color: #ffffff;
+  color: $fff;
+  background-color: #652e8c9c;
   flex-direction: column;
 
   @media only screen and (max-width: 769px) {
@@ -31,29 +32,24 @@ export const MenuWrapper = styled.div`
 
   @media only screen and (max-width: 769px) {
     padding: 20px 0;
-    /* alignItems: 'flex-start'; */
+    alignitems: "flex-start";
   }
 `;
 
 export const NavLink = styled(NavLinks)`
-  width: calc(100% - 30px);
+  // width: calc(100% - 30px);
   outline: 0;
   color: black;
   display: flex;
   align-items: center;
-  padding: 20px 55px 20px 30px;
+  left: 0;
+  padding: 5px 30px;
   text-decoration: none;
   transition: 0.15s ease-in-out;
 
   @media only screen and (max-width: 769px) {
     width: 100%;
-    padding: 20px 35px;
-  }
-
-  &.active {
-    color: black;
-    background-color: blue;
-    border-radius: 50px 0 0 50px;
+    padding: 3px 35px;
   }
 `;
 
@@ -99,11 +95,11 @@ export const LogoImage = styled.img`
 export const Header = styled.header(
   (props) =>
     css({
-      fontSize: props.depth === "parent" ? [2] : [1],
-      fontWeight: 6,
+      fontSize: props.depth === "parent" ? [15] : [12],
+      // fontWeight: 6,
       display: "flex",
       alignItems: "center",
-      marginBottom: props.depth === "parent" ? 12 : 0,
+      marginBottom: props.depth === "parent" ? 1 : 0,
       color:
         props.depth === "parent"
           ? props.open
@@ -111,7 +107,7 @@ export const Header = styled.header(
             : "darkBold"
           : props.open
           ? "primary"
-          : "darkRegular",
+          : "#ec7323",
       cursor: "pointer",
       transition: "0.15s ease-in-out",
 
@@ -128,8 +124,8 @@ export const Header = styled.header(
 export const IconWrapper = styled.div(
   (props) =>
     css({
-      width: props.depth === "child" ? 10 : 16,
-      marginRight: props.depth === "child" ? "8px" : 15,
+      width: props.depth === "child" ? 8 : 10,
+      marginRight: props.depth === "child" ? 0 : 15,
     }),
   {
     display: "flex",
@@ -137,6 +133,7 @@ export const IconWrapper = styled.div(
     justifyContent: "center",
     overflow: "hidden",
     flexShrink: 0,
+    // padding: 1,
 
     svg: {
       width: "100%",
@@ -161,12 +158,13 @@ export const Content = styled(animated.div)({
 export const Frame = styled.div(
   (props) =>
     css({
-      marginBottom: props.depth === "parent" ? 15 : 10,
+      marginBottom: props.depth === "parent" ? "0" : "5px",
+      marginTop: props.depth === "parent" ? "5px" : "5px",
       paddingLeft: props.depth === "child" ? 32 : 0,
     }),
   {
     position: "relative",
 
-    overflowX: "hidden",
+    // overflowX: "hidden",
   }
 );

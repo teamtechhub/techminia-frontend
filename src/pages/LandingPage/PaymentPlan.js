@@ -8,7 +8,7 @@ import {
   Column,
   Card,
   PaymentButton,
-  Arrow,
+  // Arrow,
 } from "./PaymentPlan.style";
 import { AreaHeading } from "./LandingPage.style";
 import Fade from "react-reveal/Fade";
@@ -23,14 +23,14 @@ const cards = [
   },
   {
     id: 2,
-    type: "Semi Annually",
+    type: "6 months",
     amount: 5000,
     save: 1000,
     color: "#ed145b",
   },
   {
     id: 3,
-    type: "Annually",
+    type: "12 months",
     amount: 10000,
     save: 2000,
     color: "#ef5927",
@@ -67,7 +67,7 @@ function PaymentPlan() {
                       ) : null}
                     </Amount>
                     <PaymentButton style={{ color: card.color }}>
-                      <Arrow style={{ backgroundColor: card.color }}></Arrow>
+                      {/* <Arrow style={{ backgroundColor: card.color }}></Arrow> */}
                       {card.type}
                     </PaymentButton>
                   </A>

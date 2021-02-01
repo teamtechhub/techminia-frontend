@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import { Modal } from "@redq/reuse-modal";
 import DashboardLayout from "layouts/DashboardLayout";
 import NotFound from "pages/NotFound";
+import AppLayout from "layouts/AppLayout";
 
 class PrivateRoutes extends Component {
   state = { allowedRoutes: [] };
@@ -33,25 +34,55 @@ class PrivateRoutes extends Component {
   }
 
   render() {
+    const path =
+      this.props.location.pathname
+        .replace(/\/+$/, "")
+        .substr(1)
+        .split(/\//)[0]
+        .trim() === "dashboard";
+    console.log(path);
     return (
-      <DashboardLayout
-        routes={this.state.allowedRoutes}
-        path={this.props.match.path}
-      >
-        <Modal>
-          <Switch>
-            {this.state.allowedRoutes.map((route) => (
-              <PrivateRoute
-                exact
-                key={route.url}
-                component={Routes[route.component]}
-                path={`${this.props.match.path}${route.url}`}
-              />
-            ))}
-            <Route component={NotFound} />
-          </Switch>
-        </Modal>
-      </DashboardLayout>
+      <>
+        {path ? (
+          <DashboardLayout
+            routes={this.state.allowedRoutes.filter(
+              (filteredRoute) => filteredRoute.dashboard_item
+            )}
+            path={this.props.match.path}
+          >
+            <Modal>
+              <Switch>
+                {this.state.allowedRoutes.map((route) => (
+                  <PrivateRoute
+                    exact
+                    key={route.url}
+                    component={Routes[route.component]}
+                    path={`${this.props.match.path}${route.url}`}
+                  />
+                ))}
+                <Route component={NotFound} />
+              </Switch>
+            </Modal>
+          </DashboardLayout>
+        ) : (
+          <AppLayout deviceType={{ desktop: true }}>
+            <Modal>
+              <Switch>
+                {this.state.allowedRoutes
+                  .filter((filteredRoute) => !filteredRoute.dashboard_item)
+                  .map((route) => (
+                    <PrivateRoute
+                      exact
+                      key={route.url}
+                      component={Routes[route.component]}
+                      path={`${route.url}`}
+                    />
+                  ))}
+              </Switch>
+            </Modal>
+          </AppLayout>
+        )}
+      </>
     );
   }
 }

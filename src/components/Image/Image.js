@@ -11,7 +11,7 @@ export default function ImageWrapper({ url, alt, className, style, id }) {
       style={style}
       src={url}
       alt={alt}
-      loader={<Placeholder />}
+      // loader={<Placeholder />}
       unloader={<Placeholder />}
       className={className}
     />

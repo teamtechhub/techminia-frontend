@@ -105,8 +105,8 @@ function VideoCarousel({ deviceType }) {
           autoPlay={true}
           infinite={true}
           data={videos}
-          component={(video, index) => (
-            <Fade key={index} bottom duration={800} delay={index * 100}>
+          component={(video, idx) => (
+            <Fade key={idx} bottom duration={800} delay={idx * 100}>
               <Video>
                 <VideoPreview>
                   <img src={video.placeholder} alt="tuition" />

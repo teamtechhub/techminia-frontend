@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 function RadioButtons(props) {
   const { label, name, options, ...rest } = props;
+
   return (
     <FormInput className="form-control">
       <label>{label}</label>
@@ -22,7 +23,14 @@ function RadioButtons(props) {
                   onBlur={(e) => field.onBlur(e)}
                   checked={field.value === option.value.toString()}
                 />{" "}
-                <label htmlFor={option.value.toString()}>{option.key}</label>
+                <label
+                  onClick={() =>
+                    form.setFieldValue(field.name, option.value.toString())
+                  }
+                  htmlFor={option.value.toString()}
+                >
+                  {option.key}
+                </label>
               </Fragment>
             );
           });
@@ -45,7 +53,7 @@ const FormInput = styled.div`
   > label {
     display: flex;
 
-    margin-bottom: 5px;
+    margin-left: 5px;
     font-size: 14px;
     line-height: 28px;
     color: #333;
@@ -55,8 +63,7 @@ const FormInput = styled.div`
   textarea,
   select {
     opacity: 0.9;
-    height: 10px;
-    width: 14px;
+    margin: auto;
   }
 
   .error {
@@ -73,7 +80,7 @@ const Fragment = styled.div`
   > label {
     display: inherit;
 
-    margin-bottom: 5px;
+    margin-left: 5px;
     font-size: 14px;
     line-height: 28px;
     color: #333;
@@ -83,8 +90,7 @@ const Fragment = styled.div`
   textarea,
   select {
     opacity: 0.9;
-    height: 20px;
-    width: 14px;
+    margin: auto;
   }
   .error {
     color: palevioletred;

@@ -1,19 +1,28 @@
 import axios from "axios";
 import { BASE_URL } from "constants/constants";
 
+const baseUrl = `${BASE_URL}/api`;
+const accessToken = localStorage.getItem("access_token");
 export const axiosInstance = axios.create({
-  baseURL: `${BASE_URL}/api`,
+  baseURL: baseUrl,
   // timeout: 10000,
+
+  headers: {
+    Authorization: accessToken ? `JWT ` + accessToken : null,
+    "Content-Type": "application/json",
+    accept: "application/json",
+  },
 });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     if (!error.response) {
       // network error
       console.log("Error: Network Error");
     } else {
       const originalRequest = error.config;
+      console.log(originalRequest);
 
       // Prevent infinite loops
       if (
@@ -30,6 +39,7 @@ axiosInstance.interceptors.response.use(
         error.response.statusText === "Unauthorized"
       ) {
         const refreshToken = localStorage.getItem("refresh_token");
+        console.log("trying to refresh token");
 
         if (refreshToken) {
           const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
@@ -39,18 +49,21 @@ axiosInstance.interceptors.response.use(
           console.log(tokenParts.exp);
 
           if (tokenParts.exp > now) {
-            return axiosInstance
+            console.log("refresshing token");
+            return await axiosInstance
               .post("/auth/token/refresh/", { refresh: refreshToken })
-              .then((response) => {
-                localStorage.setItem("access_token", response.data.access);
-                localStorage.setItem("refresh_token", response.data.refresh);
+              .then(async (response) => {
+                await localStorage.setItem(
+                  "access_token",
+                  response.data.access
+                );
 
                 axiosInstance.defaults.headers["Authorization"] =
                   "JWT " + response.data.access;
                 originalRequest.headers["Authorization"] =
                   "JWT " + response.data.access;
 
-                return axiosInstance(originalRequest);
+                return await axiosInstance(originalRequest);
               })
               .catch((err) => {
                 console.log(err);
@@ -81,7 +94,7 @@ export const formTokenConfig = () => {
     },
   };
   if (token) {
-    config.headers["Authorization"] = `JWT ${token}`;
+    config.headers["Authorization"] = "JWT " + token;
   }
   return config;
 };
@@ -94,7 +107,7 @@ export const tokenConfig = () => {
     },
   };
   if (token) {
-    config.headers["Authorization"] = `JWT ${token}`;
+    config.headers["Authorization"] = "JWT " + token;
   }
   return config;
 };

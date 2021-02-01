@@ -54,12 +54,12 @@ const ButtonStyle = styled.button`
 
   &.disabled {
     color: ${themeGet("colors.labelColor", "#767676")};
-    background-color: ${themeGet("colors.borderColor", "#E6E6E6")};
+    background-color: ${themeGet("colors.inactiveButton", "#b7dbdd")};
     border-color: ${themeGet("colors.borderColor", "#E6E6E6")};
 
     &:hover {
       color: ${themeGet("colors.labelColor", "#767676")};
-      background-color: ${themeGet("colors.borderColor", "#E6E6E6")};
+      background-color: ${themeGet("colors.inactiveButton", "#b7dbdd")};
       border-color: ${themeGet("colors.borderColor", "#E6E6E6")};
     }
   }

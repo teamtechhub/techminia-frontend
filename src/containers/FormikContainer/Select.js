@@ -39,9 +39,9 @@ const FormInput = styled.div`
     color: #333;
   }
 
-  > input[type="text"],
-  > input[type="email"],
-  > input[type="password"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
   textarea,
   select {
     opacity: 0.9;

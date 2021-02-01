@@ -11,6 +11,8 @@ import PasswordReset from "containers/Authentication/passwordReset";
 import Library from "pages/Library/Library";
 import ProductPage from "pages/product/[slug]";
 import CheckoutPage from "pages/Checkout/Checkout";
+import Video from "components/Video/Video";
+import Contact from "pages/Contact/Contact";
 
 const PublicRoutes = ({ deviceType }) => (
   <Fragment>
@@ -27,11 +29,17 @@ const PublicRoutes = ({ deviceType }) => (
       <Route exact path={`/library`}>
         <Library deviceType={deviceType} />
       </Route>
+      <Route exact path={`/contact-us`}>
+        <Contact deviceType={deviceType} />
+      </Route>
       <Route exact path={`/product/:slug`}>
         <ProductPage deviceType={deviceType} />
       </Route>
       <Route exact path={`/checkout`}>
         <CheckoutPage deviceType={deviceType} />
+      </Route>
+      <Route exact path={`/classes`}>
+        <Video deviceType={deviceType} />
       </Route>
       <Route
         exact

@@ -9,9 +9,9 @@ import {
   CONTACT,
   DASHBOARD,
   HOME,
-  LIBRARY,
+  // LIBRARY,
   PROFILE_PAGE,
-  TUITION,
+  // TUITION,
 } from "constants/routes.constants";
 import { AuthContext } from "contexts/auth/auth.context";
 import React from "react";
@@ -30,17 +30,17 @@ export const RightMenu = ({ onLogout, avatar, isAuthenticated, onJoin }) => {
   return (
     <RightMenuBox>
       <NavLink className="menu-item" href={HOME} label="HOME" />
-      <NavLink className="menu-item" href={TUITION} label="TUITION" />
-      <NavLink className="menu-item" href={CLASSES} label="CLASSES" />
+      {/* <NavLink className="menu-item" href={TUITION} label="TUITION" /> */}
 
       {isAuthenticated ? (
         <>
-          <NavLink className="menu-item" href={LIBRARY} label="LIBRARY" />
+          <NavLink className="menu-item" href={CLASSES} label="CLASSES" />
+          {/* <NavLink className="menu-item" href={LIBRARY} label="LIBRARY" /> */}
 
           <NavLink
             className="menu-item"
             href={DASHBOARD}
-            label="Tuition Dashboard"
+            label="TUITION DASHBOARD"
           />
         </>
       ) : (

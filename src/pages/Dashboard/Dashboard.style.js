@@ -209,3 +209,55 @@ export const LinkButton = styled.button`
   text-decoration: underline;
   cursor: pointer;
 `;
+
+export const WizardRightSideCard = styled.div`
+  float: right;
+  width: 350px;
+  margin-left: 20px;
+  @media (max-width: 991px) {
+    float: none;
+    width: 100% !important;
+    margin: 0;
+  }
+`;
+export const WizardLeftSideCard = styled.div`
+  float: left;
+  width: 350px;
+  min-width: 350px;
+  margin-right: 20px;
+  @media (max-width: 991px) {
+    float: none;
+    width: 100% !important;
+    margin: 0;
+  }
+`;
+
+export const WizardCard = styled.div`
+  position: relative;
+  margin-bottom: 24px;
+  margin-top: 10px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  .card-topline {
+    border-top: 3px solid ${themeGet("colors.primary.regular", "#652e8d")};
+  }
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+  @media (max-width: 991px) {
+    min-height: 50px;
+  }
+`;

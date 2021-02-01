@@ -1,8 +1,8 @@
-import { AlertDotIcon, NotificationIcon } from "components/AllSvgIcon";
+// import { AlertDotIcon, NotificationIcon } from "components/AllSvgIcon";
 import Drawer from "components/Drawer/Drawer";
-import Notification from "components/Notification/Notification";
+// import Notification from "components/Notification/Notification";
 import Popover from "components/Popover/Popover";
-import { SETTINGS } from "constants/constants";
+// import { SETTINGS } from "constants/constants";
 import { PROFILE_PAGE } from "constants/routes.constants";
 import { AuthContext } from "contexts/auth/auth.context";
 import { DrawerContext } from "contexts/drawer/drawer.context";
@@ -11,7 +11,7 @@ import UserImage from "images/user.jpg";
 import React, { useContext, useCallback } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Link, useHistory } from "react-router-dom";
-import { useDeviceType } from "utils/useDeviceType";
+// import { useDeviceType } from "utils/useDeviceType";
 import {
   DrawerClose,
   DrawerContentWrapper,
@@ -19,7 +19,7 @@ import {
 } from "../../Header/Header.style";
 import Sidebar from "../Sidebar/Sidebar";
 import {
-  AlertDot,
+  // AlertDot,
   CloseButton,
   DrawerWrapper,
   Image,
@@ -27,7 +27,7 @@ import {
   LogoImage,
   LogoutBtn,
   NavLink as NavBarLink,
-  NotificationIconWrapper,
+  // NotificationIconWrapper,
   ProfileImg,
   TopbarRightSide,
   TopbarWrapper,
@@ -35,13 +35,13 @@ import {
 } from "./Topbar.style";
 import { CloseIcon } from "components/AllSvgIcon";
 
-const data = [
-  {
-    title: "Application Successful",
-    time: "5m",
-    message: "You will be contacted soon",
-  },
-];
+// const data = [
+//   {
+//     title: "Application Successful",
+//     time: "5m",
+//     message: "You will be contacted soon",
+//   },
+// ];
 
 const Topbar = ({ refs, path, routes }) => {
   const history = useHistory();
@@ -50,8 +50,8 @@ const Topbar = ({ refs, path, routes }) => {
     authState: { profile },
     authDispatch,
   } = useContext(AuthContext);
-  const userAgent = navigator.userAgent;
-  const deviceType = useDeviceType(userAgent);
+  // const userAgent = navigator.userAgent;
+  // const deviceType = useDeviceType(userAgent);
   const img = profile.avatar ? profile.avatar : UserImage;
   // Toggle drawer
   const toggleHandler = useCallback(() => {
@@ -123,7 +123,7 @@ const Topbar = ({ refs, path, routes }) => {
       </DrawerWrapper>
 
       <TopbarRightSide>
-        {deviceType.desktop ? (
+        {/* {deviceType.desktop ? (
           <Popover
             direction="right"
             content={<Notification data={data} />}
@@ -138,7 +138,7 @@ const Topbar = ({ refs, path, routes }) => {
               </NotificationIconWrapper>
             }
           />
-        ) : null}
+        ) : null} */}
 
         <Link
           style={{ color: "#fff", margin: "0 10px", fontSize: "13px" }}
@@ -159,9 +159,9 @@ const Topbar = ({ refs, path, routes }) => {
               <NavBarLink to={PROFILE_PAGE} exact>
                 Profile
               </NavBarLink>
-              <NavBarLink to={SETTINGS} exact>
+              {/* <NavBarLink to={SETTINGS} exact>
                 Settings
-              </NavBarLink>
+              </NavBarLink> */}
               <LogoutBtn
                 onClick={() => {
                   handleLogout();

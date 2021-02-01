@@ -157,7 +157,7 @@ export const GlobalStyle = createGlobalStyle(({ theme }) =>
 
       "&::placeholder": {
         color: get(theme, "colors.text.regular"),
-        fontSize: `calc(${get(theme, "fontSizes.base")}px + 1px)`,
+        fontSize: "inherit",
       },
       "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
         webkitAppearance: "none",
@@ -275,6 +275,19 @@ export const GlobalStyle = createGlobalStyle(({ theme }) =>
     },
     ".react-multi-carousel-item": {
       margin: " 0 auto",
+    },
+    // ".video-react": {
+    //   color: "#ba9bd0",
+    // },
+    // ".video-react": {
+    //   backgroundColor: "transparent",
+    //   background: `linear-gradient(  90deg, rgba(236, 118, 35, 1) 0%, rgba(101, 46, 141, 1) 100% )`,
+    // },
+    // ".video-react .video-react-poster ": {
+    //   backgroundColor: "transparent",
+    // },
+    ".video-react .video-react-control-bar ": {
+      backgroundColor: "#ec76238f ",
     },
     //@js-ignore
     ...theme.globals,

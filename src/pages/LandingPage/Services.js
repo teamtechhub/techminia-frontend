@@ -28,10 +28,7 @@ const services = [
 function Services() {
   return (
     <Container>
-      <AreaHeading>
-        <h3>Love Learning with Darasa</h3>
-        <p>Checkout some of the cool features we offer</p>
-      </AreaHeading>
+      <AreaHeading></AreaHeading>
       <Wrapper>
         <Row>
           {services.map((service, index) => (

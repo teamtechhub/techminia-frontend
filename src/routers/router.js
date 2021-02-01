@@ -20,13 +20,14 @@ function BaseRouter({ deviceType }) {
       <Switch>
         <Route
           path="/dashboard"
-          component={PrivateRoutes}
-          deviceType={deviceType}
+          render={(props) => (
+            <PrivateRoutes deviceType={deviceType} {...props} />
+          )}
         />
 
         <AppLayout deviceType={deviceType}>
           <Modal>
-            <Route path="" render={authentication} />
+            <Route path="/" render={authentication} />
           </Modal>
         </AppLayout>
       </Switch>

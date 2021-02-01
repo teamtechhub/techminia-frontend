@@ -11,6 +11,8 @@ import { AuthContext } from "contexts/auth/auth.context";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Form, Formik } from "formik";
+import StudentForm from "pages/Profile/StudentForm";
+import TeacherForm from "pages/Profile/TeacherForm";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -42,12 +44,34 @@ export default function SignOutModal() {
   const [phoneValues, setPhoneValues] = useState({});
   const [validating, setValidating] = useState(Boolean());
   const [confirmationResult, setConfirmationResult] = useState({});
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+  const [userForm, setUserForm] = useState(false);
   const history = useHistory();
   const captchaRef = React.useRef(null);
 
   useEffect(() => {
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (redirect) {
+      authDispatch({
+        type: "EMAILCONFIRM",
+      });
+      authDispatch({
+        type: "SIGNUP_SUCCESS",
+      });
+      history.push("/dashboard");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [redirect]);
+
+  const handleRedirect = () => {
+    setRedirect(!redirect);
+  };
 
   const recaptcha = () => {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -78,7 +102,7 @@ export default function SignOutModal() {
     gender: "",
     surname: "",
     other_names: "",
-    is_student: Boolean(),
+    is_student: "",
   };
   const otpInitialValues = {
     code: "",
@@ -97,7 +121,9 @@ export default function SignOutModal() {
   });
 
   const validationSchema = Yup.object().shape({
-    is_student: Yup.boolean().required("Select an Option"),
+    is_student: Yup.bool()
+      .required("Select User Type.")
+      .oneOf([true, false], "Select an Option"),
     email: Yup.string()
       .min(3, emailNotLongEnough)
       .max(100)
@@ -167,14 +193,11 @@ export default function SignOutModal() {
         if (typeof window !== "undefined") {
           localStorage.setItem("access_token", res.data.token.access);
           localStorage.setItem("refresh_token", res.data.token.refresh);
-          authDispatch({
-            type: "EMAILCONFIRM",
-          });
+
           await new Promise((resolve) => setTimeout(resolve, 1000));
         }
         await new Promise((resolve) => setTimeout(resolve, 1000));
         console.log("response", res);
-        history.push("/dashboard");
       })
       .catch((err) => {
         console.log(err.response);
@@ -194,6 +217,7 @@ export default function SignOutModal() {
         await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
+        setUserForm(true);
       })
       .catch((error) => {
         console.log("error on otp submit: ", error);
@@ -225,6 +249,14 @@ export default function SignOutModal() {
       .post(`/auth/register/`, body)
       .then(async (res) => {
         console.log("data received", res);
+        if (res.data.is_teacher) {
+          setIsTeacher(true);
+        }
+        if (res.data.is_student) {
+          setIsStudent(true);
+        }
+        setUserProfile(res.data);
+
         authDispatch({
           type: "REGUPDATE",
           payload: {
@@ -340,6 +372,19 @@ export default function SignOutModal() {
                           name="is_student"
                           options={options}
                         />
+                        {/* <span>Teacher</span>
+                        <FormikControl
+                          style={{
+                            ".toggle-switch": { width: "100px" },
+                            ".toggle-switch-switch": {
+                              right: "75px",
+                            },
+                          }}
+                          options={["T", "S"]}
+                          control="toggle"
+                          name="is_student"
+                        />
+                        <span>Student</span> */}
 
                         <FormikControl
                           control="input"
@@ -414,6 +459,22 @@ export default function SignOutModal() {
                   }}
                 </Formik>
               </>
+            )}
+          </>
+        )}
+        {userForm && (
+          <>
+            {isTeacher && (
+              <TeacherForm
+                profile={userProfile}
+                handleRedirect={handleRedirect}
+              />
+            )}
+            {isStudent && (
+              <StudentForm
+                profile={userProfile}
+                handleRedirect={handleRedirect}
+              />
             )}
           </>
         )}

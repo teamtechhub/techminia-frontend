@@ -39,8 +39,8 @@ export const Thumb = styled.div`
   display: inline-flex;
   border-radius: 2px;
   margin-bottom: 8px;
-  margin-right: 8px;
-  width: 100px;
+  // margin-right: 8px;
+  width: 100%;
   height: 100px;
   padding: 4px;
   box-sizing: border-box;
@@ -55,5 +55,6 @@ export const ThumbInner = styled.div`
 export const Img = styled.img`
   display: block;
   width: auto;
+  margin: auto;
   height: 100%;
 `;

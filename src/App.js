@@ -11,8 +11,7 @@ import { AuthProvider } from "contexts/auth/auth.provider";
 import { StickyProvider } from "contexts/app/app.provider";
 import { SearchProvider } from "contexts/search/search.provider";
 import { HeaderProvider } from "contexts/header/header.provider";
-import { useTimer } from "utils";
-import Intro from "Intro";
+// import { useTimer } from "utils";
 import Fade from "react-reveal/Fade";
 import Firebase, { FirebaseContext } from "services/Firebase";
 import { Provider as AlertProvider } from "react-alert"; //, withAlert } from "react-alert";
@@ -30,6 +29,7 @@ import "rc-table/assets/index.css";
 import "rc-collapse/assets/index.css";
 import "react-multi-carousel/lib/styles.css";
 import "@redq/reuse-modal/lib/index.css";
+import "video-react/dist/video-react.css";
 
 function App() {
   const queryParams = useRouterQuery();
@@ -50,9 +50,9 @@ function App() {
     return <div />;
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  if (useTimer(7) > 0) {
-    return <Intro style={{ position: "absolute", zIndex: "1008" }} />;
-  }
+  // if (useTimer(7) > 0) {
+  //   return <Intro style={{ position: "absolute", zIndex: "1008" }} />;
+  // }
   const query = queryParams.get("text") ? queryParams.get("text") : "";
   return (
     <Fade clear duration={800}>

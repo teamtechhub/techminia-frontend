@@ -26,42 +26,17 @@ import { AuthContext } from "contexts/auth/auth.context";
 import ImageWrapper from "components/Image/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PasswordChange from "containers/Authentication/passwordChange";
-import { axiosInstance } from "utils/axios";
 import DraftRenderer from "components/DraftRenderer/DraftRenderer";
 
-const ProfileView = ({ profileID }) => {
+const ProfileView = () => {
   const {
     authState: { profile },
-    authDispatch,
   } = useContext(AuthContext);
   const [extendedProfile, setExtendedProfile] = useState({});
 
   useEffect(() => {
-    if (profile.is_student) {
-      axiosInstance.get(`/account/students/profile/`).then((res) => {
-        console.log(JSON.stringify(res, 4, null));
-        authDispatch({
-          type: "AUTHUPDATE",
-          payload: {
-            profile: { ...profile, extended_profile: res.data },
-          },
-        });
-        setExtendedProfile(res.data);
-      });
-    }
-    if (profile.is_teacher) {
-      axiosInstance.get(`/account/teachers/profile/`).then((res) => {
-        console.log(JSON.stringify(res, 4, null));
-        authDispatch({
-          type: "AUTHUPDATE",
-          payload: {
-            profile: { ...profile, extended_profile: res.data },
-          },
-        });
-        setExtendedProfile(res.data);
-      });
-    }
-  }, []);
+    setExtendedProfile(profile.extended_profile);
+  }, [profile]);
   return (
     <>
       <ProfileSidebar>
@@ -78,7 +53,9 @@ const ProfileView = ({ profileID }) => {
             </CardRow>
             <ProfileUserTitle>
               <ProfileName>
-                {profile.is_student ? null : extendedProfile.honorific_title}
+                {profile.is_teacher
+                  ? `${extendedProfile.honorofic_title}. `
+                  : null}
                 {profile.surname}
               </ProfileName>
               <ProfileTitle>{profile.other_names}</ProfileTitle>
@@ -105,35 +82,77 @@ const ProfileView = ({ profileID }) => {
           </ProfileCardHead>
           <ProfileCardBody>
             <ProfileDescription>
-              {profile.about.length > 1 ? (
+              {profile.about ? (
                 <DraftRenderer content={profile.about} />
               ) : (
                 `To be added ...`
               )}
             </ProfileDescription>
             <ListGroup>
-              <Li>
-                <B>Gender</B>
-                <A>{profile.gender}</A>
-              </Li>
-              <Li>
-                <B>Hobbies</B>
-                <A>Swimming, Reading</A>
-              </Li>
+              {profile.is_teacher && (
+                <>
+                  <Li>
+                    <B>TSC ID</B>
+                    <A>{extendedProfile.tsc_id}</A>
+                  </Li>
+                  <Li>
+                    <B>National ID</B>
+                    <A>{extendedProfile.national_id}</A>
+                  </Li>
+                </>
+              )}
+              {profile.is_student && (
+                <>
+                  <Li>
+                    <B>Gender</B>
+                    <A>{profile.gender}</A>
+                  </Li>
+                  <Li>
+                    <B>Hobbies</B>
+                    <A>
+                      {extendedProfile.hobby
+                        ? extendedProfile.hobby.map((hobby, index) => hobby)
+                        : null}
+                    </A>
+                  </Li>
+                </>
+              )}
             </ListGroup>
             <CardRow className="list-seperated profile-stat">
-              <ProfileListCol>
-                <ProfileListTitle>8</ProfileListTitle>
-                <ProfileListText>Subjects</ProfileListText>
-              </ProfileListCol>
-              <ProfileListCol>
-                <ProfileListTitle>2</ProfileListTitle>
-                <ProfileListText>Tasks</ProfileListText>
-              </ProfileListCol>
-              <ProfileListCol>
-                <ProfileListTitle>8</ProfileListTitle>
-                <ProfileListText>Classes</ProfileListText>
-              </ProfileListCol>
+              {profile.is_teacher && (
+                <>
+                  <ProfileListCol>
+                    <ProfileListTitle>8</ProfileListTitle>
+                    <ProfileListText>Subjects</ProfileListText>
+                  </ProfileListCol>
+                  <ProfileListCol>
+                    <ProfileListTitle>
+                      {extendedProfile.students ? 0 : extendedProfile.students}
+                    </ProfileListTitle>
+                    <ProfileListText>Students</ProfileListText>
+                  </ProfileListCol>
+                  <ProfileListCol>
+                    <ProfileListTitle>8</ProfileListTitle>
+                    <ProfileListText>Classes</ProfileListText>
+                  </ProfileListCol>
+                </>
+              )}
+              {profile.is_student && (
+                <>
+                  <ProfileListCol>
+                    <ProfileListTitle>8</ProfileListTitle>
+                    <ProfileListText>Subjects</ProfileListText>
+                  </ProfileListCol>
+                  <ProfileListCol>
+                    <ProfileListTitle>2</ProfileListTitle>
+                    <ProfileListText>Assignments</ProfileListText>
+                  </ProfileListCol>
+                  <ProfileListCol>
+                    <ProfileListTitle>8</ProfileListTitle>
+                    <ProfileListText>Exams</ProfileListText>
+                  </ProfileListCol>
+                </>
+              )}
             </CardRow>
           </ProfileCardBody>
         </ProfileCard>

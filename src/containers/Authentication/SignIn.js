@@ -121,11 +121,14 @@ export default function SignInModal() {
             // hashPassword(values.password_confirm);
             // eslint-disable-next-line no-unused-vars
             payload = { ...payload, ...extraPayloadData };
-            addObjectToLocalStorageObject("darasa_auth_payload", payload);
+            await addObjectToLocalStorageObject("darasa_auth_payload", payload);
 
             if (typeof window !== "undefined") {
-              localStorage.setItem("access_token", `${res.data.token.access}`);
-              localStorage.setItem(
+              await localStorage.setItem(
+                "access_token",
+                `${res.data.token.access}`
+              );
+              await localStorage.setItem(
                 "refresh_token",
                 `${res.data.token.refresh}`
               );
@@ -136,7 +139,7 @@ export default function SignInModal() {
               // closeModal();
             }
             // CHECK TOKEN & LOAD USER
-            axiosInstance
+            await axiosInstance
               .get(`/auth/profile/`, tokenConfig())
               .then(async (res) => {
                 let auth_profile = res.data;

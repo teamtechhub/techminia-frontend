@@ -124,7 +124,7 @@ export const GetStarted = styled.div`
 `;
 
 export const FloatingImage = styled.img`
-  position: absolute;
+  position: fixed;
   bottom: -8px;
   right: 39%;
   width: 300px;

@@ -33,7 +33,7 @@ const circle = keyframes`
 export const Wrapper = styled.div`
   width: 200px;
   height: 60px;
-  position: absolute;
+  position: relative;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

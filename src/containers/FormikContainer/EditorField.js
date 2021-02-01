@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { EditorState, ContentState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 
 // function uploadImageCallBack(file) {
 //   return new Promise((resolve, reject) => {
@@ -38,14 +36,17 @@ function EditorField({
     if (form.dirty) {
       return;
     }
-    if (!field.value) {
+    if (
+      field.value === null ||
+      field.value === undefined ||
+      Object.keys(field.value).length === 0
+    ) {
       return;
     }
-    const contentBlock = htmlToDraft(field.value);
+    const contentBlock = convertFromRaw(field.value);
+
     if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks
-      );
+      const contentState = contentBlock;
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState);
     }
@@ -55,12 +56,10 @@ function EditorField({
     setEditorState(editorState);
     form.setFieldValue(
       field.name,
-      //   convertToRaw(editorState.getCurrentContent())
-      draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      convertToRaw(editorState.getCurrentContent())
     );
   }
 
-  // const { editorState } = editorState;
   return (
     <>
       <Editor
@@ -92,7 +91,7 @@ function EditorField({
         //     textAlign: { inDropdown: true },
         //     link: { inDropdown: true },
         //     history: { inDropdown: true },
-        //
+        //}}
       />
     </>
   );

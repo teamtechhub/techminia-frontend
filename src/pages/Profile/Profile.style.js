@@ -41,7 +41,7 @@ export const FormWrapper = styled.div`
   }
   form {
     > div {
-      margin: 0 10px;
+      margin: 0 10px 0 0;
       max-width: 360px;
       label {
         display: table;

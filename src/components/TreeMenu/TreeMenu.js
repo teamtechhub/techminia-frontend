@@ -62,10 +62,7 @@ export const TreeMenu = ({ data, className, onClick, active }) => {
           icon={subOption.icon}
           depth="parent"
           onClick={() => onClick(subOption.slug)}
-          isOpen={
-            active === subOption.slug ||
-            subOption.children.some((item) => item.slug === active)
-          }
+          isOpen={active === subOption.title}
         >
           {handler(subOption.children)}
         </Tree>

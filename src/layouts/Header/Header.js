@@ -57,13 +57,7 @@ const Header = ({ className, isSticky, deviceType }) => {
             disableDragging: true,
             className: "quick-view-modal",
             width: 900,
-            y: 30,
             height: "auto",
-            transition: {
-              mass: 1,
-              tension: 0,
-              friction: 0,
-            },
           }
         : {
             enableResizing: false,

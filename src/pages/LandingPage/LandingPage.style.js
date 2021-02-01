@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { themeGet } from "@styled-system/theme-get";
 
 export const Site = styled.div`
-  z-index: 1000;
+  // z-index: 1;
   position: relative;
   // margin: 0 20px;
   // @media (max-width: 1600px) {
   //   margin-right: 20px;
   // }
+  background: #f7f7f7;
 `;
 export const Container = styled.div`
   position: absolute;
@@ -17,7 +18,7 @@ export const Container = styled.div`
   bottom: 0;
   content: "";
   margin: 0 auto;
-  z-index: 1;
+  // z-index: 1;
   align-items: center !important;
   justify-content: flex-end !important;
   display: flex !important;

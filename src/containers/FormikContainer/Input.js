@@ -8,6 +8,16 @@ import { themeGet } from "@styled-system/theme-get";
 import ReactCodeInput from "react-code-input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+function setImageFieldValue(img) {
+  if (typeof img !== "string" && typeof img !== undefined && img !== null) {
+    return img[0];
+  }
+  if (typeof img === Array) {
+    return img;
+  }
+  return null;
+}
+
 function Input(props) {
   const [show, setShow] = useState(false);
   const { label, name, type, file, setFieldValue, ...rest } = props;
@@ -29,9 +39,16 @@ function Input(props) {
                 id={name}
                 name={name}
                 selected={value}
+                doc={rest.doc}
+                multiple={rest.multiple ? rest.multiple : false}
                 {...field}
                 {...rest}
-                onChange={(val) => setFieldValue(name, val)}
+                onChange={(val) =>
+                  setFieldValue(
+                    name,
+                    rest.multiple ? val : setImageFieldValue(val)
+                  )
+                }
                 imageURL={value}
                 onBlur={(e) => field.onBlur(e)}
               />

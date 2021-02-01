@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Section,
   Container,
@@ -15,8 +16,26 @@ import { AreaHeading } from "./LandingPage.style";
 import IMG from "images/login-1.png";
 import Button from "components/Button/Button";
 import Fade from "react-reveal/Fade";
+import { AuthContext } from "contexts/auth/auth.context";
 
 function Portfolio() {
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = useContext(AuthContext);
+
+  const history = useHistory();
+  const handleGetStarted = () => {
+    if (!isAuthenticated) {
+      authDispatch({
+        type: "SIGNUP",
+      });
+
+      history.push("/auth/");
+    } else {
+      history.push("/dashboard/");
+    }
+  };
   return (
     <Section>
       <Container>
@@ -62,6 +81,7 @@ function Portfolio() {
               </Fade>
               <Button
                 title="Get Started"
+                onClick={handleGetStarted}
                 style={{
                   fontWeight: "500",
                   fontSize: 15,

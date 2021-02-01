@@ -118,7 +118,7 @@ function PasswordReset() {
     >
       <Wrapper
         style={{
-          width: "500px",
+          maxWidth: "500px",
           position: "relative",
         }}
       >

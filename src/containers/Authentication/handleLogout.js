@@ -16,6 +16,7 @@ function handleLogout() {
       localStorage.removeItem("darasa_applications");
       localStorage.removeItem("darasa_org_profile");
       localStorage.removeItem("darasa_individual_profile");
+      localStorage.clear();
       authDispatch({ type: "SIGN_OUT" });
       history.push("/");
     }
