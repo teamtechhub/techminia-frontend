@@ -196,7 +196,10 @@ export default function StudentDashboard() {
                                 return (
                                   <Video key={id}>
                                     <VideoPreview>
-                                      <VideoCast url={session.video_url} />
+                                      <VideoCast
+                                        url={session.video_url}
+                                        playercontrols={false}
+                                      />
                                       <div>
                                         <FontAwesomeIcon
                                           icon={"play-circle"}

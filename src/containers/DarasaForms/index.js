@@ -23,12 +23,12 @@ export default function DarasaForms() {
   const match = useRouteMatch();
   const [loading, setLoading] = useState(true);
 
-  const [forms, setForms] = useState({});
+  const [forms, setForms] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance.get(`/form`, tokenConfig()).then((res) => {
-      setForms(res.data.results);
+    axiosInstance.get(`/form`, tokenConfig()).then(async (res) => {
+      await setForms(res.data.results);
       setLoading(false);
     });
   }, []);
@@ -47,7 +47,7 @@ export default function DarasaForms() {
     return <SingleForm />;
   }
   if (loading) {
-    <Loader />;
+    return <Loader />;
   }
 
   return (
@@ -124,11 +124,12 @@ export default function DarasaForms() {
                     </div>
                   );
                 })
+              ) : !forms ? (
+                <Loader />
               ) : (
                 <h5>Oops! You have No Questions Yet</h5>
               )}
-
-              {/* <QuestionTab formData={formDetails} /> */}
+              {}
             </div>
           </ProfileCardBody>
         </WizardCard>

@@ -103,30 +103,18 @@ export default function Session(props) {
 
     let formData = new FormData();
 
-    const docs =
-      documents &&
-      (await documents.reduce((acc, d) => {
-        // let docsFormData = new FormData();
-        // docsFormData.append(
-        //   "title",
-
-        // );
-        // docsFormData.append("saved_file", d);
-        // acc["title"] = d.name
-        //   .replace(".docx", "")
-        //   .replace(".doc", "")
-        //   .replace(".pdf", "");
-        // acc["saved_file"] = d;
-
-        acc.push({
-          title: d.name
-            .replace(".docx", "")
-            .replace(".doc", "")
-            .replace(".pdf", ""),
-          saved_file: d,
-        });
-        return acc;
-      }, []));
+    const docs = documents
+      ? await documents.reduce((acc, d) => {
+          acc.push({
+            title: d.name
+              .replace(".docx", "")
+              .replace(".doc", "")
+              .replace(".pdf", ""),
+            saved_file: d,
+          });
+          return acc;
+        }, [])
+      : null;
     console.log(docs);
 
     formData.append("topic", selectedTopic ? selectedTopic.id : null);
@@ -140,6 +128,18 @@ export default function Session(props) {
       .post(`/curriculum/session/`, formData, formTokenConfig())
       .then(async (res) => {
         console.log("res", res.data);
+        // if (docs) {
+        //   for (let i = 0; i < docs.length; i++) {
+        //     let docsFormData = new FormData();
+        //     const element = docs[i];
+        //     docsFormData.append("session", res.data.id);
+        //     docsFormData.append("title", element.title);
+        //     docsFormData.append("saved_file", element.saved_file);
+        //     await axiosInstance
+        //       .post(`/curriculum/files/`, docsFormData, formTokenConfig())
+        //       .then((res) => console.log("files ----", res.data));
+        //   }
+        // }
         setInitialValues(res.data);
         setActiveSession(res.data);
         alert.success(`Lesson Created Successfully ✔`);
@@ -176,16 +176,18 @@ export default function Session(props) {
 
     let formData = new FormData();
 
-    const docs = await documents.reduce((acc, d) => {
-      acc.push({
-        title: d.name
-          .replace(".docx", "")
-          .replace(".doc", "")
-          .replace(".pdf", ""),
-        saved_file: d,
-      });
-      return acc;
-    }, []);
+    const docs = documents
+      ? await documents.reduce((acc, d) => {
+          acc.push({
+            title: d.name
+              .replace(".docx", "")
+              .replace(".doc", "")
+              .replace(".pdf", ""),
+            saved_file: d,
+          });
+          return acc;
+        }, [])
+      : null;
     console.log(docs);
 
     formData.append("name", name);
@@ -201,15 +203,17 @@ export default function Session(props) {
         formTokenConfig()
       )
       .then(async (res) => {
-        for (let i = 0; i < docs.length; i++) {
-          let docsFormData = new FormData();
-          const element = docs[i];
-          docsFormData.append("session", res.data.id);
-          docsFormData.append("title", element.title);
-          docsFormData.append("saved_file", element.saved_file);
-          await axiosInstance
-            .post(`/curriculum/files/`, docsFormData, formTokenConfig())
-            .then((res) => console.log("files ----", res.data));
+        if (docs) {
+          for (let i = 0; i < docs.length; i++) {
+            let docsFormData = new FormData();
+            const element = docs[i];
+            docsFormData.append("session", res.data.id);
+            docsFormData.append("title", element.title);
+            docsFormData.append("saved_file", element.saved_file);
+            await axiosInstance
+              .post(`/curriculum/files/`, docsFormData, formTokenConfig())
+              .then((res) => console.log("files ----", res.data));
+          }
         }
         setSubmitting(false);
         setLoading(false);

@@ -17,7 +17,7 @@ import Fade from "react-reveal/Fade";
 import Img1 from "images/for web 1.png";
 import Img2 from "images/for web 2.png";
 import Img3 from "images/for web 3.png";
-import Img4 from "images/for web 4.png";
+import Img4 from "images/for web 4.jpg";
 
 const cards = [
   {

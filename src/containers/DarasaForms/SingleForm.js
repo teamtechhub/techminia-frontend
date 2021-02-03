@@ -12,7 +12,6 @@ export default function SingleForm() {
   const {
     authState: { profile },
   } = useContext(AuthContext);
-  const [formID, setFormID] = useState();
   const [formDetails, setFormDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -25,8 +24,7 @@ export default function SingleForm() {
     setLoading(true);
     var formId = match.params.formID;
     if (formId !== undefined) {
-      setFormID(formId);
-      axiosInstance.get(`/form/${match.params.formID}`, tokenConfig()).then(
+      axiosInstance.get(`/form/${match.params.formID}/`, tokenConfig()).then(
         async (data) => {
           // console.log(data);
           await setFormDetails(data.data);
@@ -45,9 +43,6 @@ export default function SingleForm() {
       );
     }
   }, [match.params.formID]);
-
-  console.log(formID);
-  console.log(formDetails);
 
   if (formDetails.length) {
     return <Loader />;

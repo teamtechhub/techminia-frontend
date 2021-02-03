@@ -18,6 +18,7 @@ import { FormWrapper } from "pages/Profile/Profile.style";
 import { tokenConfig } from "utils/axios";
 import { useRouteMatch } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { toFormData } from "utils";
 
 export default function EditForm({ formDetails }) {
   const match = useRouteMatch();
@@ -39,17 +40,12 @@ export default function EditForm({ formDetails }) {
       formDetails.code === null ? { code: formDetails.id } : null;
     const all_data = { ...values, ...the_code };
 
-    let formData = new FormData();
-    console.log("========apapa=======", Object.keys(values).length);
-    for (let f = 0; f < Object.keys(values).length; f++) {
-      await formData.append(
-        `${Object.keys(all_data)[f]}`,
-        Object.values(all_data)[f]
-      );
-    }
-    console.log("=======ooo========", JSON.stringify(formData));
     await axiosInstance
-      .put(`/form/${formDetails.uuid}/`, formData, formTokenConfig())
+      .put(
+        `/form/${formDetails.uuid}/`,
+        toFormData(all_data),
+        formTokenConfig()
+      )
       .then((res) => {
         console.log(res);
         alert.success(`${res.data.title} Updates Successfully`);

@@ -1,12 +1,19 @@
 import Loader from "components/Loader/Loader";
-import React, { useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { axiosInstance, tokenConfig } from "utils/axios";
 import { FormHeader } from "./df.style";
 import { ProfileContent, ProfileCardHead } from "pages/Profile/Profile.style";
 import { WizardCard } from "pages/Dashboard/Dashboard.style";
+import Button from "components/Button/Button";
+import { AuthContext } from "contexts/auth/auth.context";
+import QuestionTabWizard from "./QuestionTabMultiStep";
 
 export default function ViewForm() {
+  const {
+    authState: { profile },
+  } = useContext(AuthContext);
+  const history = useHistory();
   const match = useRouteMatch();
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
@@ -22,12 +29,23 @@ export default function ViewForm() {
   }, [match.params.formID]);
   console.log(form);
 
+  function editForm() {
+    history.push(`/dashboard/form/${match.params.formID}/edit`);
+  }
+
   return (
     <div style={{ alignItems: "center", margin: "0 auto" }}>
       {loading ? (
         <Loader />
       ) : (
         <>
+          {profile.is_teacher ? (
+            <Button
+              onClick={editForm}
+              style={{ float: "right", margin: "5px" }}
+              title={`Edit`}
+            />
+          ) : null}
           <ProfileContent style={{ width: "100%" }}>
             <WizardCard style={{ minHeight: 0 }}>
               <ProfileCardHead
@@ -40,7 +58,7 @@ export default function ViewForm() {
           </ProfileContent>
           <div
             style={{
-              display: "flex",
+              display: "table",
               margin: "0 auto",
               alignItems: "center",
               justifyContent: "center",
@@ -55,174 +73,7 @@ export default function ViewForm() {
                 })`,
               }}
             />
-            {form.questions.length > 0 &&
-              form.questions.questions.map((ques, i) => {
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      marginLeft: "13px",
-                      paddingTop: "15px",
-                      paddingBottom: "15px",
-                    }}
-                  >
-                    {/* <TextField id="standard-basic" label=" " value="Question" InputProps={{ disableUnderline: true }} />  */}
-
-                    <p style={{ marginLeft: "0px" }}>
-                      {i + 1}. {ques.question}
-                    </p>
-
-                    {ques.background_image ? (
-                      <div>
-                        <img
-                          src={ques.background_image}
-                          width="400px"
-                          height="auto"
-                          alt="header-pic"
-                        />
-                        <br></br>
-                        <br></br>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {ques.question_type === "mcq_one"
-                      ? ques.mcq_one.map((op, j) => (
-                          <div key={j}>
-                            <div style={{ display: "flex" }}>
-                              <input
-                                type="radio"
-                                disabled
-                                style={{
-                                  height: "1.3em",
-                                  margin: "2px 5px",
-                                }}
-                              />
-                              <p style={{ color: "#555555" }}>
-                                {ques.mcq_one[j].choice_text}
-                              </p>
-                            </div>
-
-                            <div>
-                              {op.background_image ? (
-                                <img
-                                  src={op.background_image}
-                                  width="160px"
-                                  height="auto"
-                                  alt="header-info-pic"
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                        ))
-                      : null}
-                    {ques.question_type === "mcq_many"
-                      ? ques.mcq_many.map((op, j) => (
-                          <div key={j}>
-                            <div style={{ display: "flex" }}>
-                              <input
-                                type="checkbox"
-                                value="1"
-                                disabled
-                                style={{
-                                  height: "1.3em",
-                                  margin: "2px 5px",
-                                }}
-                              />
-                              <p style={{ color: "#555555" }}>
-                                {ques.mcq_many[j].choice_text}
-                              </p>
-                            </div>
-
-                            <div>
-                              {op.background_image ? (
-                                <img
-                                  src={op.background_image}
-                                  width="160px"
-                                  height="auto"
-                                  alt="header-info-pic"
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                        ))
-                      : null}
-                    {ques.question_type === "lng_txt" && (
-                      <>
-                        <div style={{ display: "flex" }}>
-                          <p style={{ color: "#555555" }}>
-                            {ques.lng_txt.answer_text}
-                          </p>
-                        </div>
-
-                        <div>
-                          {ques.lng_txt.background_image ? (
-                            <img
-                              src={ques.lng_txt.background_image_alt}
-                              width="160px"
-                              height="auto"
-                              alt="header-info-pic"
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </>
-                    )}
-                    {ques.question_type === "txt" && (
-                      <>
-                        <div style={{ display: "flex" }}>
-                          <p style={{ color: "#555555" }}>
-                            {ques.txt.answer_text}
-                          </p>
-                        </div>
-
-                        <div>
-                          {ques.txt.background_image ? (
-                            <img
-                              src={ques.txt.background_image_alt}
-                              width="160px"
-                              height="auto"
-                              alt="header-info-pic"
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </>
-                    )}
-
-                    {ques.question_type === "binary" && (
-                      <div className="toggle-switch">
-                        <input
-                          type="checkbox"
-                          className="toggle-switch-checkbox"
-                          id={"chkbx2"}
-                          name={"chkbx2"}
-                          checked={ques.binary.answer_option}
-                        />
-                        <label
-                          className="toggle-switch-label"
-                          htmlFor={"chkbx2"}
-                        >
-                          <span
-                            className={"toggle-switch-inner"}
-                            data-yes={"yes"}
-                            data-no={"no"}
-                          />
-                          <span className={"toggle-switch-switch"} />
-                        </label>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <QuestionTabWizard form={form} />
           </div>
         </>
       )}

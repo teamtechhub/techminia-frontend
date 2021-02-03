@@ -365,3 +365,123 @@ export const FormHeader = styled.div`
   border-radius: 8px;
   margin-bottom: 12px;
 `;
+export const QuestionHeader = styled.div`
+  padding: 0 30px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #8995a1;
+  h2 {
+    margin-top: 0;
+
+    font-size: 25px;
+    line-height: inherit;
+
+    margin: 15px 0;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    color: #f44336;
+    text-transform: none;
+    text-shadow: none;
+    text-align: left;
+  }
+`;
+export const QuestionInfoContainer = styled.div`
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+`;
+export const QuestionInfoCategory = styled.section`
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-right: 15px;
+`;
+export const QuestionInfoCategoryIcon = styled.div`
+  background-color: #9c27b0;
+  border-radius: 50%;
+  padding: 5px;
+  position: relative;
+  margin-right: 7.5px;
+  top: -10px;
+`;
+export const QCIcon = styled.div`
+  background-image: url(https://cdn.quizzclub.com/tags/geography.png?v=qi4);
+
+  height: 25px;
+  width: 25px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+`;
+
+export const QCTitle = styled.div`
+  margin-bottom: 0;
+
+  font-size: inherit;
+  color: inherit;
+  font-weight: bold;
+  margin: 0;
+  line-height: inherit;
+  h3 {
+    text-transform: none;
+    text-shadow: none;
+    text-align: left;
+  }
+`;
+
+export const QuestionInfo = styled.div`
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-right: 15px;
+`;
+
+export const Answers = styled.div``;
+export const AnswersList = styled.div`
+  margin: 22.5px 0 0;
+  padding: 0;
+  list-style: none;
+`;
+export const AnswersItem = styled.li`
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+  margin: 0 0 7.5px;
+`;
+
+export const AnswersLink = styled.div`
+  position: relative;
+  padding: 17px 45px;
+  display: inline-flex;
+  line-height: 1;
+  outline: none;
+  color: #fff;
+  font-size: 20px;
+  background-color: #b35bc2;
+  border: none;
+  border-left: 6px solid #ec7323;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  span {
+    position: relative;
+    z-index: 1;
+  }
+`;
+
+export const AnswerFeedback = styled.div`
+  margin-top: 15px;
+  margin-bottom: 30px;
+  padding: 30px 30px;
+  margin-bottom: 30px;
+  position: relative;
+  color: #151515;
+  background: #fff;
+`;

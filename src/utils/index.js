@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import _ from "lodash";
+import _, { isArray, isEqual, isObject, transform } from "lodash";
 import CryptoJS from "crypto-js";
 import AES from "crypto-js/aes";
 import { Base64 } from "js-base64";
+import { inspect } from "util";
 
 export const getDBIdFromGraphqlId = (graphqlId, schema) => {
   // This is temporary solution, we will use slugs in the future
@@ -49,6 +50,116 @@ export const parseJwt = (token) => {
   return JSON.parse(jsonPayload);
 };
 
+export const customFilter = (fn, a) => {
+  const f = []; //final
+  for (let i = 0; i < a.length; i++) {
+    if (fn(a[i])) {
+      f.push(a[i]);
+    }
+  }
+  return f;
+};
+/**
+ * @func curry
+ *filter an arr of obj
+ *
+ * @typedef{(e: object) => boolean} filterFnObjs
+ * @param {filterFnObjs} fn
+ * return {(a: object[]) => object[]}
+ */
+export const filterObjs = (fn) => (a) =>
+  // eslint-disable-next-line no-undef
+  throwIfNotArrOfObjs(a) || customFilter(fn, a);
+
+export const objDiff = (originalObject, newObject) => {
+  const changes = (newObject, originalObject) => {
+    let arrayIndexCounter = 0;
+    return transform(newObject, (result, value, key) => {
+      if (!isEqual(value, originalObject[key])) {
+        let resultKey = isArray(originalObject) ? arrayIndexCounter++ : key;
+        result[resultKey] =
+          isObject(value) && isObject(originalObject[key])
+            ? changes(value, originalObject[key])
+            : value;
+        if (originalObject.id) {
+          result["id"] = originalObject.id;
+        }
+        if (originalObject.question) {
+          result["question"] = originalObject.question;
+        }
+
+        // result["id"] =  Object.prototype.valueOf.arguments(originalObject, "id");
+      }
+    });
+  };
+  return changes(newObject, originalObject);
+};
+
+export const toFormData = (obj, form, namespace) => {
+  console.log(obj);
+  let fd = form || new FormData();
+  let formKey;
+
+  if (obj.new) {
+    let reducedObj;
+    if (obj.old) {
+      let diff = objDiff(obj.old, obj.new);
+
+      const dict = inspect(diff, {
+        showHidden: false,
+        depth: null,
+        colors: true,
+      });
+
+      console.log(dict);
+      reducedObj = diff;
+    } else {
+      reducedObj = obj.new;
+    }
+
+    for (let property in reducedObj) {
+      if (reducedObj.hasOwnProperty(property)) {
+        if (namespace) {
+          formKey = namespace + "[" + property + "]";
+        } else {
+          formKey = property;
+        }
+        if (reducedObj[property] instanceof Date) {
+          fd.append(formKey, reducedObj[property].toISOString());
+        } else if (
+          typeof reducedObj[property] === "object" &&
+          !(reducedObj[property] instanceof File)
+        ) {
+          toFormData(reducedObj[property], fd, formKey);
+        } else {
+          fd.append(formKey, reducedObj[property]);
+        }
+      }
+    }
+  } else {
+    for (let property in obj) {
+      if (obj.hasOwnProperty(property)) {
+        if (namespace) {
+          formKey = namespace + "[" + property + "]";
+        } else {
+          formKey = property;
+        }
+        if (obj[property] instanceof Date) {
+          fd.append(formKey, obj[property].toISOString());
+        } else if (
+          typeof obj[property] === "object" &&
+          !(obj[property] instanceof File)
+        ) {
+          toFormData(obj[property], fd, formKey);
+        } else {
+          fd.append(formKey, obj[property]);
+        }
+      }
+    }
+  }
+
+  return fd;
+};
 export const useTimer = (seconds) => {
   const [counter, setCounter] = useState(seconds ? seconds : 0);
   // Third Attempts

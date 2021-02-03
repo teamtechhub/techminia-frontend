@@ -413,7 +413,7 @@ export default function Session({ className, view }) {
               </ProfileCardHead>
               <ProfileCardBody>
                 {/* <img src={session.video_url} alt="tuition" /> */}
-                <Video url={session.video_url} />
+                <Video url={session.video_url} playercontrols={true} />
               </ProfileCardBody>
             </ProfileCard>
           </ProfileContent>

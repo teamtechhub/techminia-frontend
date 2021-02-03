@@ -5,6 +5,7 @@ import { useCreateContext } from "../create-context";
 
 const initialState = {
   isOpen: false,
+  drawerComponent: null,
   data: null,
 };
 
@@ -14,12 +15,14 @@ function reducer(state, action) {
       return {
         ...state,
         isOpen: true,
+        drawerComponent: action.drawerComponent,
         data: action.data,
       };
     case "CLOSE_DRAWER":
       return {
         ...state,
         isOpen: false,
+        drawerComponent: null,
         data: null,
       };
     case "TOGGLE":

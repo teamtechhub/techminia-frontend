@@ -1,25 +1,25 @@
 import React from "react";
 import {
-  Col1,
+  // Col1,
   Col2,
   Container,
   CourseTitle,
-  CourseRating,
+  // CourseRating,
   Instructor,
   MGrid,
-  RatingTextOnly,
-  StarRatingSection,
-  StarRatingNumberOnly,
-  Tally,
+  // RatingTextOnly,
+  // StarRatingSection,
+  // StarRatingNumberOnly,
+  // Tally,
   Video,
   VideoPreview,
-  VideoTeachers,
+  // VideoTeachers,
   VideoText,
   WatchButton,
   Wrapper,
 } from "./VideoCarousel.style";
 import { AreaHeading } from "./LandingPage.style";
-import StarRating from "containers/StarRating/StarRating";
+// import StarRating from "containers/StarRating/StarRating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "components/Carousel/Carousel";
 import Fade from "react-reveal/Fade";
@@ -117,7 +117,7 @@ function VideoCarousel({ deviceType }) {
                 <VideoText>
                   <CourseTitle>{video.title}</CourseTitle>
                   <Instructor>{video.class}</Instructor>
-                  <CourseRating>
+                  {/* <CourseRating>
                     <StarRatingSection>
                       <RatingTextOnly>
                         {video.rating} out of {video.maxRating}
@@ -134,7 +134,7 @@ function VideoCarousel({ deviceType }) {
                       />
                     </StarRatingSection>
                     <Tally>({video.tally})</Tally>
-                  </CourseRating>
+                  </CourseRating> */}
 
                   {/* <MGrid className="summary-row">
                     <Col2>
@@ -159,11 +159,11 @@ function VideoCarousel({ deviceType }) {
                       </VideoDescription>
                     </Col1>
                   </MGrid> */}
-                  <MGrid>
+                  {/* <MGrid>
                     <Col1>
                       <VideoTeachers>{video.teachers}</VideoTeachers>
                     </Col1>
-                  </MGrid>
+                  </MGrid> */}
                   <MGrid className="action-row">
                     <Col2>
                       <WatchButton>

@@ -74,7 +74,7 @@ export default withRouter(function Sidebar({
         />
         <div style={{ direction: "ltr", position: "absolute", bottom: 0 }}>
           {profile.is_student &&
-            (profile.subscription.is_active ? (
+            (profile.subscription && profile.subscription.state === 1 ? (
               <ProfileCard
                 style={{ backgroundColor: "#ffffff00", color: "#fff" }}
               >

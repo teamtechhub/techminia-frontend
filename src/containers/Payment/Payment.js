@@ -99,6 +99,7 @@ const Payment = ({ setSelectedContact }) => {
                   title="Add Contact"
                   iconPosition="right"
                   colors="primary"
+                  style={{ color: "#fff" }}
                   size="small"
                   variant="outlined"
                   type="button"

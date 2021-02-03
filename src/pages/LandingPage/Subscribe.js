@@ -15,8 +15,10 @@ import FormikControl from "containers/FormikContainer/FormikControl";
 import * as Yup from "yup";
 import Button from "components/Button/Button";
 import Fade from "react-reveal/Fade";
+import { useAlert } from "react-alert";
 
 function Subscribe() {
+  const alert = useAlert();
   const emailNotLongEnough = "email must be at least 3 characters";
   const emailRequired = "Please enter an email address";
   const invalidEmail = "email must be a valid email";
@@ -33,6 +35,7 @@ function Subscribe() {
       .required(emailRequired),
   });
   const onSubmit = (values) => {
+    alert.info("you have successcfully been added to our mailing list");
     console.log("Sorry", values.email, ", Subscription service is yet to run");
   };
   return (

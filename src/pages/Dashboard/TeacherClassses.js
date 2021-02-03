@@ -83,6 +83,13 @@ export default function TeacherClassses({ setView }) {
   return (
     <>
       <CardWrapper>
+        <Button
+          onClick={() => {
+            setView(false);
+          }}
+          style={{ float: "right", margin: "5px" }}
+          title={`Add Lessons`}
+        />
         <br />
         {classes && selectedTeacher
           ? classes
@@ -110,13 +117,6 @@ export default function TeacherClassses({ setView }) {
               ))
           : null}
         {classes.length === 0 ? <p>No Classes Here</p> : null}
-        <Button
-          onClick={() => {
-            setView(false);
-          }}
-          style={{ float: "right", margin: "5px" }}
-          title={`Add More Lessons`}
-        />
       </CardWrapper>
       {loading ? (
         <Loader />
