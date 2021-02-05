@@ -439,7 +439,7 @@ export const DrawerClose = styled.div`
 `;
 
 export const DrawerProfile = styled.div`
-  background-color: ${themeGet("colors.gray.200", "#F7F7F7")};
+  // background-color: ${themeGet("colors.gray.200", "#F7F7F7")};
   padding: 45px;
 `;
 

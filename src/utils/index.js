@@ -100,7 +100,7 @@ export const toFormData = (obj, form, namespace) => {
   let fd = form || new FormData();
   let formKey;
 
-  if (obj.new) {
+  if (obj && obj.new) {
     let reducedObj;
     if (obj.old) {
       let diff = objDiff(obj.old, obj.new);

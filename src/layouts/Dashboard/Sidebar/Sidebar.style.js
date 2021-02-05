@@ -10,7 +10,6 @@ export const SidebarWrapper = styled.div`
   display: flex;
   flex-shrink: 0;
   color: $fff;
-  background-color: #652e8c9c;
   flex-direction: column;
 
   @media only screen and (max-width: 769px) {

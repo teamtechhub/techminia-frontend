@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "components/Button/Button";
 import {
   Container,
@@ -22,9 +22,37 @@ import { Panel } from "rc-collapse";
 import TextField from "components/forms/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function questionsUI(
-  questions,
-  typeChooserOptions,
+const typeChooserOptions = [
+  // {
+  //   key: "txt",
+  //   Value: "Short Text",
+  //   icon: <FontAwesomeIcon icon="align-left" className="icon" />,
+  // },
+  // {
+  //   key: "lng_txt",
+  //   Value: "Long Answer",
+  //   icon: <FontAwesomeIcon icon="paragraph" className="icon" />,
+  // },
+  {
+    the_key: "mcq_one",
+    Value: "Multiple Choice",
+    icon: <FontAwesomeIcon icon="check-circle" className="icon" />,
+  },
+  {
+    the_key: "mcq_many",
+    Value: "Check Boxes",
+    icon: <FontAwesomeIcon icon="check-square" className="icon" />,
+  },
+  {
+    the_key: "binary",
+    Value: "Yes/No",
+    icon: <FontAwesomeIcon icon="check" className="icon" />,
+  },
+];
+
+export default function QuestionsUI(
+  qns,
+  // typeChooserOptions,
 
   copyQuestion,
   removeImage,
@@ -56,6 +84,10 @@ export default function questionsUI(
   setIsSelectActive,
   isSelectActive
 ) {
+  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    setQuestions(qns);
+  }, [qns]);
   function checkImageHereOrNotForQuestion(gg) {
     // console.log(gg);
     if (gg === undefined || gg === "" || gg === null) {
@@ -74,10 +106,20 @@ export default function questionsUI(
     }
   }
 
-  function handleFilter(qType, type) {
+  function handleTypeChooser(ques, opts) {
+    console.log(opts);
+    if (opts.length > 0) {
+      const opt = opts.find(({ the_key }) => the_key === ques.question_type);
+      return opt.the_key;
+    } else {
+      return null;
+    }
+  }
+
+  function handleFilter(ques, opts) {
+    const opt = opts && opts.find((fqs) => fqs.the_key === ques.question_type);
     const fltr =
-      typeChooserOptions.find((filteredType) => filteredType.key === qType)
-        .key === "mcq_one" ? (
+      opt.the_key === "mcq_one" ? (
         <input
           type="radio"
           disabled
@@ -100,8 +142,9 @@ export default function questionsUI(
     return fltr;
   }
   return (
-    <>
-      {questions &&
+    <div>
+      {typeChooserOptions &&
+        questions &&
         questions.length > 0 &&
         questions.map((ques, i) => {
           return (
@@ -188,7 +231,10 @@ export default function questionsUI(
                                         <div style={{ display: "flex" }}>
                                           {ques.mcq_one[j].is_answer
                                             ? " ✔ "
-                                            : handleFilter(ques.question_type)}
+                                            : handleFilter(
+                                                ques,
+                                                typeChooserOptions
+                                              )}
                                           <p
                                             style={{
                                               color: ques.mcq_one[j].is_answer
@@ -224,12 +270,15 @@ export default function questionsUI(
                                   ? ques.mcq_many.map((op, j) => (
                                       <div key={j}>
                                         <div style={{ display: "flex" }}>
-                                          {ques.mcq_one[j].is_answer
+                                          {ques.mcq_many[j].is_answer
                                             ? " ✔ "
-                                            : handleFilter(ques.question_type)}
+                                            : handleFilter(
+                                                ques,
+                                                typeChooserOptions
+                                              )}
                                           <p
                                             style={{
-                                              color: ques.mcq_one[j].is_answer
+                                              color: ques.mcq_many[j].is_answer
                                                 ? "#37bc35"
                                                 : "#555555",
                                             }}
@@ -392,7 +441,7 @@ export default function questionsUI(
                                           {
                                             typeChooserOptions.find(
                                               (filteredType) =>
-                                                filteredType.key ===
+                                                filteredType.the_key ===
                                                 ques.question_type
                                             ).icon
                                           }
@@ -401,7 +450,7 @@ export default function questionsUI(
                                           {
                                             typeChooserOptions.find(
                                               (filteredType) =>
-                                                filteredType.key ===
+                                                filteredType.the_key ===
                                                 ques.question_type
                                             ).Value
                                           }
@@ -419,10 +468,11 @@ export default function questionsUI(
                                     return (
                                       <PopupOption
                                         onClick={(e) => {
-                                          handleQuestionType(opt, i);
+                                          handleQuestionType(opt.the_key, i);
                                           setIsSelectActive(false);
                                           handleToggle(e);
                                         }}
+                                        key={o}
                                       >
                                         <PopUpOptionIcon>
                                           {opt.icon}
@@ -472,10 +522,8 @@ export default function questionsUI(
                               flexDirection: "column",
                             }}
                           >
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "txt" && (
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "txt" && (
                               <div
                                 style={{
                                   display: "flex",
@@ -537,10 +585,8 @@ export default function questionsUI(
                                 </div>
                               </div>
                             )}
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "lng_txt" && (
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "lng_txt" && (
                               <div
                                 style={{
                                   display: "flex",
@@ -608,10 +654,8 @@ export default function questionsUI(
                               /> */}
                               </div>
                             )}
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "binary" && (
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "binary" && (
                               <div
                                 style={{
                                   display: "flex",
@@ -647,10 +691,8 @@ export default function questionsUI(
                                 </div>
                               </div>
                             )}
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "mcq_one" &&
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "mcq_one" &&
                               ques.mcq_one.map((op, j) => {
                                 return (
                                   <div
@@ -769,10 +811,8 @@ export default function questionsUI(
                                   </div>
                                 );
                               })}
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "mcq_many" &&
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "mcq_many" &&
                               ques.mcq_many.map((op, j) => {
                                 return (
                                   <div
@@ -933,14 +973,10 @@ export default function questionsUI(
                               })}
                             <br />
                             <br />
-                            {typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "mcq_one" ||
-                            typeChooserOptions.find(
-                              (filteredType) =>
-                                filteredType.key === ques.question_type
-                            ).key === "mcq_many" ? (
+                            {handleTypeChooser(ques, typeChooserOptions) ===
+                              "mcq_one" ||
+                            handleTypeChooser(ques, typeChooserOptions) ===
+                              "mcq_many" ? (
                               <div
                                 style={{
                                   display: "inline-flex",
@@ -950,7 +986,7 @@ export default function questionsUI(
                                   paddingBottom: "5px",
                                 }}
                               >
-                                {handleFilter(ques.question_type)}
+                                {handleFilter(ques, typeChooserOptions)}
                                 <Button
                                   size="small"
                                   onClick={() => {
@@ -1112,6 +1148,6 @@ export default function questionsUI(
             </Draggable>
           );
         })}
-    </>
+    </div>
   );
 }

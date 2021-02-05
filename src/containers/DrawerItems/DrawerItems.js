@@ -6,6 +6,8 @@ import {
   useDrawerState,
   useDrawerDispatch,
 } from "contexts/drawer/drawer.provider";
+// import AuthenticationForm from "containers/Authentication/Form";
+// import Sidebar from "layouts/Dashboard/Sidebar/Sidebar";
 
 const CloseButton = styled.button`
   color: black;
@@ -32,6 +34,12 @@ const CloseButton = styled.button`
     top: 29px;
   }
 `;
+
+/** Components Name Constants */
+// const DRAWER_COMPONENTS = {
+//   AUTHENTICATION_FORM: AuthenticationForm,
+//   SIDEBAR: Sidebar,
+// };
 
 export default function DrawerItems() {
   const isOpen = useDrawerState("isOpen");
@@ -73,7 +81,7 @@ export default function DrawerItems() {
         DrawerContainer: {
           style: {
             width: "70vw",
-            backgroundColor: "#f7f7f7",
+            backgroundColor: "#a17fb9",
             "@media only screen and (max-width: 769px)": {
               width: "100%",
             },

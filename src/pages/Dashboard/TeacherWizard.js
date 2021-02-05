@@ -101,7 +101,7 @@ export default function TeacherWizard() {
           name={"Lesson"}
           sessionChange={setSession}
           selectedClass={teacherClass}
-          selectedSyllabus={session}
+          selectedSyllabus={syllabus}
           selectedSubject={subject}
           selectedTopic={topic}
           Icon={<FontAwesomeIcon icon={"play-circle"} className="icon" />}
@@ -125,7 +125,20 @@ const WizardController = ({ SW, globalState }) => {
   const history = useHistory();
   function createForm() {
     axiosInstance.post(`/form/`, {}, tokenConfig()).then((res) => {
-      history.push(`/dashboard/form/${res.data.uuid}/edit`);
+      axiosInstance
+        .patch(
+          `/curriculum/syllabus/${globalState.syllabus.id}/`,
+          {
+            assessments: [res.data.id],
+          },
+          tokenConfig()
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            history.push(`/dashboard/form/${res.data.uuid}/edit`);
+          } else {
+          }
+        });
     });
   }
   return (

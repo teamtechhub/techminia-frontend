@@ -5,13 +5,14 @@ import { useCreateContext } from "../create-context";
 
 const initialState = {
   isOpen: false,
-  drawerComponent: null,
+  drawerComponent: "AUTHENTICATION_FORM",
   data: null,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "OPEN_DRAWER":
+      alert("openning");
       return {
         ...state,
         isOpen: true,

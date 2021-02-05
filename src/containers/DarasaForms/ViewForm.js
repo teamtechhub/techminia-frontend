@@ -39,13 +39,6 @@ export default function ViewForm() {
         <Loader />
       ) : (
         <>
-          {profile.is_teacher ? (
-            <Button
-              onClick={editForm}
-              style={{ float: "right", margin: "5px" }}
-              title={`Edit`}
-            />
-          ) : null}
           <ProfileContent style={{ width: "100%" }}>
             <WizardCard style={{ minHeight: 0 }}>
               <ProfileCardHead
@@ -53,6 +46,13 @@ export default function ViewForm() {
                 style={{ textAlign: "center" }}
               >
                 <header>{form.title}</header>
+                {profile.is_teacher ? (
+                  <Button
+                    onClick={editForm}
+                    style={{ float: "right", margin: "5px" }}
+                    title={`Edit`}
+                  />
+                ) : null}
               </ProfileCardHead>
             </WizardCard>
           </ProfileContent>

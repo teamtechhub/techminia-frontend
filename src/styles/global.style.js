@@ -268,6 +268,7 @@ export const GlobalStyle = createGlobalStyle(({ theme }) =>
       "*:focus": {
         outline: "none",
       },
+      backgroundColor: "#a17fb9",
     },
 
     ".rc-table-content": {

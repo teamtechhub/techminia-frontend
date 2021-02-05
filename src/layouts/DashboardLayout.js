@@ -33,7 +33,7 @@ const DashboardLayout = (props) => {
       >
         {desktop ? (
           <>
-            <SidedbarDesktop>
+            <SidedbarDesktop style={{ backgroundColor: "#a17fb9" }}>
               <Sidebar
                 refs={sidebarRef}
                 style={{

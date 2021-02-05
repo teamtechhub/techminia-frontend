@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { openModal } from "@redq/reuse-modal";
 import AccordionWrapper from "components/Accordion/Accordion.style";
 import { SaveIcon, Plus } from "components/AllSvgIcon";
 import Button from "components/Button/Button";
@@ -111,47 +109,19 @@ export default function QuestionTab({ formDetails }) {
       .then(async (res) => {
         await setOldQuestions(res.data.questions);
       });
-  }, [match.params.formID, loadForm]);
+  }, [match.params.formID]);
 
   useEffect(() => {
     alert.error("reloading old questions data");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oldQuestions]);
 
-  const typeChooserOptions = [
-    // {
-    //   key: "txt",
-    //   Value: "Short Text",
-    //   icon: <FontAwesomeIcon icon="align-left" className="icon" />,
-    // },
-    // {
-    //   key: "lng_txt",
-    //   Value: "Long Answer",
-    //   icon: <FontAwesomeIcon icon="paragraph" className="icon" />,
-    // },
-    {
-      key: "mcq_one",
-      Value: "Multiple Choice",
-      icon: <FontAwesomeIcon icon="check-circle" className="icon" />,
-    },
-    {
-      key: "mcq_many",
-      Value: "Check Boxes",
-      icon: <FontAwesomeIcon icon="check-square" className="icon" />,
-    },
-    {
-      key: "binary",
-      Value: "Yes/No",
-      icon: <FontAwesomeIcon icon="check" className="icon" />,
-    },
-  ];
-
-  const updateQuestions = (q, d, res) => {
+  const updateQuestions = async (q, d, res) => {
     const qs = q;
-    alert.info("handle update questions");
-    qs.splice(indexOf(qs, d), 1);
-    setQuestions([...qs, { ...res.data, open: false }]);
-    // setOldQuestions([...qs, { ...res.data, open: false }]);
+    let newQ = { ...res, open: false };
+    await qs.splice(indexOf(qs, d), 1);
+    await setQuestions((qs) => [...qs, newQ]);
+    await setOldQuestions((qs) => [...qs, newQ]);
     setLoadForm(!loadForm);
   };
 
@@ -166,14 +136,16 @@ export default function QuestionTab({ formDetails }) {
           : await qs.find(({ open }) => open === true);
 
       const formData = await toFormData({
-        old: oldQuestions.find(({ id }) => id === all_data.id) || null,
-        new: all_data || null,
+        old: all_data.id
+          ? oldQuestions.find(({ id }) => id === all_data.id)
+          : false,
+        new: all_data,
       });
       all_data.order = (await indexOf(qs, all_data)) + 1;
       if (type === "edit_question") {
         if (all_data.id) {
           axiosInstance
-            .put(`/question/${all_data.id}/`, formData, formTokenConfig())
+            .patch(`/question/${all_data.id}/`, formData, formTokenConfig())
             .then(async (res) => {
               updateQuestions(questions, all_data, res.data);
               alert.success(`${res.data.question} Saved`);
@@ -243,7 +215,7 @@ export default function QuestionTab({ formDetails }) {
       });
       if (element.id) {
         axiosInstance
-          .put(`/question/${element.id}/`, formData, formTokenConfig())
+          .patch(`/question/${element.id}/`, formData, formTokenConfig())
           .then(async (res) => {
             alert.success(`${res.data.question} Saved`);
           });
@@ -442,9 +414,9 @@ export default function QuestionTab({ formDetails }) {
 
   function handleQuestionType(type, i) {
     var optionsOfQuestion = [...questions];
-    optionsOfQuestion[i].question_type = type.key;
+    optionsOfQuestion[i].question_type = type;
     setQuestions(optionsOfQuestion);
-    console.log("the type", type.key);
+    console.log("the type", type);
   }
   function setImageFieldValue(img) {
     if (typeof img !== "string" && typeof img !== undefined && img !== null) {
@@ -594,7 +566,7 @@ export default function QuestionTab({ formDetails }) {
               <div {...provided.droppableProps} ref={provided.innerRef}>
                 {questionsUI(
                   questions,
-                  typeChooserOptions,
+                  // typeChooserOptions,
 
                   copyQuestion,
                   removeImage,

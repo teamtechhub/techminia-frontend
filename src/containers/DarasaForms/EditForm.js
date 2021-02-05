@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   ProfileContent,
   ProfileCardBody,
@@ -15,40 +15,27 @@ import {
 import FormikControl from "containers/FormikContainer/FormikControl";
 import Button from "components/Button/Button";
 import { FormWrapper } from "pages/Profile/Profile.style";
-import { tokenConfig } from "utils/axios";
-import { useRouteMatch } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { toFormData } from "utils";
 
 export default function EditForm({ formDetails }) {
-  const match = useRouteMatch();
   const alert = useAlert();
-  const [initialValues, setInitialValues] = useState({});
-
-  useEffect(() => {
-    axiosInstance
-      .get(`/form/${match.params.formID}`, tokenConfig())
-      .then((res) => {
-        setInitialValues(res.data);
-      });
-  }, [match.params.formID]);
+  const [initialValues, setInitialValues] = useState(formDetails);
 
   async function onSubmit(values, { setErrors, setSubmitting }) {
-    console.log("values=========", values);
-
     const the_code =
       formDetails.code === null ? { code: formDetails.id } : null;
     const all_data = { ...values, ...the_code };
 
     await axiosInstance
-      .put(
+      .patch(
         `/form/${formDetails.uuid}/`,
-        toFormData(all_data),
+        toFormData({ old: initialValues, new: all_data }),
         formTokenConfig()
       )
       .then((res) => {
         console.log(res);
-        alert.success(`${res.data.title} Updates Successfully`);
+        alert.success(`${res.data.title} Updated Successfully`);
         setInitialValues(res.data);
       });
   }
