@@ -26,5 +26,5 @@ export const ADMIN = "/admin";
 
 export const TUITION = "/tuition";
 export const CLASSES = "/dashboard/classes";
-export const BAT = "/auth";
+export const BAT = "/auth/tecaher";
 export const LIBRARY = "/library";

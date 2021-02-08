@@ -2,7 +2,6 @@ import { UserAvatar } from "components/AllSvgIcon";
 import Button from "components/Button/Button";
 import NavLink from "components/NavLink/NavLink";
 import Popover from "components/Popover/Popover";
-import {} from "constants/constants";
 import {
   BAT,
   CLASSES,
@@ -22,11 +21,17 @@ import { RightMenuBox, ProfileImg, Image } from "./RightMenu.style";
 export const RightMenu = ({ onLogout, avatar, isAuthenticated, onJoin }) => {
   const {
     authState: { profile },
+    authDispatch,
   } = React.useContext(AuthContext);
   const location = useLocation();
   const path = location.pathname.replace(/\/+$/, "");
   const pathname = path[0] === "/" ? path.substr(1) : path;
   const isAuthPage = pathname === "auth";
+  const setSignup = () => {
+    authDispatch({
+      type: "SIGNUP",
+    });
+  };
   return (
     <RightMenuBox>
       <NavLink className="menu-item" href={HOME} label="HOME" />
@@ -44,7 +49,12 @@ export const RightMenu = ({ onLogout, avatar, isAuthenticated, onJoin }) => {
           />
         </>
       ) : (
-        <NavLink className="menu-item" href={BAT} label="BECOME A TEACHER" />
+        <NavLink
+          onClick={setSignup}
+          className="menu-item"
+          href={BAT}
+          label="BECOME A TEACHER"
+        />
       )}
       <NavLink className="menu-item" href={CONTACT} label="CONTACT" />
 

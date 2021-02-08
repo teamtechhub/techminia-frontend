@@ -1,29 +1,24 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
-  // Col1,
   Col2,
   Container,
   CourseTitle,
-  // CourseRating,
   Instructor,
   MGrid,
-  // RatingTextOnly,
-  // StarRatingSection,
-  // StarRatingNumberOnly,
-  // Tally,
   Video,
   VideoPreview,
-  // VideoTeachers,
   VideoText,
   WatchButton,
   Wrapper,
 } from "./VideoCarousel.style";
 import { AreaHeading } from "./LandingPage.style";
-// import StarRating from "containers/StarRating/StarRating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "components/Carousel/Carousel";
 import Fade from "react-reveal/Fade";
+import VideoCast from "components/Video/Video";
 import tuit from "images/tuit.png";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "contexts/auth/auth.context";
 
 const videos = [
   {
@@ -38,6 +33,7 @@ const videos = [
     hardLimit: 10,
     tally: "26,014",
     placeholder: tuit,
+    video_url: "http://127.0.0.1:8000/media/videos/burna.mp4",
   },
   {
     id: 2,
@@ -51,6 +47,7 @@ const videos = [
     hardLimit: 10,
     tally: "26,014",
     placeholder: tuit,
+    video_url: "http://127.0.0.1:8000/media/videos/burna.mp4",
   },
   {
     id: 3,
@@ -64,6 +61,7 @@ const videos = [
     hardLimit: 10,
     tally: "26,014",
     placeholder: tuit,
+    video_url: "http://127.0.0.1:8000/media/videos/burna.mp4",
   },
   {
     id: 4,
@@ -77,6 +75,7 @@ const videos = [
     hardLimit: 10,
     tally: "26,014",
     placeholder: tuit,
+    video_url: "http://127.0.0.1:8000/media/videos/burna.mp4",
   },
   {
     id: 5,
@@ -90,10 +89,35 @@ const videos = [
     hardLimit: 10,
     tally: "26,014",
     placeholder: tuit,
+    video_url: "http://127.0.0.1:8000/media/videos/burna.mp4",
   },
 ];
 
 function VideoCarousel({ deviceType }) {
+  const history = useHistory();
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = useContext(AuthContext);
+  const [selectedVideo, setSelectedVideo] = useState(false);
+  console.log(selectedVideo);
+  const selectVideo = (v) => {
+    if (selectedVideo === false) {
+      setSelectedVideo(v);
+      // handleModal();
+    } else {
+      if (selectedVideo === true) {
+        if (isAuthenticated) {
+          history.push(`/dashboard`);
+        } else {
+          authDispatch({
+            type: "SIGNIN",
+          });
+        }
+      }
+      setSelectedVideo(true);
+    }
+  };
   return (
     <Container>
       <AreaHeading>
@@ -102,68 +126,19 @@ function VideoCarousel({ deviceType }) {
       <Wrapper>
         <Carousel
           deviceType={deviceType}
-          autoPlay={true}
+          autoPlay={false}
           infinite={true}
           data={videos}
           component={(video, idx) => (
             <Fade key={idx} bottom duration={800} delay={idx * 100}>
-              <Video>
+              <Video onClick={() => selectVideo(video)}>
                 <VideoPreview>
-                  <img src={video.placeholder} alt="tuition" />
-                  <div>
-                    <FontAwesomeIcon icon={"play-circle"} className="icon" />
-                  </div>
+                  <VideoCast url={Video.video_url} playercontrols={false} />
                 </VideoPreview>
                 <VideoText>
                   <CourseTitle>{video.title}</CourseTitle>
                   <Instructor>{video.class}</Instructor>
-                  {/* <CourseRating>
-                    <StarRatingSection>
-                      <RatingTextOnly>
-                        {video.rating} out of {video.maxRating}
-                      </RatingTextOnly>
-                      <StarRatingNumberOnly>
-                        {video.rating}/{video.maxRating}
-                      </StarRatingNumberOnly>
-                      <StarRating
-                        rating={video.rating}
-                        minRating={video.minRating}
-                        maxRating={video.maxRating}
-                        starRatio={video.starRatio}
-                        limit={video.hardLimit}
-                      />
-                    </StarRatingSection>
-                    <Tally>({video.tally})</Tally>
-                  </CourseRating> */}
 
-                  {/* <MGrid className="summary-row">
-                    <Col2>
-                      <h5>SUMMARY</h5>
-                    </Col2>
-                    <Col2>
-                      <VideoLikes>
-                        <li>
-                          <i>🙂 </i>124
-                        </li>
-                        <li>
-                          <i>🙁 </i>3
-                        </li>
-                      </VideoLikes>
-                    </Col2>
-                  </MGrid> */}
-                  {/* <MGrid>
-                    <Col1>
-                      <VideoDescription>
-                        one seen is an elderly woman stating her father was a
-                        farmer, but did not start out that way.
-                      </VideoDescription>
-                    </Col1>
-                  </MGrid> */}
-                  {/* <MGrid>
-                    <Col1>
-                      <VideoTeachers>{video.teachers}</VideoTeachers>
-                    </Col1>
-                  </MGrid> */}
                   <MGrid className="action-row">
                     <Col2>
                       <WatchButton>

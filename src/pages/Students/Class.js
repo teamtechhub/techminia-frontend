@@ -26,22 +26,28 @@ export default function Class() {
   const [selectedTeacher, setSelectedTeacher] = useState(false);
 
   useEffect(() => {
-    axiosInstance
-      .get(`/curriculum/class/${match.params.classID}`)
-      .then((res) => {
-        setClass(res.data);
-      });
+    if (match.params.classID) {
+      axiosInstance
+        .get(`/curriculum/class/${match.params.classID}`)
+        .then((res) => {
+          setClass(res.data);
+        });
+      axiosInstance
+        .get(
+          `/curriculum/syllabus/?class=${match.params.classID}`,
+          tokenConfig()
+        )
+        .then(async (res) => {
+          await setTreeItems(res.data.results);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          console.log(res.data.results);
+          setLoading(false);
+        });
+    }
+
     axiosInstance.get(`/curriculum/subject/`).then((res) => {
       setSubjects(res.data.results);
     });
-    axiosInstance
-      .get(`/curriculum/syllabus/?class=${match.params.classID}`, tokenConfig())
-      .then(async (res) => {
-        await setTreeItems(res.data.results);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(res.data.results);
-        setLoading(false);
-      });
   }, [match.params.classID]);
 
   useEffect(() => {

@@ -176,7 +176,7 @@ const FormInput = styled.div`
   .react-tel-input .form-control {
     width: 100%;
     height: 40px;
-    border-radius: ${themeGet("radii.base", "6px")};
+    border-radius: 0;
     background-color: ${themeGet("colors.gray.200", "#F7F7F7")};
     border: 1px solid ${themeGet("colors.borderColor", "#E6E6E6")};
     font-family: ${themeGet("fonts.body", "Lato")};

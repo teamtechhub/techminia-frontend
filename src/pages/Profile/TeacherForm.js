@@ -31,7 +31,7 @@ export default function TeacherForm({ profile, handleRedirect }) {
       } else {
         console.log("not happening");
         setInitialTeacherValues({
-          national_id: "",
+          document_id: "",
           tsc_id: "",
           honorofic_title: "",
           user: localStorage.getItem("darasa_auth_profile") ? profile.id : "",
@@ -43,9 +43,8 @@ export default function TeacherForm({ profile, handleRedirect }) {
 
   const teacherValidationSchema = Yup.object({
     honorofic_title: Yup.string().required("Required"),
-    national_id: Yup.number()
-      .max(2147483647, "Id Number too long")
-      .min(10101010, "Id Number is invalid")
+    document_id: Yup.string()
+      .min(6, "Document Number is invalid")
       .required("Required"),
     tsc_id: Yup.string().required("Required"),
   });
@@ -161,8 +160,8 @@ export default function TeacherForm({ profile, handleRedirect }) {
             <FormikControl
               control="input"
               type="text"
-              label="ID Number"
-              name="national_id"
+              label="National Document ID"
+              name="document_id"
             />
             <FormikControl
               control="input"

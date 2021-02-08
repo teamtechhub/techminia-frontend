@@ -1,7 +1,6 @@
 import Button from "components/Button/Button";
 import StepWizard from "containers/Multistep/Multistep";
 import React, { useState } from "react";
-import { useAlert } from "react-alert";
 import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import {
@@ -21,7 +20,6 @@ import {
 } from "./df.style";
 
 export default function QuestionTabWizard({ form }) {
-  const alert = useAlert();
   const [state, setState] = useState({
     isAnswer: false,
     transitions: {
@@ -39,7 +37,6 @@ export default function QuestionTabWizard({ form }) {
     const rs =
       selectedAnswers &&
       selectedAnswers.reduce((acc, val) => {
-        alert.info(JSON.stringify(val));
         acc.push({
           answer: val.id,
           answer_to: ques.id,
@@ -65,7 +62,6 @@ export default function QuestionTabWizard({ form }) {
         }, []);
       setSelectedAnswers(newQ);
     }
-    alert.info(JSON.stringify(ques.question_type));
     const data = {
       response_to: form.id,
       question_id: ques.id,
@@ -89,7 +85,6 @@ export default function QuestionTabWizard({ form }) {
               },
             ],
     };
-    alert.info(JSON.stringify(data));
 
     if (ques.question_type === "mcq_many") {
       setSelectedAnswers([...selectedAnswers, op]);
@@ -128,10 +123,8 @@ export default function QuestionTabWizard({ form }) {
   const handleAnswerCheck = (q) => {
     switch (q.question_type) {
       case "mcq_one":
-        alert.show(q.question_type);
         const mcq_one = q.mcq_one.find((fq) => fq.is_answer === true);
         console.log(mcq_one);
-        alert.info(JSON.stringify(mcq_one));
         return mcq_one !== undefined
           ? mcq_one.id && selectedAnswer.id
             ? mcq_one.id === selectedAnswer.id
@@ -191,7 +184,7 @@ export default function QuestionTabWizard({ form }) {
     <>
       <StepWizard
         onStepChange={onStepChange}
-        isHashEnabled={true}
+        // isHashEnabled={true}
         // nav={<Nav />}
         instance={setInstance}
       >

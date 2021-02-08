@@ -70,6 +70,11 @@ function reducer(state, action) {
         ...state,
         currentForm: "completeGoogleLogin",
       };
+    case "PHONEVERIFICATION":
+      return {
+        ...state,
+        currentForm: "phoneVerification",
+      };
     case "EMAILCONFIRM":
       return {
         ...state,

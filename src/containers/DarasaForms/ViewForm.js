@@ -46,7 +46,7 @@ export default function ViewForm() {
                 style={{ textAlign: "center" }}
               >
                 <header>{form.title}</header>
-                {profile.is_teacher ? (
+                {profile.is_teacher && profile.id === form.creator ? (
                   <Button
                     onClick={editForm}
                     style={{ float: "right", margin: "5px" }}

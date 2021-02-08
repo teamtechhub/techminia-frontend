@@ -28,7 +28,7 @@ const Section = ({ heading, subHeading, bannerCaption, cta }) => {
   };
 
   return (
-    <BannerComponent>
+    <BannerComponent style={{ zIndex: 2 }}>
       <BannerContent>
         <HeadingWrapper>{heading}</HeadingWrapper>
         <SubHeadingWrapper>{subHeading}</SubHeadingWrapper>

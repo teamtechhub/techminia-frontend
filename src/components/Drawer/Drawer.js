@@ -40,7 +40,7 @@ const Drawer = ({
       </RcDrawer>
       <div
         className="drawer__handler"
-        style={{ display: "inline-block" }}
+        // style={{ display: "inline-block" }}
         onClick={toggleHandler}
       >
         {drawerHandler}

@@ -26,9 +26,8 @@ function BaseRouter({ deviceType }) {
         />
 
         <AppLayout deviceType={deviceType}>
-          <Modal>
-            <Route path="/" render={authentication} />
-          </Modal>
+          <Route path="/" render={authentication} />
+          <Modal />
         </AppLayout>
       </Switch>
     </>

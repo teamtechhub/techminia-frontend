@@ -16,7 +16,7 @@ const ContactValidationSchema = Yup.object().shape({
     .required("Phone Number is Required"),
 });
 
-const CreateOrUpdateContact = ({ item }) => {
+const CreateOrUpdateContact = ({ item, fetchNew }) => {
   console.log(item);
   const initialValues = {
     id: item.id || null,
@@ -31,7 +31,7 @@ const CreateOrUpdateContact = ({ item }) => {
     if (item !== "add-contact-modal") {
       console.log(item.length);
       await axiosInstance
-        .put(
+        .patch(
           `/account/contact/${item.id}/`,
           {
             name: values.name,
@@ -40,10 +40,11 @@ const CreateOrUpdateContact = ({ item }) => {
           tokenConfig()
         )
         .then((res) => {
-          dispatch({ type: "ADD_OR_UPDATE_CONTACT", payload: res.data });
-          alert.success("Contact Edited Successfully ✔");
+          alert.success(`${res.data.contact} Edited Successfully ✔`);
           closeModal();
           setSubmitting(false);
+          fetchNew(true);
+          dispatch({ type: "ADD_OR_UPDATE_CONTACT", payload: res.data });
         })
         .catch((err) => {
           if (err.response) {
@@ -63,10 +64,11 @@ const CreateOrUpdateContact = ({ item }) => {
           tokenConfig()
         )
         .then((res) => {
-          dispatch({ type: "ADD_OR_UPDATE_CONTACT", payload: res.data });
-          alert.success("Contact Added Successfully ✔");
-          closeModal();
+          // dispatch({ type: "ADD_OR_UPDATE_CONTACT", payload: res.data });
+          alert.success(` ${res.data.contact} Added Successfully ✔`);
+          fetchNew(true);
           setSubmitting(false);
+          closeModal();
         })
         .catch((err) => {
           if (err.response) {

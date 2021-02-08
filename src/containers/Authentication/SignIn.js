@@ -5,6 +5,7 @@ import FormikControl from "containers/FormikContainer/FormikControl";
 import { AuthContext } from "contexts/auth/auth.context";
 import { Form, Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
+import { useAlert } from "react-alert";
 import { useHistory, useLocation } from "react-router-dom";
 import {
   addArrayToLocalStorage,
@@ -13,7 +14,6 @@ import {
   unhashPassword,
 } from "utils";
 import { axiosInstance, tokenConfig } from "utils/axios";
-import * as Yup from "yup";
 import GoogleSocialAuth from "./GoogleSocialAuth";
 import {
   Button,
@@ -24,24 +24,22 @@ import {
   OfferSection,
   Wrapper,
 } from "./SignInOutForm.style";
+import { loginValidationSchema } from "./validation.schema";
 
 export default function SignInModal() {
   const history = useHistory();
   const location = useLocation();
+  const alert = useAlert();
   const path = location.pathname.replace(/\/+$/, "");
-  const pathname = path[0] === "/" ? path.substr(1) : path;
-
-  const emailNotLongEnough = "email must be at least 3 characters";
-  const emailRequired = "Please enter an email address";
-  const invalidEmail = "email must be a valid email";
-  const passwordNotLongEnough = "password must be at least 3 characters";
-  const fieldRequired = "This field is required";
+  const pathname = path[0] === "/" ? path.split("/")[1].trim() : path;
+  const isAuthPage = pathname === "auth";
   const [initialValues, setInitialValues] = useState();
   const { state, authDispatch } = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [showPhone, setShowPhone] = useState(Boolean());
   const [showEmail, setShowEmail] = useState(Boolean());
   const [isLoading, setIsLoading] = useState(Boolean());
+  const [showPhoneVerify, setShowPhoneVerify] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("darasa_auth_profile") !== null) {
@@ -56,12 +54,12 @@ export default function SignInModal() {
       });
     }
   }, []);
-  const isAuthPage = pathname === "auth";
 
   const toggleSignUpForm = () => {
     authDispatch({
       type: "SIGNUP",
     });
+    // alert(isAuthPage);
     if (!isAuthPage) {
       closeModal();
       history.push("/auth");
@@ -73,20 +71,11 @@ export default function SignInModal() {
       type: "FORGOTPASS",
     });
   };
-
-  const validationSchema = Yup.object({
-    login: showPhone
-      ? Yup.string().min(12, "Must have 12 numbers").required(fieldRequired)
-      : Yup.string()
-          .min(3, emailNotLongEnough)
-          .max(100)
-          .email(invalidEmail)
-          .required(emailRequired),
-    password: Yup.string()
-      .min(8, passwordNotLongEnough)
-      .max(100)
-      .required(fieldRequired),
-  });
+  const togglePhoneVerifyForm = () => {
+    authDispatch({
+      type: "PHONEVERIFICATION",
+    });
+  };
 
   const onSubmit = async (values, { setErrors, setSubmitting }) => {
     setIsLoading(true);
@@ -132,10 +121,7 @@ export default function SignInModal() {
                 "refresh_token",
                 `${res.data.token.refresh}`
               );
-              authDispatch({
-                type: "LOGIN_SUCCESS",
-              });
-
+              alert.success("Login Successful");
               // closeModal();
             }
             // CHECK TOKEN & LOAD USER
@@ -147,6 +133,7 @@ export default function SignInModal() {
                   "darasa_auth_profile",
                   auth_profile
                 );
+                alert.success("Redirecting ...");
                 authDispatch({
                   type: "UPDATE",
                   payload: {
@@ -186,9 +173,13 @@ export default function SignInModal() {
                       password: err.response.data.detail,
                     }
               );
+              if (err.response.data.detail === "Phone Number Not Activated") {
+                setShowPhoneVerify(true);
+              }
             } else {
               setError(err);
             }
+
             console.log(err);
             setSubmitting(false);
             setIsLoading(false);
@@ -212,7 +203,7 @@ export default function SignInModal() {
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
-      validationSchema={validationSchema}
+      validationSchema={() => loginValidationSchema(showPhone)}
       onSubmit={onSubmit}
     >
       {(formik) => {
@@ -230,6 +221,15 @@ export default function SignInModal() {
               label="Password"
               name="password"
             />
+            {showPhoneVerify && (
+              <OfferSection>
+                <Offer>
+                  Click
+                  <LinkButton onClick={togglePhoneVerifyForm}>here</LinkButton>
+                  to verify phone
+                </Offer>
+              </OfferSection>
+            )}
 
             <Button
               type="submit"
@@ -315,13 +315,13 @@ export default function SignInModal() {
           Don't have any account?{" "}
           <LinkButton onClick={toggleSignUpForm}>Sign Up</LinkButton>
         </Offer>
-        <OfferSection>
-          <Offer>
-            Forgot your password?{" "}
-            <LinkButton onClick={toggleForgotPassForm}>Reset It</LinkButton>
-          </Offer>
-        </OfferSection>
       </Container>
+      <OfferSection>
+        <Offer>
+          Forgot your password?
+          <LinkButton onClick={toggleForgotPassForm}>Reset It</LinkButton>
+        </Offer>
+      </OfferSection>
     </Wrapper>
   );
 }

@@ -11,8 +11,8 @@ import PasswordReset from "containers/Authentication/passwordReset";
 import Library from "pages/Library/Library";
 import ProductPage from "pages/product/[slug]";
 import CheckoutPage from "pages/Checkout/Checkout";
-import Video from "components/Video/Video";
 import Contact from "pages/Contact/Contact";
+import Nest from "containers/Authentication/Nest";
 
 const PublicRoutes = ({ deviceType }) => (
   <Fragment>
@@ -39,11 +39,20 @@ const PublicRoutes = ({ deviceType }) => (
         <CheckoutPage deviceType={deviceType} />
       </Route>
       <Route exact path={`/classes`}>
-        <Video deviceType={deviceType} />
+        <Nest deviceType={deviceType} />
+      </Route>
+      <Route exact path={`/classes/:userType`}>
+        <Nest deviceType={deviceType} />
       </Route>
       <Route
         exact
         path={`/auth`}
+        component={Authentication}
+        deviceType={deviceType}
+      />
+      <Route
+        exact
+        path={`/auth/:userType`}
         component={Authentication}
         deviceType={deviceType}
       />

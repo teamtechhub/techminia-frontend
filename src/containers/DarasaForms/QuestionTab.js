@@ -15,6 +15,7 @@ import { formTokenConfig } from "utils/axios";
 import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import questionsUI from "./questionsUI";
+import { Container } from "./df.style";
 
 // import ImageUplaodModel from "./ImageUploadModel";
 
@@ -95,7 +96,6 @@ export default function QuestionTab({ formDetails }) {
         setQuestions([newQuestion]);
       } else {
         setQuestions(formDetails.questions);
-        alert.info("reloading form data");
       }
     }
     window.addEventListener("click", handleDocumentClick);
@@ -112,21 +112,22 @@ export default function QuestionTab({ formDetails }) {
   }, [match.params.formID]);
 
   useEffect(() => {
-    alert.error("reloading old questions data");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oldQuestions]);
 
-  const updateQuestions = async (q, d, res) => {
-    const qs = q;
+  const updateQuestions = async (d, res) => {
+    const qs = questions;
     let newQ = { ...res, open: false };
+    console.log(qs);
+    console.log(indexOf(qs, d));
     await qs.splice(indexOf(qs, d), 1);
-    await setQuestions((qs) => [...qs, newQ]);
+    await setQuestions((qs) => [...qs, newQ, newQuestion]);
+    // await setQuestions((questions) => [...questions, newQuestion])
     await setOldQuestions((qs) => [...qs, newQ]);
     setLoadForm(!loadForm);
   };
 
   const handleEditAddQuestion = async (quiz, type) => {
-    alert.error("handle edit");
     const qs = [...questions];
 
     if (qs.filter(({ open }) => open === true).length > 0) {
@@ -147,7 +148,7 @@ export default function QuestionTab({ formDetails }) {
           axiosInstance
             .patch(`/question/${all_data.id}/`, formData, formTokenConfig())
             .then(async (res) => {
-              updateQuestions(questions, all_data, res.data);
+              updateQuestions(all_data, res.data);
               alert.success(`${res.data.question} Saved`);
             });
         } else {
@@ -163,7 +164,7 @@ export default function QuestionTab({ formDetails }) {
                 .then((response) => {
                   console.log("response", response);
                   if (response.status === 200) {
-                    updateQuestions(questions, all_data, res.data);
+                    updateQuestions(all_data, res.data);
                     alert.success("Question added");
                   }
                 });
@@ -175,7 +176,7 @@ export default function QuestionTab({ formDetails }) {
             axiosInstance
               .patch(`/question/${all_data.id}/`, formData, formTokenConfig())
               .then(async (res) => {
-                updateQuestions(questions, all_data, res.data);
+                updateQuestions(all_data, res.data);
                 alert.success("Question Editted");
               });
           } else {
@@ -191,7 +192,7 @@ export default function QuestionTab({ formDetails }) {
                   .then((response) => {
                     console.log("response", response);
                     if (response.status === 200) {
-                      updateQuestions(questions, all_data, res.data);
+                      updateQuestions(all_data, res.data);
                       alert.success("Question added");
                     }
                   });
@@ -232,12 +233,12 @@ export default function QuestionTab({ formDetails }) {
   async function addMoreQuestionField() {
     if (questions.filter((filteredQS) => filteredQS.open === true).length > 0) {
       await handleEditAddQuestion(null, "add_question");
+      expandCloseAll();
+    } else {
+      await expandCloseAll();
+
+      await setQuestions((questions) => [...questions, newQuestion]);
     }
-
-    console.log("adding more quiz");
-    expandCloseAll();
-
-    setQuestions((questions) => [...questions, newQuestion]);
   }
 
   async function copyQuestion(i) {
@@ -532,7 +533,6 @@ export default function QuestionTab({ formDetails }) {
   }
 
   async function handleExpand(i) {
-    alert.info("expanding");
     let qs = [...questions];
     [].splice();
 
@@ -606,23 +606,42 @@ export default function QuestionTab({ formDetails }) {
           </Droppable>
         </DragDropContext>
 
-        <div>
-          <Button
-            variant="contained"
-            onClick={addMoreQuestionField}
-            icon={<Plus color={"#fff"} />}
-            style={{ margin: "5px" }}
-            title={"Add Question"}
-          />
+        <div
+          style={{
+            position: "sticky",
+            bottom: 0,
+            width: "100%",
+            maxWidth: "950px",
+            borderRadius: 0,
+          }}
+        >
+          <Container
+            style={{
+              borderRadius: 0,
+              width: "100%",
+              display: "inline-flex",
+              verticalAlign: "middle",
+              alignItems: "center",
+              margin: "0px auto",
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={addMoreQuestionField}
+              icon={<Plus color={"#fff"} />}
+              style={{ margin: "5px" }}
+              title={"Add Question"}
+            />
 
-          <Button
-            variant="contained"
-            color="primary"
-            icon={<SaveIcon color={"#fff"} />}
-            onClick={saveQuestions}
-            style={{ background: "#ec7623", color: "#fff", margin: "15px" }}
-            title={"Save Questions"}
-          />
+            <Button
+              variant="contained"
+              color="primary"
+              icon={<SaveIcon color={"#fff"} />}
+              onClick={saveQuestions}
+              style={{ background: "#ec7623", color: "#fff" }}
+              title={"Save Questions"}
+            />
+          </Container>
         </div>
       </Collapse>
     </AccordionWrapper>

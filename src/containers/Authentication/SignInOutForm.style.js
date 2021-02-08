@@ -17,14 +17,14 @@ export const Button = styled(Buttons)`
 export const Wrapper = styled.div`
   text-align: center;
   background-color: ${themeGet("colors.white", "#ffffff")};
-  margin: 0 auto;
+  margin: auto;
 `;
 
 export const Container = styled.div`
-  padding: 40px 40px 0;
+  padding: 10px 15px 0;
 
   @media (max-width: 768px) {
-    padding: 40px 30px 0;
+    padding: 10px 10px 0;
   }
 `;
 
@@ -184,7 +184,7 @@ export const LeftPreview = styled.div`
   background-repeat: no-repeat;
   background-size: 100% 100%;
 
-  @media (max-width: 769px) {
+  @media (max-width: 900px) {
     flex: 0 0 100%;
     max-width: 100%;
     padding: 30px 47px 40px 30px;
@@ -195,7 +195,7 @@ export const LeftPreview = styled.div`
   img {
     width: 100%;
 
-    @media (max-width: 769px) {
+    @media (max-width: 900px) {
       min-width: auto !important;
     }
   }
@@ -229,26 +229,27 @@ export const AuthSection = styled.div`
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  position: relative;
   overflow: hidden;
   width: 70%;
   max-width: 100%;
   top: 100px;
-  margin-bottom: 50px;
-  @media (max-width: 769px) {
+  display: flex;
+  margin: auto;
+  min-height: 600px;
+  @media (max-width: 610px) {
+    min-height: 85vh;
     padding: 10px;
     width: 100%;
   }
 `;
 
 export const AuthWrapper = styled.div`
-  background: #f6f5f7;
+  padding: 80px 10px 30px;
+  background: #652e8c;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
   min-height: 100vh;
-  margin-bottom: 100px;
-  // margin: -20px 0 50px;
 `;

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import withAutoplay from "react-awesome-slider/dist/autoplay";
+// import withAutoplay from "react-awesome-slider/dist/autoplay";
 import "react-awesome-slider/dist/styles.css";
 import Section from "./Section";
 import AwesomeSlider from "react-awesome-slider";
@@ -33,7 +33,7 @@ export const StyledAwesomeSlider = styled(AwesomeSlider)`
   }
 `;
 
-const AutoplaySlider = withAutoplay(StyledAwesomeSlider);
+// const AutoplaySlider = withAutoplay(StyledAwesomeSlider);
 
 function Slider() {
   const {
@@ -93,8 +93,14 @@ function Slider() {
         <div style={{ position: "relative" }}>
           <FloatingImage src={boy} alt="pics" />
         </div>
+        <Section
+          heading={sections[0].heading}
+          subHeading={sections[0].subHeading}
+          bannerCaption={sections[0].bannerCaption}
+          cta={sections[0].cta}
+        />
 
-        <AutoplaySlider
+        {/* <AutoplaySlider
           play={true}
           cancelOnInteraction={false} // should stop playing on user interaction
           interval={20000}
@@ -110,7 +116,7 @@ function Slider() {
               />
             </div>
           ))}
-        </AutoplaySlider>
+        </AutoplaySlider> */}
       </BannerWrapper>{" "}
     </CustomParticles>
   );

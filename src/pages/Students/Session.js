@@ -413,7 +413,7 @@ export default function Session({ className, view }) {
               </ProfileCardHead>
               <ProfileCardBody>
                 {/* <img src={session.video_url} alt="tuition" /> */}
-                <Video url={session.video_url} playercontrols={true} />
+                <Video url={session.video_url} playercontrols={false} />
               </ProfileCardBody>
             </ProfileCard>
           </ProfileContent>
@@ -423,9 +423,9 @@ export default function Session({ className, view }) {
                 <>
                   <ProfileCardHead className="card-topline">
                     <header>
-                      {btns.map((item, xedni) => (
+                      {btns.map((item, p) => (
                         <Button
-                          key={xedni}
+                          key={p}
                           onClick={() => {
                             setActiveButton(item.title);
                           }}

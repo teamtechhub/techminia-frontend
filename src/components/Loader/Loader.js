@@ -3,7 +3,12 @@ import { Wrapper, Circle, Shadow, Span } from "./Loader.style";
 
 function Loader() {
   return (
-    <Wrapper>
+    <Wrapper
+    // style={{
+    //   display: "contents",
+    //   margin: "auto",
+    // }}
+    >
       <Circle />
       <Circle />
       <Circle />

@@ -23,8 +23,7 @@ const ButtonStyle = styled.button`
     props.variant === "extendedOutlinedFab"
       ? "#222222"
       : "#ffffff"};
-  border-radius: ${(props) =>
-    props.radius ? props.radius : themeGet("radius.3", "6")}px;
+  // border-radius: ${(props) => (props.radius ? props.radius : 0)}px;
   font-family: "Lato", sans-serif;
   font-size: ${themeGet("fontSizes.2", "15")}px;
   text-decoration: none;

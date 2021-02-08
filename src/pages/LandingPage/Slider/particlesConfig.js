@@ -5,7 +5,7 @@ import Lady from "images/lady.png";
 const ParticlesConfig = {
   particles: {
     number: {
-      value: 8,
+      value: 12,
       density: {
         enable: true,
         value_area: 800,
@@ -19,7 +19,7 @@ const ParticlesConfig = {
       out_mode: "out",
     },
     shape: {
-      type: ["image", "star", "triangle"],
+      type: ["image", "svg", "star", "triangle"],
       image: [
         {
           src: `${Plus}`,
@@ -38,14 +38,12 @@ const ParticlesConfig = {
         },
         {
           src: `${Lady}`,
-          height: 10,
+          height: 15,
           width: 10,
         },
       ],
     },
-    color: {
-      value: "#CCC",
-    },
+    color: { value: "#652e8d" },
     size: {
       value: 40,
       random: false,

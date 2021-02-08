@@ -1,6 +1,6 @@
 import StepWizard from "containers/Multistep/Multistep";
 import React, { useEffect, useState } from "react";
-import Nav from "./nav";
+// import Nav from "./nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./wizard.scss";
@@ -73,8 +73,8 @@ export default function TeacherWizard() {
     <div>
       <StepWizard
         onStepChange={onStepChange}
-        isHashEnabled={true}
-        nav={<Nav />}
+        // isHashEnabled={true}
+        // nav={<Nav />}
         instance={setInstance}
       >
         <Subject

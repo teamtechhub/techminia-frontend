@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw, Modifier } from "draft-js";
+import { List } from "immutable";
+import { getSelectedBlock } from "draftjs-utils";
+import htmlToDraft from "html-to-draftjs";
 import { Editor } from "react-draft-wysiwyg";
+import "./style.css";
+// import { axiosInstance } from "utils/axios";
 
-// function uploadImageCallBack(file) {
-//   return new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open("POST", "https://api.imgur.com/3/image");
-//     xhr.setRequestHeader("Authorization", "Client-ID XXXXX");
-//     const data = new FormData();
-//     data.append("image", file);
-//     xhr.send(data);
-//     xhr.addEventListener("load", () => {
-//       const response = JSON.parse(xhr.responseText);
-//       resolve(response);
-//     });
-//     xhr.addEventListener("error", () => {
-//       const error = JSON.parse(xhr.responseText);
-//       reject(error);
-//     });
-//   });
-// }
+// export const imageUploadApi = (file, transform = true) => {
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   return axiosInstance.post(`/api/images/`, formData);
+// };
 
 function EditorField({
   input,
@@ -29,6 +21,9 @@ function EditorField({
   label,
   placeholder,
   labelCss,
+  wrapperClassName,
+  toolbarClassName,
+  editorClassName,
 }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
@@ -59,39 +54,108 @@ function EditorField({
       convertToRaw(editorState.getCurrentContent())
     );
   }
+  const handlePastedText = (text, html, editorState, onChange) => {
+    if (html) {
+      const contentBlock = htmlToDraft(html);
+      let contentState = editorState.getCurrentContent();
+      contentBlock.entityMap.forEach((value, key) => {
+        contentState = contentState.mergeEntityData(key, value);
+      });
+      contentState = Modifier.replaceWithFragment(
+        contentState,
+        editorState.getSelection(),
+        new List(contentBlock.contentBlocks)
+      );
+      if (!this.isValidLength(contentState)) {
+        return "handled";
+      }
+      onChange(
+        EditorState.push(editorState, contentState, "insert-characters")
+      );
+      return true;
+    }
+    const selectedBlock = getSelectedBlock(editorState);
+    const newState = Modifier.replaceText(
+      editorState.getCurrentContent(),
+      editorState.getSelection(),
+      text,
+      editorState.getCurrentInlineStyle()
+    );
+    if (!this.isValidLength(newState)) {
+      return "handled";
+    }
+    onChange(EditorState.push(editorState, newState, "insert-characters"));
+    if (selectedBlock && selectedBlock.type === "code") {
+      return true;
+    }
+    return false;
+  };
+  // function uploadImageCallBack(file) {
+  //   return new Promise((resolve, reject) => {
+  //     imageUploadApi(file, false)
+  //       .then((response) => {
+  //         /* react-draft-wywsgi need data.link as the uploaded image url
+  //         so we had to slightly modify the result from cloudinary response */
+  //         let newResponse = {
+  //           data: {
+  //             link: response.data.secure_url,
+  //           },
+  //         };
+  //         resolve(newResponse);
+  //       })
+  //       .catch((error) => {
+  //         reject(error);
+  //       });
+  //   });
+  // }
 
   return (
     <>
       <Editor
         editorState={editorState}
-        toolbarClassName="toolbarClassName"
-        wrapperClassName="wrapperClassName"
-        editorClassName="editorClassName"
+        wrapperClassName={wrapperClassName || "richEditor-wrapper"}
+        toolbarClassName={toolbarClassName || "richEditor-toolbar"}
+        editorClassName={editorClassName || "richEditor-editor"}
         placeholder={placeholder}
+        handlePastedText={handlePastedText}
         onEditorStateChange={(val) => onEditorStateChange(val)}
         // onFocus={(e) => field.onFocus(e)}
         // onBlur={(e) => field.onBlur(e)}
-        // toolbar={{
-        //   options: [
-        //     "inline",
-        //     "blockType",
-        //     "fontSize",
-        //     "fontFamily",
-        //     "list",
-        //     "textAlign",
-        //     "link",
-        //     "embedded",
-        //     "remove",
-        //     "history",
-        //   ],
-        // }}
-        // toolbar={{
-        //     inline: { inDropdown: true },
-        //     list: { inDropdown: true },
-        //     textAlign: { inDropdown: true },
-        //     link: { inDropdown: true },
-        //     history: { inDropdown: true },
-        //}}
+        toolbar={{
+          options: [
+            "inline",
+            "blockType",
+            "fontSize",
+            "fontFamily",
+            "list",
+            "textAlign",
+            "colorPicker",
+            "link",
+            "emoji",
+            "image",
+            "history",
+          ],
+          inline: { inDropdown: true },
+          list: { inDropdown: true },
+          textAlign: { inDropdown: true },
+          link: { inDropdown: true },
+          image: {
+            // uploadCallback: uploadImageCallBack,
+            alt: { present: true },
+            previewImage: true,
+          },
+          fontFamily: {
+            options: [
+              "Arial",
+              "Georgia",
+              "Impact",
+              "Tahoma",
+              "Roboto",
+              "Times New Roman",
+              "Verdana",
+            ],
+          },
+        }}
       />
     </>
   );

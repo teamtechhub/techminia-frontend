@@ -62,7 +62,7 @@ export const VideoPreview = styled.div`
   > div {
     width: 100%;
     height: 100%;
-    opacity: 0;
+    opacity: 1;
     background-size: cover;
     position: absolute;
     z-index: 99;

@@ -1,20 +1,14 @@
-import { closeModal } from "@redq/reuse-modal";
-import // Facebook,
-
-// Google
-"components/AllSvgIcon";
 import Error500 from "components/Error/Error500";
 import Loader from "components/Loader/Loader";
 import { TERMS_CONDITIONS } from "constants/routes.constants";
 import FormikControl from "containers/FormikContainer/FormikControl";
+import StepWizard from "containers/Multistep/Multistep";
 import { AuthContext } from "contexts/auth/auth.context";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Form, Formik } from "formik";
-import StudentForm from "pages/Profile/StudentForm";
-import TeacherForm from "pages/Profile/TeacherForm";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import {
   addArrayToLocalStorage,
   addObjectToLocalStorageObject,
@@ -33,9 +27,12 @@ import {
   SubHeading,
   Wrapper,
 } from "./SignInOutForm.style";
+import { signupValidationSchema } from "./validation.schema";
+import signupImg from "images/signup.jpg";
+import studentsignup from "images/studentsignup.jpg";
 
 export default function SignOutModal() {
-  const { state, authDispatch } = useContext(AuthContext);
+  const { authState, authDispatch } = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [verifyOTP, setVerifyOTP] = useState(false);
@@ -46,32 +43,72 @@ export default function SignOutModal() {
   const [confirmationResult, setConfirmationResult] = useState({});
   const [isTeacher, setIsTeacher] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-  const [userProfile, setUserProfile] = useState({});
-  const [userForm, setUserForm] = useState(false);
+  const [switchTab, setSwitchTab] = useState(true);
+  const [classes, setClasses] = useState([]);
+  const [state, setState] = useState({
+    isAnswer: false,
+    transitions: {
+      enterRight: `animated enterRight`,
+      enterLeft: `animated enterLeft`,
+      exitRight: `animated exitRight`,
+      exitLeft: `animated exitLeft`,
+      intro: `animated intro`,
+    },
+  });
+  const setInstance = (SW) => {
+    setState({
+      ...state,
+      SW,
+    });
+  };
+  const { SW } = state;
+  const match = useRouteMatch();
   const history = useHistory();
   const captchaRef = React.useRef(null);
 
   useEffect(() => {
+    console.log(match.params.userType);
     setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (redirect) {
-      authDispatch({
-        type: "EMAILCONFIRM",
-      });
-      authDispatch({
-        type: "SIGNUP_SUCCESS",
-      });
-      history.push("/dashboard");
+    if (match.params.userType) {
+      setSwitchTab(false);
+      if (match.params.userType === "teacher") {
+        setIsTeacher(true);
+        setIsStudent(false);
+      } else if (match.params.userType === "student") {
+        axiosInstance.get(`/curriculum/class`).then((res) => {
+          const all_classes = res.data.results.reduce((arr, val) => {
+            arr.push({
+              value: val.name,
+              key: val.name,
+            });
+            return arr;
+          }, []);
+          setClasses([{ value: "", key: "Choose Class" }, ...all_classes]);
+        });
+        setIsTeacher(false);
+        setIsStudent(true);
+      }
+    } else {
+      setSwitchTab(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [redirect]);
+  }, [match.params.userType]);
 
-  const handleRedirect = () => {
-    setRedirect(!redirect);
-  };
+  // useEffect(() => {
+  //   if (redirect) {
+  //     authDispatch({
+  //       type: "EMAILCONFIRM",
+  //     });
+  //     authDispatch({
+  //       type: "SIGNUP_SUCCESS",
+  //     });
+  //     history.push("/dashboard");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [redirect]);
+
+  // const handleRedirect = () => {
+  //   setRedirect(!redirect);
+  // };
 
   const recaptcha = () => {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -86,12 +123,6 @@ export default function SignOutModal() {
     // window.recaptchaVerifier.render();
   };
 
-  const emailNotLongEnough = "email must be at least 3 characters";
-  const emailRequired = "Please enter an email address";
-  const invalidEmail = "email must be a valid email";
-  const nameNotLongEnough = "user's name must be at least 4 characters";
-  const passwordNotLongEnough = "password must be at least 8 characters";
-  const passwordDoNotMatch = "passwords must match";
   const fieldRequired = "This field is required";
 
   const initialValues = {
@@ -102,15 +133,29 @@ export default function SignOutModal() {
     gender: "",
     surname: "",
     other_names: "",
-    is_student: "",
+    extended_user: isTeacher
+      ? {
+          document_id: "",
+          tsc_id: "",
+          honorofic_title: "",
+        }
+      : {
+          // hobbies: [],
+          class_level: "",
+          student_id: "",
+        },
   };
   const otpInitialValues = {
     code: "",
   };
-  const options = [
-    { key: "Student", value: true },
-    { key: "Teacher", value: false },
+  const honorificTitleOptions = [
+    { value: "", key: "Select Title" },
+    { value: "Mr", key: "Mr" },
+    { value: "Mrs", key: "Mrs" },
+    { value: "Ms", key: "Ms" },
+    { value: "Dr", key: "Dr" },
   ];
+
   const genderOptions = [
     { value: "", key: "Select Gender" },
     { value: "Male", key: "Male" },
@@ -120,37 +165,12 @@ export default function SignOutModal() {
     code: Yup.number().min(6, "code is too short").required(fieldRequired),
   });
 
-  const validationSchema = Yup.object().shape({
-    is_student: Yup.bool()
-      .required("Select User Type.")
-      .oneOf([true, false], "Select an Option"),
-    email: Yup.string()
-      .min(3, emailNotLongEnough)
-      .max(100)
-      .email(invalidEmail)
-      .required(emailRequired),
-    other_names: Yup.string()
-      .min(4, nameNotLongEnough)
-      .max(100)
-      .required(fieldRequired),
-    phone_number: Yup.string()
-      .min(12, "Must have 12 numbers")
-      .required(fieldRequired),
-    password: Yup.string()
-      .min(8, passwordNotLongEnough)
-      .matches(/^.*[a-zA-Z].*$/, "Must Contain One Letter")
-      .matches(/^.*\d.*$/, "Must Contain One Number")
-      .max(100)
-      .required(fieldRequired),
-    password_confirm: Yup.string()
-      .oneOf([Yup.ref("password"), null], passwordDoNotMatch)
-      .required(fieldRequired),
-  });
-
   const toggleSignInForm = () => {
+    setSwitchTab(true);
     authDispatch({
       type: "SIGNIN",
     });
+    history.push("/auth");
   };
   const handlePhoneConfirm = () => {
     console.log("login values", phoneValues);
@@ -217,7 +237,6 @@ export default function SignOutModal() {
         await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
-        setUserForm(true);
       })
       .catch((error) => {
         console.log("error on otp submit: ", error);
@@ -237,10 +256,16 @@ export default function SignOutModal() {
     recaptcha();
 
     const body = values;
-    body["is_teacher"] =
-      body.is_student === "true" || body.is_student === true ? false : true;
-    body["is_student"] = !body.is_teacher;
-    body["phone_number"] = `+${body.phone_number}`;
+    if (isTeacher) {
+      body["is_teacher"] = true;
+    } else if (isStudent) {
+      body["is_student"] = true;
+    }
+    body["phone_number"] = `+${body.phone_number.replace(
+      /[*?^+${}()]|[-]|[ ]/g,
+      ""
+    )}`;
+    console.log(body);
 
     setLoginValues({ login: body.phone_number, password: body.password });
     setPhoneValues({ phone_number: body.phone_number, email: body.email });
@@ -255,12 +280,11 @@ export default function SignOutModal() {
         if (res.data.is_student) {
           setIsStudent(true);
         }
-        setUserProfile(res.data);
 
         authDispatch({
           type: "REGUPDATE",
           payload: {
-            ...state,
+            ...authState,
             profile: res.data,
           },
         });
@@ -291,7 +315,6 @@ export default function SignOutModal() {
     return null;
   };
   const handleTOS = () => {
-    closeModal();
     history.push(`${TERMS_CONDITIONS}`);
   };
   if (error) {
@@ -315,170 +338,276 @@ export default function SignOutModal() {
       console.log(err);
     }
   };
+
   return (
     <Wrapper>
-      <Container>
-        {verifyOTP ? (
-          <>
-            <Heading>Verify Phone Number</Heading>
-            <SubHeading>Check your phone for the sent code</SubHeading>
-            <Formik
-              initialValues={otpInitialValues}
-              validationSchema={otpValidationSchema}
-              onSubmit={otpSubmit}
-            >
-              {(formik) => {
-                return (
-                  <Form>
-                    <FormikControl
-                      control="input"
-                      type="code"
-                      label="Confirmation Code"
-                      name="code"
-                    />
+      {switchTab ? (
+        <div style={{ display: "block", margin: "5px" }}>
+          <h5 style={{ color: "#f1592a" }}>
+            Hey there, I'm <strong style={{ color: "#652e8d" }}>Arif</strong>
+          </h5>
+          <h6 style={{ color: "#f1592a" }}>here to help.</h6>
 
-                    <Button
-                      type="submit"
-                      disabled={!formik.isValid && validating}
-                      fullwidth
-                      title={validating ? "Verifying Number... " : "Verify"}
-                      style={{ color: "#ffffff" }}
-                    />
-                    <Offer style={{ padding: "20px 0" }}></Offer>
-                    <div id="recaptcha-container" ref={captchaRef} />
-                  </Form>
-                );
-              }}
-            </Formik>
-          </>
-        ) : (
-          <>
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                <SubHeading>Every fill is required in sign up</SubHeading>
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={onSubmit}
-                >
-                  {(formik) => {
-                    return (
-                      <Form>
-                        <FormikControl
-                          control="radio"
-                          label="Register as:"
-                          name="is_student"
-                          options={options}
-                        />
-                        {/* <span>Teacher</span>
-                        <FormikControl
-                          style={{
-                            ".toggle-switch": { width: "100px" },
-                            ".toggle-switch-switch": {
-                              right: "75px",
-                            },
-                          }}
-                          options={["T", "S"]}
-                          control="toggle"
-                          name="is_student"
-                        />
-                        <span>Student</span> */}
+          <div>
+            <img src={signupImg} alt="signup" />
+          </div>
+          <p>Select an option so I can get you started.</p>
+          <div style={{ display: "flex", margin: "5px" }}>
+            <Button
+              style={{ margin: "15px", width: "100%" }}
+              title={`Teacher`}
+              onClick={() => history.push(`/auth/teacher`)}
+            />
+            <Button
+              style={{ margin: "15px", width: "100%" }}
+              title={`Student`}
+              onClick={() => history.push(`/auth/student`)}
+            />
+          </div>
+        </div>
+      ) : (
+        <Container>
+          {verifyOTP ? (
+            <>
+              <Heading>Verify Phone Number</Heading>
+              <SubHeading>Check your phone for the sent code</SubHeading>
+              <Formik
+                initialValues={otpInitialValues}
+                validationSchema={otpValidationSchema}
+                onSubmit={otpSubmit}
+              >
+                {(formik) => {
+                  return (
+                    <Form>
+                      <FormikControl
+                        control="input"
+                        type="code"
+                        label="Confirmation Code"
+                        name="code"
+                      />
 
-                        <FormikControl
-                          control="input"
-                          type="text"
-                          label="Surname"
-                          name="surname"
-                        />
-                        <FormikControl
-                          control="input"
-                          type="text"
-                          label="Other Names"
-                          name="other_names"
-                        />
-                        <FormikControl
-                          control="input"
-                          type="email"
-                          label="Email"
-                          name="email"
-                        />
-                        <FormikControl
-                          control="input"
-                          type="phone"
-                          label="Phone Number"
-                          name="phone_number"
-                        />
-                        <FormikControl
-                          control="select"
-                          name="gender"
-                          options={genderOptions}
-                        />
-                        <FormikControl
-                          control="input"
-                          type="password"
-                          label="Password"
-                          name="password"
-                        />
-                        <FormikControl
-                          control="input"
-                          type="password"
-                          label="Confirm Password"
-                          name="password_confirm"
-                        />
-
-                        <HelperText style={{ padding: "20px 0 30px" }}>
-                          By signing up, you agree to Darasa's{" "}
-                          <strong
-                            style={{ color: "#652e8d" }}
-                            onClick={handleTOS}
+                      <Button
+                        type="submit"
+                        disabled={!formik.isValid && validating}
+                        fullwidth
+                        title={validating ? "Verifying Number... " : "Verify"}
+                        style={{ color: "#ffffff" }}
+                      />
+                      <Offer style={{ padding: "20px 0" }}></Offer>
+                      <div id="recaptcha-container" ref={captchaRef} />
+                    </Form>
+                  );
+                }}
+              </Formik>
+            </>
+          ) : (
+            <>
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <img
+                    style={{ height: "100px", borderRadius: "50%" }}
+                    src={studentsignup}
+                    alt="tsignup"
+                  />
+                  {isStudent ? (
+                    <p>Great! another mind eager to learn.</p>
+                  ) : (
+                    <p>Ready to help these kids learn ...</p>
+                  )}
+                  <SubHeading>Every fill is required in sign up</SubHeading>
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={() => signupValidationSchema(isTeacher)}
+                    onSubmit={onSubmit}
+                  >
+                    {(formik) => {
+                      return (
+                        <Form>
+                          <div></div>
+                          <StepWizard
+                            isHashEnabled={true}
+                            instance={setInstance}
                           >
-                            Terms &amp; Condtions
-                          </strong>
-                        </HelperText>
+                            <div name="user-profile">
+                              {/* <FormikControl
+                              control="radio"
+                              label="Register as:"
+                              name="is_student"
+                              options={options}
+                            /> */}
+                              <FormikControl
+                                control="input"
+                                type="text"
+                                label="Surname"
+                                name="surname"
+                              />
+                              <FormikControl
+                                control="input"
+                                type="text"
+                                label="Other Names"
+                                name="other_names"
+                              />
+                              <FormikControl
+                                control="input"
+                                type="email"
+                                label="Email"
+                                name="email"
+                              />
+                              <FormikControl
+                                control="input"
+                                type="phone"
+                                label="Phone Number"
+                                name="phone_number"
+                              />
+                              <FormikControl
+                                control="select"
+                                name="gender"
+                                options={genderOptions}
+                              />
+                              <FormikControl
+                                control="input"
+                                type="password"
+                                label="Password"
+                                name="password"
+                              />
+                              <FormikControl
+                                control="input"
+                                type="password"
+                                label="Confirm Password"
+                                name="password_confirm"
+                              />
+                              {SW && (
+                                <>
+                                  {SW.currentStep === SW.totalSteps ? null : (
+                                    <Button
+                                      style={{ float: "right" }}
+                                      title={`Next >`}
+                                      onClick={() => {
+                                        SW.nextStep();
+                                      }}
+                                    />
+                                  )}
+                                </>
+                              )}
+                            </div>
 
-                        <Button
-                          type="submit"
-                          disabled={!formik.isValid && validating}
-                          fullwidth
-                          title={
-                            validating ? "Creating account... " : "Sign Up"
-                          }
-                          style={{ color: "#ffffff" }}
-                        />
-                        <div id="recaptcha-container" ref={captchaRef} />
-                        <Offer style={{ padding: "20px 0" }}>
-                          Already have an account?{" "}
-                          <LinkButton onClick={toggleSignInForm}>
-                            Login
-                          </LinkButton>
-                        </Offer>
-                      </Form>
-                    );
-                  }}
-                </Formik>
-              </>
-            )}
-          </>
-        )}
-        {userForm && (
-          <>
-            {isTeacher && (
-              <TeacherForm
-                profile={userProfile}
-                handleRedirect={handleRedirect}
-              />
-            )}
-            {isStudent && (
-              <StudentForm
-                profile={userProfile}
-                handleRedirect={handleRedirect}
-              />
-            )}
-          </>
-        )}
-      </Container>
+                            <div
+                              name={`${
+                                isTeacher ? "Teacher" : "Student"
+                              } profile`}
+                            >
+                              {SW && (
+                                <>
+                                  {SW.currentStep === SW.totalSteps ? (
+                                    <HelperText
+                                      type="button"
+                                      style={{ padding: "20px 0 30px" }}
+                                    >
+                                      {formik.isValid ? null : (
+                                        <strong style={{ color: "orange" }}>
+                                          Check previous step. Form not valid
+                                        </strong>
+                                      )}
+                                      <br />
+                                      <strong
+                                        style={{
+                                          color: "#652e8d",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() => {
+                                          SW.previousStep();
+                                        }}
+                                      >
+                                        {"<< "}Edit your {match.params.userType}{" "}
+                                        profile
+                                      </strong>
+                                    </HelperText>
+                                  ) : null}
+                                </>
+                              )}
+
+                              {isStudent && (
+                                <>
+                                  <FormikControl
+                                    control="select"
+                                    label="Class"
+                                    name="extended_user.class_level"
+                                    options={classes}
+                                  />
+                                  <FormikControl
+                                    control="input"
+                                    type="text"
+                                    label="NEMIS Number"
+                                    name="extended_user.student_id"
+                                  />
+                                </>
+                              )}
+                              {isTeacher && (
+                                <>
+                                  <FormikControl
+                                    control="select"
+                                    label="Honorific Title"
+                                    name="extended_user.honorofic_title"
+                                    options={honorificTitleOptions}
+                                  />
+                                  <FormikControl
+                                    control="input"
+                                    type="text"
+                                    label="National Document ID"
+                                    name="extended_user.document_id"
+                                  />
+                                  <FormikControl
+                                    control="input"
+                                    type="text"
+                                    label="TSC Number"
+                                    name="extended_user.tsc_id"
+                                  />
+                                </>
+                              )}
+                              <HelperText style={{ padding: "20px 0 30px" }}>
+                                By signing up, you agree to Darasa's{" "}
+                                <strong
+                                  style={{ color: "#652e8d" }}
+                                  onClick={handleTOS}
+                                >
+                                  Terms &amp; Condtions
+                                </strong>
+                              </HelperText>
+
+                              <Button
+                                type="submit"
+                                disabled={!formik.isValid && validating}
+                                fullwidth
+                                title={
+                                  validating
+                                    ? "Creating account... "
+                                    : "Finish Sign Up"
+                                }
+                                style={{ color: "#ffffff" }}
+                              />
+                            </div>
+                          </StepWizard>
+                          <br />
+
+                          <div id="recaptcha-container" ref={captchaRef} />
+                          <Offer style={{ padding: "20px 0" }}>
+                            Already have an account?{" "}
+                            <LinkButton onClick={toggleSignInForm}>
+                              Login
+                            </LinkButton>
+                          </Offer>
+                        </Form>
+                      );
+                    }}
+                  </Formik>
+                </>
+              )}
+            </>
+          )}
+        </Container>
+      )}
     </Wrapper>
   );
 }

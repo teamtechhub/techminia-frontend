@@ -46,6 +46,16 @@ export default function Payment() {
   const [selectedContact, setSelectedContact] = useState();
   const [plan, setPlan] = useState();
 
+  const mpesaSocket = new WebSocket(`ws://127.0.0.1:8000/mpesa/`);
+
+  mpesaSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    console.log(data);
+  };
+  mpesaSocket.onclose = function (e) {
+    console.log("mpesa connection closed");
+  };
+
   useEffect(() => {
     setInitialValues({
       phone: selectedContact ? selectedContact.contact : null,
@@ -106,7 +116,7 @@ export default function Payment() {
       .error((err) => console.log(err));
   };
   return (
-    <div>
+    <div style={{ padding: "0 0 60px 0" }}>
       <section className="section-plans" id="section-plans">
         <div className="u-center-text u-margin-bottom-big">
           <h2 className="heading-secondary">Select a Payment Plan</h2>
@@ -115,7 +125,7 @@ export default function Payment() {
         <div className="row">
           {cards.map((card, i) => {
             return (
-              <div className="col-1-of-3">
+              <div className="col-1-of-3" key={i}>
                 <div className="card">
                   <div className={`card__side card__side--front-${i + 1}`}>
                     <div className={`card__title card__title--${i + 1}`}>
@@ -160,8 +170,8 @@ export default function Payment() {
             );
           })}
         </div>
+        <PaymentContainer setSelectedContact={setSelectedContact} />
       </section>
-      <PaymentContainer setSelectedContact={setSelectedContact} />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -170,25 +180,44 @@ export default function Payment() {
       >
         {(formik) => {
           return (
-            <Form>
-              <ProfileContent style={{ width: "100%" }}>
-                <WizardCard>
-                  <ProfileCardBody
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    {plan && (
-                      <h4>
-                        {plan.name}({plan.price}) Selected
-                      </h4>
-                    )}
-                    {selectedContact && (
-                      <h4>
-                        {selectedContact.name}({selectedContact.contact})
-                        Selected
-                      </h4>
-                    )}
+            <Form
+              style={{
+                position: "sticky",
+                bottom: 0,
+                width: "100%",
+              }}
+            >
+              <ProfileContent>
+                <WizardCard style={{ minHeight: 0, margin: 0 }}>
+                  <ProfileCardBody style={{ textAlign: "center", padding: 0 }}>
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        verticalAlign: "middle",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "block",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {plan && (
+                          <p>
+                            <strong>Plan : </strong>
+                            {plan.name}({plan.price})
+                          </p>
+                        )}
+
+                        {selectedContact && (
+                          <p>
+                            <strong>Number : </strong>
+                            {selectedContact.name}({selectedContact.contact})
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
                     <Button
                       type="submit"
                       size="small"
@@ -197,6 +226,10 @@ export default function Payment() {
                       style={{
                         fontSize: 15,
                         color: "#fff",
+                        float: "right",
+                        margin: "auto",
+                        paddingLeft: "15px",
+                        paddingRight: "15px",
                       }}
                       // disabled={!formik.isValid}
                     />

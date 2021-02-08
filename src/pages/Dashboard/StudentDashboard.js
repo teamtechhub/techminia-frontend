@@ -200,12 +200,6 @@ export default function StudentDashboard() {
                                         url={session.video_url}
                                         playercontrols={false}
                                       />
-                                      <div>
-                                        <FontAwesomeIcon
-                                          icon={"play-circle"}
-                                          className="icon"
-                                        />
-                                      </div>
                                     </VideoPreview>
                                     <VideoText>
                                       <CourseTitle>

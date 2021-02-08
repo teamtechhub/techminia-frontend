@@ -97,7 +97,7 @@ const ProfileView = () => {
                   </Li>
                   <Li>
                     <B>National ID</B>
-                    <A>{extendedProfile.national_id}</A>
+                    <A>{extendedProfile.document_id}</A>
                   </Li>
                 </>
               )}
@@ -110,8 +110,10 @@ const ProfileView = () => {
                   <Li>
                     <B>Hobbies</B>
                     <A>
-                      {extendedProfile.hobby
-                        ? extendedProfile.hobby.map((hobby, index) => hobby)
+                      {extendedProfile.hobbies
+                        ? extendedProfile.hobbies.map(
+                            (hobbies, index) => hobbies
+                          )
                         : null}
                     </A>
                   </Li>

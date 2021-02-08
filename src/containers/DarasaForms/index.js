@@ -28,9 +28,13 @@ export default function DarasaForms() {
   useEffect(() => {
     setLoading(true);
     axiosInstance.get(`/form`, tokenConfig()).then(async (res) => {
-      await setForms(res.data.results);
+      const data = res.data.results.filter(
+        (fd) => fd.questions.length > 0 || fd.creator === profile.id
+      );
+      await setForms(data);
       setLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelectForm = (selectedForm) => {
@@ -52,7 +56,7 @@ export default function DarasaForms() {
 
   return (
     <>
-      <ProfileContent style={{ width: "100%" }}>
+      <ProfileContent style={{ width: "100%", marginBottom: "75px" }}>
         <WizardCard>
           <ProfileCardHead
             className="card-topline"

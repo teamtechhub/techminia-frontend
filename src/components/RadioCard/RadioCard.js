@@ -106,10 +106,10 @@ const ActionButton = styled.span`
   color: ${themeGet("colors.white", "#ffffff")};
 
   &.edit-btn {
-    background-color: ${themeGet("colors.primary.regular", "#009E7F")};
+    background-color: #85ff86;
   }
   &.delete-btn {
-    background-color: ${themeGet("colors.secondary.regular", "#ff5b60")};
+    background-color: #ffa5a5;
   }
 
   svg {

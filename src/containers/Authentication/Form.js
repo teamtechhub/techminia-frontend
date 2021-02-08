@@ -10,9 +10,15 @@ import { CloseIcon } from "components/AllSvgIcon";
 import { closeModal } from "@redq/reuse-modal";
 import CompleteGoogleLogin from "./CompleteGoogleLogin";
 import PasswordReset from "./passwordReset";
+import PhoneVerification from "./PhoneVerification";
+import { useLocation } from "react-router-dom";
 
 export default function AuthenticationForm() {
   const { authState } = useContext(AuthContext);
+  const location = useLocation();
+  const path = location.pathname.replace(/\/+$/, "");
+  const pathname = path[0] === "/" ? path.substr(1) : path;
+  const isAuthPage = pathname === "auth";
   let RenderForm;
 
   if (authState.currentForm === "signIn") {
@@ -38,12 +44,18 @@ export default function AuthenticationForm() {
   if (authState.currentForm === "completeGoogleLogin") {
     RenderForm = CompleteGoogleLogin;
   }
+  if (authState.currentForm === "phoneVerification") {
+    RenderForm = PhoneVerification;
+  }
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <ModalClose onClick={closeModal}>
-        <CloseIcon />
-      </ModalClose>
+    <div style={{ display: "contents" }}>
+      {isAuthPage ? null : (
+        <ModalClose onClick={closeModal}>
+          <CloseIcon />
+        </ModalClose>
+      )}
+
       <LeftPreview />
       <RenderForm />
     </div>

@@ -6,6 +6,22 @@ import _ from "lodash";
 import { useAlert } from "react-alert";
 import { filter } from "fuzzaldrin";
 
+function stateReducer(state, changes) {
+  // this prevents the menu from being closed when the user
+  // selects an item with a keyboard or mouse
+  switch (changes.type) {
+    case Downshift.stateChangeTypes.keyDownEnter:
+    case Downshift.stateChangeTypes.clickItem:
+      return {
+        ...changes,
+        isOpen: state.isOpen,
+        highlightedIndex: state.highlightedIndex,
+      };
+    default:
+      return changes;
+  }
+}
+
 export default function AutoCompleteSelectField(props) {
   const { data, name, apipath, collection, fields, handleChange } = props;
   const [items, setItems] = useState(null);
@@ -37,6 +53,7 @@ export default function AutoCompleteSelectField(props) {
   return (
     <div>
       <Downshift
+        stateReducer={stateReducer}
         onChange={(selection) => {
           alert.success(
             selection

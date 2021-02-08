@@ -1,5 +1,8 @@
 import { closeModal } from "@redq/reuse-modal";
+import // Facebook,
 
+// Google
+"components/AllSvgIcon";
 import Error500 from "components/Error/Error500";
 import Loader from "components/Loader/Loader";
 import { TERMS_CONDITIONS } from "constants/routes.constants";
@@ -8,15 +11,17 @@ import { AuthContext } from "contexts/auth/auth.context";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Form, Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { addArrayToLocalStorage } from "utils";
-import { addObjectToLocalStorageObject } from "utils";
-import { tokenConfig } from "utils/axios";
-import { axiosInstance } from "utils/axios";
-import * as Yup from "yup";
 import StudentForm from "pages/Profile/StudentForm";
 import TeacherForm from "pages/Profile/TeacherForm";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import {
+  addArrayToLocalStorage,
+  addObjectToLocalStorageObject,
+  parseJwt,
+} from "utils";
+import { axiosInstance } from "utils/axios";
+import * as Yup from "yup";
 import {
   Button,
   Container,
@@ -29,34 +34,35 @@ import {
   Wrapper,
 } from "./SignInOutForm.style";
 
-export default function CompleteGoogleLogin() {
-  const history = useHistory();
-
-  const captchaRef = React.useRef(null);
-
+export default function SignOutModal() {
   const { state, authDispatch } = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [verifyOTP, setVerifyOTP] = useState(false);
   const [otp, setOtp] = useState(false);
+  const [loginValues, setLoginValues] = useState({});
   const [phoneValues, setPhoneValues] = useState({});
   const [validating, setValidating] = useState(Boolean());
   const [confirmationResult, setConfirmationResult] = useState({});
-  const [params, setParams] = useState({});
-  const [update, setUpdate] = useState(false);
-  const [name, setName] = useState();
   const [isTeacher, setIsTeacher] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [userProfile, setUserProfile] = useState({});
-  // const [updateValues, setUpdateValues] = useState({});
+  const [userForm, setUserForm] = useState(false);
+  const history = useHistory();
+  const captchaRef = React.useRef(null);
 
-  console.log("update", update);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     if (redirect) {
       authDispatch({
         type: "EMAILCONFIRM",
+      });
+      authDispatch({
+        type: "SIGNUP_SUCCESS",
       });
       history.push("/dashboard");
     }
@@ -66,34 +72,6 @@ export default function CompleteGoogleLogin() {
   const handleRedirect = () => {
     setRedirect(!redirect);
   };
-
-  useEffect(() => {
-    setName(localStorage.getItem("darasa_name"));
-    const email = localStorage.getItem("darasa_email");
-    axiosInstance
-      .post(`/auth/send-reset-password-link/`, { ga: true, login: email })
-      .then(async (res) => {
-        console.log("google email reset", res);
-        const url = new URL(res.data.detail);
-        const query = new URLSearchParams(url.search);
-        if (
-          query.get("user_id") &&
-          query.get("timestamp") &&
-          query.get("signature")
-        ) {
-          setParams({
-            user_id: query.get("user_id"),
-            timestamp: query.get("timestamp"),
-            signature: query.get("signature"),
-          });
-
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }, []);
 
   const recaptcha = () => {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -117,14 +95,14 @@ export default function CompleteGoogleLogin() {
   const fieldRequired = "This field is required";
 
   const initialValues = {
-    email: localStorage.getItem("darasa_email"),
+    email: "",
     password: "",
     password_confirm: "",
     phone_number: "",
     gender: "",
     surname: "",
     other_names: "",
-    is_student: Boolean(),
+    is_student: "",
   };
   const otpInitialValues = {
     code: "",
@@ -143,7 +121,9 @@ export default function CompleteGoogleLogin() {
   });
 
   const validationSchema = Yup.object().shape({
-    is_student: Yup.bool().oneOf([true], "Select an Option"),
+    is_student: Yup.bool()
+      .required("Select User Type.")
+      .oneOf([true, false], "Select an Option"),
     email: Yup.string()
       .min(3, emailNotLongEnough)
       .max(100)
@@ -172,37 +152,57 @@ export default function CompleteGoogleLogin() {
       type: "SIGNIN",
     });
   };
-
   const handlePhoneConfirm = () => {
     console.log("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, phoneValues)
       .then(async (res) => {
         console.log("phone confirm res", res);
+        handleLogin();
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       })
       .catch((err) => {
         console.log(err.response);
-      });
-  };
-  const handleResetPassword = (password, phone_number) => {
-    const body = { password: password, ...params };
-    console.log("pass reset values", body);
-    axiosInstance
-      .post(`/auth/reset-password/`, body, tokenConfig())
-      .then(async (res) => {
-        console.log("reset password res", res);
-        if (res.status === 200) {
-          await setOtp(true);
-          await sendOTP(phone_number);
-          return true;
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-        return false;
       });
   };
 
+  const handleLogin = () => {
+    console.log("login values", loginValues);
+    axiosInstance
+      .post(`/auth/login/`, loginValues)
+      .then(async (res) => {
+        console.log("data received", res);
+        const userPayload = parseJwt(res.data.token.refresh);
+        console.log("user payload", userPayload);
+        const roles = userPayload.role;
+        localStorage.removeItem("darasa_auth_roles");
+        addArrayToLocalStorage("darasa_auth_roles", roles);
+        // eslint-disable-next-line no-unused-vars
+
+        var payload = {};
+
+        let extraPayloadData = {
+          token: res.data.token,
+        };
+        // hashPassword(values.password_confirm);
+        // eslint-disable-next-line no-unused-vars
+        payload = { ...payload, ...extraPayloadData };
+        addObjectToLocalStorageObject("darasa_auth_payload", payload);
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("access_token", res.data.token.access);
+          localStorage.setItem("refresh_token", res.data.token.refresh);
+
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("response", res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
   const otpSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
@@ -215,15 +215,12 @@ export default function CompleteGoogleLogin() {
       .then(async (result) => {
         console.log("result after successful otp confirm: ", result);
         await handlePhoneConfirm();
-        setUpdate(true);
         setSubmitting(false);
         setValidating(false);
+        setUserForm(true);
       })
       .catch((error) => {
         console.log("error on otp submit: ", error);
-        if (error.code === "auth/code-expired") {
-          console.log("used up code", error.message);
-        }
         if ((error.code = "auth/invalid-verification-code")) {
           console.log("error code", error.code);
         } else {
@@ -233,7 +230,6 @@ export default function CompleteGoogleLogin() {
         setValidating(false);
       });
   };
-  // const handleProfileUpdate = (body) => {};
 
   const onSubmit = async (values, { props, setErrors, setSubmitting }) => {
     setSubmitting(true);
@@ -246,79 +242,48 @@ export default function CompleteGoogleLogin() {
     body["is_student"] = !body.is_teacher;
     body["phone_number"] = `+${body.phone_number}`;
 
-    await setPhoneValues({
-      phone_number: body.phone_number,
-      email: body.email,
-    });
-    const process = await handleResetPassword(
-      body.password,
-      values.phone_number
-    );
+    setLoginValues({ login: body.phone_number, password: body.password });
+    setPhoneValues({ phone_number: body.phone_number, email: body.email });
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (process) {
-      await axiosInstance
-        .patch(
-          `/auth/profile/`,
-          {
-            surname: body.surname,
-            other_names: body.other_names,
-            is_student: body.is_student,
-            is_teacher: body.is_teacher,
-            phone_number: body.phone_number,
+    axiosInstance
+      .post(`/auth/register/`, body)
+      .then(async (res) => {
+        console.log("data received", res);
+        if (res.data.is_teacher) {
+          setIsTeacher(true);
+        }
+        if (res.data.is_student) {
+          setIsStudent(true);
+        }
+        setUserProfile(res.data);
+
+        authDispatch({
+          type: "REGUPDATE",
+          payload: {
+            ...state,
+            profile: res.data,
           },
-          tokenConfig()
-        )
-        .then(async (res) => {
-          console.log("data received", res);
-          setUserProfile(res.data);
-          const roles = [];
-          if (res.data.is_student) {
-            roles.push("student");
-            setIsStudent(true);
-            localStorage.removeItem("darasa_auth_roles");
-            addArrayToLocalStorage("darasa_auth_roles", roles);
-          }
-          if (res.data.is_publisher) {
-            roles.push("publisher");
-            localStorage.removeItem("darasa_auth_roles");
-            addArrayToLocalStorage("darasa_auth_roles", roles);
-          }
-          if (res.data.is_teacher) {
-            setIsTeacher(true);
-            roles.push("teacher");
-            localStorage.removeItem("darasa_auth_roles");
-            addArrayToLocalStorage("darasa_auth_roles", roles);
-          }
-          addObjectToLocalStorageObject("darasa_auth_profile", res.data);
-
-          authDispatch({
-            type: "REGUPDATE",
-            payload: {
-              ...state,
-              profile: res.data,
-            },
-          });
-          console.log("response", res);
-          setSubmitting(false);
-          setValidating(false);
-          localStorage.removeItem("darasa_name");
-          localStorage.removeItem("darasa_name");
-          history.push("/dashboard");
-        })
-        .catch((err) => {
-          setSubmitting(false);
-          setValidating(false);
-          if (err.response) {
-            console.log(err.response.data);
-          } else {
-            setError(err);
-          }
-          console.log(JSON.stringify(err, null, 4));
-          setLoading(false);
         });
-    }
 
+        await setOtp(true);
+        await sendOTP(values.phone_number);
+
+        console.log("response", res);
+        setValidating(false);
+        setSubmitting(false);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErrors(err.response.data);
+          console.log(err.response.data);
+        } else {
+          setError(err);
+        }
+        console.log(JSON.stringify(err, null, 4));
+        setLoading(false);
+        setValidating(false);
+        setSubmitting(false);
+      });
     if (otp) {
       console.log("otp is true");
     }
@@ -343,7 +308,6 @@ export default function CompleteGoogleLogin() {
         .then(async (confirmationResult) => {
           setConfirmationResult(confirmationResult);
           console.log("confirmation result", confirmationResult);
-          setValidating(false);
           setVerifyOTP(true);
         });
     } catch (err) {
@@ -393,9 +357,7 @@ export default function CompleteGoogleLogin() {
               <Loader />
             ) : (
               <>
-                <Heading>Google Auth Successful ✔</Heading>
-                <p>{name ? `Hello ${name}` : null}</p>
-                <SubHeading>Complete profile to enjoy Darasa</SubHeading>
+                <SubHeading>Every fill is required in sign up</SubHeading>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -410,6 +372,19 @@ export default function CompleteGoogleLogin() {
                           name="is_student"
                           options={options}
                         />
+                        {/* <span>Teacher</span>
+                        <FormikControl
+                          style={{
+                            ".toggle-switch": { width: "100px" },
+                            ".toggle-switch-switch": {
+                              right: "75px",
+                            },
+                          }}
+                          options={["T", "S"]}
+                          control="toggle"
+                          name="is_student"
+                        />
+                        <span>Student</span> */}
 
                         <FormikControl
                           control="input"
@@ -425,6 +400,12 @@ export default function CompleteGoogleLogin() {
                         />
                         <FormikControl
                           control="input"
+                          type="email"
+                          label="Email"
+                          name="email"
+                        />
+                        <FormikControl
+                          control="input"
                           type="phone"
                           label="Phone Number"
                           name="phone_number"
@@ -437,13 +418,13 @@ export default function CompleteGoogleLogin() {
                         <FormikControl
                           control="input"
                           type="password"
-                          label="Confirm Google Password"
+                          label="Password"
                           name="password"
                         />
                         <FormikControl
                           control="input"
                           type="password"
-                          label="confirm above Password"
+                          label="Confirm Password"
                           name="password_confirm"
                         />
 
@@ -481,11 +462,21 @@ export default function CompleteGoogleLogin() {
             )}
           </>
         )}
-        {isTeacher && (
-          <TeacherForm profile={userProfile} handleRedirect={handleRedirect} />
-        )}
-        {isStudent && (
-          <StudentForm profile={userProfile} handleRedirect={handleRedirect} />
+        {userForm && (
+          <>
+            {isTeacher && (
+              <TeacherForm
+                profile={userProfile}
+                handleRedirect={handleRedirect}
+              />
+            )}
+            {isStudent && (
+              <StudentForm
+                profile={userProfile}
+                handleRedirect={handleRedirect}
+              />
+            )}
+          </>
         )}
       </Container>
     </Wrapper>

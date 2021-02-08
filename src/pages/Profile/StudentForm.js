@@ -22,8 +22,20 @@ export default function StudentForm({ profile, handleRedirect }) {
   const [editting, setEditting] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [classes, setClasses] = useState([]);
   const alert = useAlert();
+
   useEffect(() => {
+    axiosInstance.get(`/curriculum/class`).then((res) => {
+      const all_classes = res.data.results.reduce((arr, val) => {
+        arr.push({
+          value: val.name,
+          key: val.name,
+        });
+        return arr;
+      }, []);
+      setClasses([{ value: "", key: "Choose Class" }, ...all_classes]);
+    });
     if (authState.extendedProfile.length > 0) {
       console.log("happening");
       setInitialStudentValues(authState.extendedProfile);
@@ -33,8 +45,8 @@ export default function StudentForm({ profile, handleRedirect }) {
     } else {
       console.log("not happening");
       setInitialStudentValues({
-        hobby: [],
-        grade_level: "",
+        hobbies: [],
+        class_level: "",
         student_id: "",
         user: profile.id,
       });
@@ -43,24 +55,9 @@ export default function StudentForm({ profile, handleRedirect }) {
   }, []);
 
   const studentValidationSchema = Yup.object({
-    grade_level: Yup.string().required("Required"),
+    class_level: Yup.string().required("Required"),
     student_id: Yup.string().required("Required"),
   });
-  const gradeLevelOptions = [
-    { value: "", key: "Select Options" },
-    { value: 1, key: "1" },
-    { value: 2, key: "2" },
-    { value: 3, key: "3" },
-    { value: 4, key: "4" },
-    { value: 5, key: "5" },
-    { value: 6, key: "6" },
-    { value: 7, key: "7" },
-    { value: 8, key: "8" },
-    { value: 9, key: "9" },
-    { value: 10, key: "10" },
-    { value: 11, key: "11" },
-    { value: 12, key: "12" },
-  ];
 
   const onStudentAddSubmit = (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
@@ -152,9 +149,9 @@ export default function StudentForm({ profile, handleRedirect }) {
           <Form>
             <FormikControl
               control="select"
-              label="Grade Level"
-              name="grade_level"
-              options={gradeLevelOptions}
+              label="Your Class"
+              name="class_level"
+              options={classes}
             />
             <FormikControl
               control="input"

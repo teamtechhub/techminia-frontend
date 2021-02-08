@@ -59,7 +59,8 @@ const MobileDrawer = () => {
   } = useContext(AuthContext);
   const location = useLocation();
   const path = location.pathname.replace(/\/+$/, "");
-  const pathname = path[0] === "/" ? path.substr(1) : path;
+  const pathname = path[0] === "/" ? path.split("/")[1].trim() : path;
+  const isAuthPage = pathname === "auth";
   const img = localStorage.getItem("darasa_individual_profile")
     ? JSON.parse(localStorage.getItem("darasa_individual_profile"))["image"]
     : localStorage.getItem("darasa_org_profile")
@@ -67,7 +68,6 @@ const MobileDrawer = () => {
     : UserImage;
 
   const isHomePage = isCategoryPage(pathname);
-  const isAuthPage = pathname === "auth";
   // Toggle drawer
   const toggleHandler = React.useCallback(() => {
     dispatch({
@@ -177,7 +177,7 @@ const MobileDrawer = () => {
               </LoginView>
             ) : (
               <>
-                {isAuthPage ? null : (
+                {isAuthPage ? null : isAuthPage ? null : (
                   <LogoutView>
                     <Button
                       title="Log In"
@@ -207,24 +207,24 @@ const MobileDrawer = () => {
 
           {isAuthenticated && (
             <UesrOptionMenu>
-              <DrawerMenuItem>
+              {/* <DrawerMenuItem>
                 <NavLink
                   href="/dashboard/profile"
                   label="Your Account Settings"
                   className="drawer_menu_item"
                 />
-              </DrawerMenuItem>
+              </DrawerMenuItem> */}
               <DrawerMenuItem>
                 <NavLink
-                  href="/dashboard/teacher"
-                  label="Teacher"
+                  href="/dashboard/classes"
+                  label="Classes"
                   className="drawer_menu_item"
                 />
               </DrawerMenuItem>
               <DrawerMenuItem>
                 <NavLink
-                  href="/dashboard/student"
-                  label="Student"
+                  href="/dashboard/form"
+                  label="Assignments"
                   className="drawer_menu_item"
                 />
               </DrawerMenuItem>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "components/Button/Button";
 import RadioCard from "components/RadioCard/RadioCard";
 import RadioGroup from "components/RadioGroup/RadioGroup";
@@ -11,21 +11,26 @@ import {
   Contact,
 } from "./Payment.style";
 
-import { ProfileContext } from "contexts/profile/profile.context";
+// import { ProfileContext } from "contexts/profile/profile.context";
 import { axiosInstance, tokenConfig } from "utils/axios";
 import { useAlert } from "react-alert";
 
 // The type of props Payment Form receives
 
 const Payment = ({ setSelectedContact }) => {
-  const { dispatch } = useContext(ProfileContext);
+  // const { dispatch } = useContext(ProfileContext);
   const [contact, setContact] = useState([]);
+  const [fetch, makeFetch] = useState(false);
   const alert = useAlert();
   useEffect(() => {
-    axiosInstance
-      .get(`/account/contact/`, tokenConfig())
-      .then((res) => setContact(res.data.results));
-  }, []);
+    axiosInstance.get(`/account/contact/`, tokenConfig()).then((res) => {
+      setContact(res.data.results);
+      fetchNew(false);
+    });
+  }, [fetch]);
+  const fetchNew = (bool) => {
+    makeFetch(bool);
+  };
 
   // Add or edit modal
   const handleModal = (
@@ -38,7 +43,7 @@ const Payment = ({ setSelectedContact }) => {
       overlayClassName: "quick-view-overlay",
       closeOnClickOutside: true,
       component: modalComponent,
-      componentProps: { item: modalProps },
+      componentProps: { item: modalProps, fetchNew },
       closeComponent: "",
       config: {
         enableResizing: false,
@@ -54,15 +59,18 @@ const Payment = ({ setSelectedContact }) => {
     if (type === "edit") {
       handleModal(UpdateContact, item);
     } else {
-      dispatch({ type: "DELETE_CONTACT", payload: item.id });
+      // dispatch({ type: "DELETE_CONTACT", payload: item.id });
 
       return await axiosInstance
-        .put(
+        .patch(
           `/account/contact/${item.id}/`,
           { is_deleted: true },
           tokenConfig()
         )
-        .then((res) => alert.info("contact deleted"));
+        .then((res) => {
+          fetchNew(true);
+          alert.info(`${res.data.contact} contact deleted`);
+        });
     }
   };
 
@@ -75,10 +83,10 @@ const Payment = ({ setSelectedContact }) => {
           <ButtonGroup>
             <RadioGroup
               items={contact}
-              component={(item) => (
+              component={(item, i) => (
                 <RadioCard
                   id={item.id}
-                  key={item.id}
+                  key={i}
                   title={item.name}
                   content={item.contact}
                   checked={item.type === "primary"}

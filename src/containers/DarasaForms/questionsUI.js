@@ -107,7 +107,6 @@ export default function QuestionsUI(
   }
 
   function handleTypeChooser(ques, opts) {
-    console.log(opts);
     if (opts.length > 0) {
       const opt = opts.find(({ the_key }) => the_key === ques.question_type);
       return opt.the_key;
@@ -229,19 +228,21 @@ export default function QuestionsUI(
                                   ? ques.mcq_one.map((op, j) => (
                                       <div key={j}>
                                         <div style={{ display: "flex" }}>
-                                          {ques.mcq_one[j].is_answer
-                                            ? " ✔ "
-                                            : handleFilter(
-                                                ques,
-                                                typeChooserOptions
-                                              )}
                                           <p
                                             style={{
+                                              display: "inline-flex",
+                                              verticalAlign: "middle",
                                               color: ques.mcq_one[j].is_answer
                                                 ? "#37bc35"
                                                 : "#555555",
                                             }}
                                           >
+                                            {ques.mcq_one[j].is_answer
+                                              ? " ✔ "
+                                              : handleFilter(
+                                                  ques,
+                                                  typeChooserOptions
+                                                )}
                                             {ques.mcq_one[j].choice_text}
                                           </p>
                                         </div>
@@ -270,19 +271,21 @@ export default function QuestionsUI(
                                   ? ques.mcq_many.map((op, j) => (
                                       <div key={j}>
                                         <div style={{ display: "flex" }}>
-                                          {ques.mcq_many[j].is_answer
-                                            ? " ✔ "
-                                            : handleFilter(
-                                                ques,
-                                                typeChooserOptions
-                                              )}
                                           <p
                                             style={{
+                                              display: "inline-flex",
+                                              verticalAlign: "middle",
                                               color: ques.mcq_many[j].is_answer
                                                 ? "#37bc35"
                                                 : "#555555",
                                             }}
                                           >
+                                            {ques.mcq_many[j].is_answer
+                                              ? " ✔ "
+                                              : handleFilter(
+                                                  ques,
+                                                  typeChooserOptions
+                                                )}
                                             {ques.mcq_many[j].choice_text}
                                           </p>
                                         </div>

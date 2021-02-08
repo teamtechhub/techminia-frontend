@@ -93,6 +93,12 @@ export default function EditForm({ formDetails }) {
                       textAlign: "center",
                       background: formik.values.background_color,
                       color: formik.values.text_color,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundImage: `url(${
+                        formik.values.background_image ||
+                        "https://lh3.googleusercontent.com/A45mBe_6UR6DnieoI4xZvX6oImdxRaaugLOTgaU0h77OSFPc1Q0R_h2HTdbfLIpAM6TQ_iAcEe4E7hDPsvMFlVmFHIqV2VXmZIroZQ3POBofXMBr7y8Xz08PMt9YXBb00quDYCyh92KqY9Zk"
+                      })`,
                     }}
                   >
                     <FormWrapper

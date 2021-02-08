@@ -11,7 +11,6 @@ export default function TeacherDashboard({ profile }) {
       .get(`/account/teachers/profile`, tokenConfig())
       .then((res) => {
         setTeacher(res.data);
-        console.log("==============ta", res.data);
         setViewClass(res.data.syllabus.length > 0);
       });
   }, []);

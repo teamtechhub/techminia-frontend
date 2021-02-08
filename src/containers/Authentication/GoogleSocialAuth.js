@@ -120,8 +120,8 @@ function GoogleSocialAuth() {
         />
       )}
       clientId="678840442214-p3h941erc79pifgavk18ugln619pbic7.apps.googleusercontent.com"
-      onSuccess={googleLogin}
-      onFailure={googleLogin}
+      onSuccess={(accesstoken) => googleLogin(accesstoken)}
+      onFailure={(accesstoken) => googleLogin(accesstoken)}
       cookiePolicy={"single_host_origin"}
     />
   );
