@@ -21,6 +21,7 @@ function setImageFieldValue(img) {
 function Input(props) {
   const [show, setShow] = useState(false);
   const { label, name, type, file, setFieldValue, ...rest } = props;
+  console.log(props);
   const handleShow = () => {
     setShow(!show);
   };
@@ -34,6 +35,7 @@ function Input(props) {
           {({ form, field }) => {
             const { setFieldValue } = form;
             const { value } = field;
+            console.log(field, form);
             return (
               <Uploader
                 id={name}

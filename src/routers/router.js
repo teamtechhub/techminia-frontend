@@ -9,7 +9,7 @@ import PrivateRoutes from "./PrivateRoutes";
 function BaseRouter({ deviceType }) {
   console.log(deviceType);
   const { isAuthenticated } = useContext(AuthContext);
-  const authentication = (deviceType) =>
+  const authentication = () =>
     isAuthenticated ? (
       <Redirect to="/dashboard" deviceType={deviceType} />
     ) : (

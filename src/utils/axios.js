@@ -1,8 +1,11 @@
 import axios from "axios";
 import { BASE_URL } from "constants/constants";
+import Cookies from "js-cookie";
 
 const baseUrl = `${BASE_URL}/api`;
 const accessToken = localStorage.getItem("access_token");
+const csrftoken = Cookies.get("csrftoken");
+
 export const axiosInstance = axios.create({
   baseURL: baseUrl,
   // timeout: 10000,
@@ -10,7 +13,9 @@ export const axiosInstance = axios.create({
   headers: {
     Authorization: accessToken ? `JWT ` + accessToken : null,
     "Content-Type": "application/json",
-    accept: "application/json",
+    Accept: "application/json",
+    "X-CSRFToken": csrftoken,
+    "X-Requested-With": "XMLHttpRequest",
   },
 });
 

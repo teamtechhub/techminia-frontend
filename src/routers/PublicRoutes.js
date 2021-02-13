@@ -8,11 +8,7 @@ import ColorPicker from "theme/ColorPage";
 import EmailVerification from "containers/Authentication/emailVerification";
 import Authentication from "containers/Authentication/Authentication";
 import PasswordReset from "containers/Authentication/passwordReset";
-import Library from "pages/Library/Library";
-import ProductPage from "pages/product/[slug]";
-import CheckoutPage from "pages/Checkout/Checkout";
 import Contact from "pages/Contact/Contact";
-import Nest from "containers/Authentication/Nest";
 
 const PublicRoutes = ({ deviceType }) => (
   <Fragment>
@@ -26,23 +22,8 @@ const PublicRoutes = ({ deviceType }) => (
       <Route exact path={`/privacy-policy`}>
         <PrivacyPage deviceType={deviceType} />
       </Route>
-      <Route exact path={`/library`}>
-        <Library deviceType={deviceType} />
-      </Route>
       <Route exact path={`/contact-us`}>
         <Contact deviceType={deviceType} />
-      </Route>
-      <Route exact path={`/product/:slug`}>
-        <ProductPage deviceType={deviceType} />
-      </Route>
-      <Route exact path={`/checkout`}>
-        <CheckoutPage deviceType={deviceType} />
-      </Route>
-      <Route exact path={`/classes`}>
-        <Nest deviceType={deviceType} />
-      </Route>
-      <Route exact path={`/classes/:userType`}>
-        <Nest deviceType={deviceType} />
       </Route>
       <Route
         exact

@@ -77,7 +77,11 @@ export default function Session({ className, view }) {
   const addAllClasses = ["accordion"];
   console.log(reload);
 
-  const btns = [{ title: "Notes" }, { title: "Comments" }, { title: "Files" }];
+  const btns = [
+    { title: "Notes" },
+    { title: "Comments" },
+    // { title: "Files" }
+  ];
 
   const clsID = match.params.classID;
   const SubID = match.params.subjectID;
@@ -470,9 +474,9 @@ export default function Session({ className, view }) {
                       </Notes>
                     </ProfileCardBody>
                   )}
-                  {activeButton === "Files" && (
+                  {/* {activeButton === "Files" && (
                     <ProfileCardBody>Some Docs</ProfileCardBody>
-                  )}
+                  )} */}
                 </>
               )}
             </ProfileCard>

@@ -84,83 +84,54 @@ export default function AutoCompleteSelectField(props) {
           selectedItem,
           isOpen,
           itemCount,
-        }) => (
-          <div>
-            <div style={{ display: "flex" }}>
-              <input
-                type="text"
-                style={props.inputStyle}
-                placeholder={props.label}
-                {...getInputProps({ value: newValue ? newValue : inputValue })}
-              />
-              <Button
-                {...getToggleButtonProps()}
-                title={"↓"}
-                aria-label={"toggle menu"}
-                style={{ padding: 0, borderRadius: 0, ...props.buttonStyle }}
-              />
-            </div>
+          ...rest
+        }) => {
+          console.log(rest);
+          return (
+            <div>
+              <div style={{ display: "flex" }}>
+                <input
+                  type="text"
+                  style={props.inputStyle}
+                  placeholder={props.label}
+                  {...getInputProps({
+                    value: newValue ? newValue : inputValue,
+                  })}
+                />
+                <Button
+                  {...getToggleButtonProps()}
+                  title={"↓"}
+                  aria-label={"toggle menu"}
+                  style={{ padding: 0, borderRadius: 0, ...props.buttonStyle }}
+                />
+              </div>
 
-            <div
-              {...getMenuProps()}
-              style={{
-                // position: "absolute",
-                top: "calc(100% + 2px)",
-                width: "100%",
-                left: 0,
-                background: "#fff",
-                border: " 1px solid #00000014",
-                boxShadow: "0 1px 5px #00000033",
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                zIndex: 9,
-              }}
-            >
-              {isOpen && (
-                <>
-                  {fields && collection ? (
-                    <>
-                      {filter(items, inputValue, {
-                        key: "label",
-                      }).map((item, index) => (
-                        <div
-                          {...getItemProps({
-                            key: `${item.combo_name}${index}`,
-                            item,
-                            index,
-                            style: {
-                              backgroundColor:
-                                highlightedIndex === index
-                                  ? "lightgray"
-                                  : "white",
-                              fontWeight:
-                                selectedItem === item ? "bold" : "normal",
-
-                              padding: "2px 5px",
-                              height: "fit-content",
-                              borderRadius: "2px",
-                              margin: "2px",
-                              border: "1px solid #00000014",
-                            },
-                          })}
-                        >
-                          {item.combo_name}
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {items
-                        .filter(
-                          (item) =>
-                            !inputValue ||
-                            _.get(item, name, null).includes(inputValue)
-                        )
-                        .map((item, index) => (
+              <div
+                {...getMenuProps()}
+                style={{
+                  // position: "absolute",
+                  top: "calc(100% + 2px)",
+                  width: "100%",
+                  left: 0,
+                  background: "#fff",
+                  border: " 1px solid #00000014",
+                  boxShadow: "0 1px 5px #00000033",
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  zIndex: 9,
+                }}
+              >
+                {isOpen && (
+                  <>
+                    {fields && collection ? (
+                      <>
+                        {filter(items, inputValue, {
+                          key: "label",
+                        }).map((item, index) => (
                           <div
                             {...getItemProps({
-                              key: `${_.get(item, name, null)}${index}`,
+                              key: `${item.combo_name}${index}`,
                               item,
                               index,
                               style: {
@@ -172,31 +143,66 @@ export default function AutoCompleteSelectField(props) {
                                   selectedItem === item ? "bold" : "normal",
 
                                 padding: "2px 5px",
+                                height: "fit-content",
                                 borderRadius: "2px",
                                 margin: "2px",
                                 border: "1px solid #00000014",
                               },
                             })}
                           >
-                            {_.get(item, name, null)}
+                            {item.combo_name}
                           </div>
                         ))}
-                    </>
-                  )}
-                  <AddItem
-                    fields={fields}
-                    apipath={apipath}
-                    title={name}
-                    inputValue={inputValue ? inputValue : ""}
-                    collection={collection}
-                    setnewvalue={setNewValue}
-                    {...props}
-                  />
-                </>
-              )}
+                      </>
+                    ) : (
+                      <>
+                        {items
+                          .filter(
+                            (item) =>
+                              !inputValue ||
+                              _.get(item, name, null).includes(inputValue)
+                          )
+                          .map((item, index) => (
+                            <div
+                              {...getItemProps({
+                                key: `${_.get(item, name, null)}${index}`,
+                                item,
+                                index,
+                                style: {
+                                  backgroundColor:
+                                    highlightedIndex === index
+                                      ? "lightgray"
+                                      : "white",
+                                  fontWeight:
+                                    selectedItem === item ? "bold" : "normal",
+
+                                  padding: "2px 5px",
+                                  borderRadius: "2px",
+                                  margin: "2px",
+                                  border: "1px solid #00000014",
+                                },
+                              })}
+                            >
+                              {_.get(item, name, null)}
+                            </div>
+                          ))}
+                      </>
+                    )}
+                    <AddItem
+                      fields={fields}
+                      apipath={apipath}
+                      title={name}
+                      inputValue={inputValue ? inputValue : ""}
+                      collection={collection}
+                      setnewvalue={setNewValue}
+                      {...props}
+                    />
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        }}
       </Downshift>
     </div>
   );

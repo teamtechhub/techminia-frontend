@@ -49,7 +49,7 @@ const Tree = React.memo(
         >
           <Header open={isOpen} depth={depth} className={depth}>
             {name}
-            {Icon !== null && (
+            {Icon === null && (
               <IconWrapper depth={depth}>
                 <Icon />
               </IconWrapper>

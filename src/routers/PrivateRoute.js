@@ -42,7 +42,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
       {...rest}
       render={(props) =>
         checkAuth() ? (
-          <Component {...props} />
+          <Component deviceType={rest.deviceType} {...props} />
         ) : (
           <Redirect
             to={{

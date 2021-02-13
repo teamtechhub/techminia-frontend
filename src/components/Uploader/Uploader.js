@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Uploader({ onChange, imageURL, doc, multiple, minimal, preview }) {
   const [files, setFiles] = useState(
-    imageURL ? [{ name: "darasa-image", preview: imageURL }] : []
+    imageURL ? [{ name: "darasa-file", preview: imageURL }] : []
   );
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: doc ? ".doc, .docx, .pdf" : "image/*",
@@ -109,8 +109,8 @@ function Uploader({ onChange, imageURL, doc, multiple, minimal, preview }) {
           <input {...getInputProps()} />
           <UploadIcon />
           <Text>
-            <TextHighlighted>Drag/Upload</TextHighlighted>
-            your {`${doc ? "document()s" : "image"}`} here.
+            <TextHighlighted>Drag/Upload</TextHighlighted> your{" "}
+            {`${doc ? "document(s)" : "image"}`} here.
           </Text>
         </Container>
       )}

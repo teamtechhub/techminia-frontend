@@ -19,6 +19,7 @@ import {
 import { formTokenConfig } from "utils/axios";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "contexts/auth/auth.context";
+import { slugify } from "utils";
 
 export default function Session(props) {
   const {
@@ -126,20 +127,34 @@ export default function Session(props) {
 
     axiosInstance
       .post(`/curriculum/session/`, formData, formTokenConfig())
-      .then(async (res) => {
+      .then((res) => {
         console.log("res", res.data);
-        // if (docs) {
-        //   for (let i = 0; i < docs.length; i++) {
-        //     let docsFormData = new FormData();
-        //     const element = docs[i];
-        //     docsFormData.append("session", res.data.id);
-        //     docsFormData.append("title", element.title);
-        //     docsFormData.append("saved_file", element.saved_file);
-        //     await axiosInstance
-        //       .post(`/curriculum/files/`, docsFormData, formTokenConfig())
-        //       .then((res) => console.log("files ----", res.data));
-        //   }
-        // }
+        if (docs.length > 0) {
+          for (let i = 0; i < docs.length; i++) {
+            let docsFormData = new FormData();
+            const element = docs[i];
+            docsFormData.append("session", res.data.id);
+            docsFormData.append("title", element.title);
+            docsFormData.append("saved_file", element.saved_file);
+            axiosInstance
+              .post(`/curriculum/files/`, docsFormData, formTokenConfig())
+              .then((res) => console.log("files ----", res.data));
+          }
+        }
+        const tpcslg = slugify(selectedSubject.name + " " + selectedClass.name);
+        console.log(tpcslg);
+        axiosInstance
+          .post(`/forums/threads/`, {
+            content: `${res.data.name}`,
+            topic_slug: `${tpcslg}`,
+            title: `${res.data.name}`,
+          })
+          .then((results) => {
+            axiosInstance.put(`curriculum/session/${res.data.id}/`, {
+              ...res.data,
+              forum: results.data.id,
+            });
+          });
         setInitialValues(res.data);
         setActiveSession(res.data);
         alert.success(`Lesson Created Successfully ✔`);
@@ -203,7 +218,7 @@ export default function Session(props) {
         formTokenConfig()
       )
       .then(async (res) => {
-        if (docs) {
+        if (docs.length > 0) {
           for (let i = 0; i < docs.length; i++) {
             let docsFormData = new FormData();
             const element = docs[i];
@@ -217,6 +232,7 @@ export default function Session(props) {
         }
         setSubmitting(false);
         setLoading(false);
+        setEditting(false);
         setInitialValues(res.data);
         setActiveSession(res.data);
         alert.success(`Updated Successfully ✔`);

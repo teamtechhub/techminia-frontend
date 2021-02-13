@@ -139,7 +139,7 @@ export default function CustomCarousel({
         deviceType={deviceType}
         autoPlay={autoPlay}
         autoPlaySpeed={3000}
-        renderButtonGroupOutside={true}
+        renderButtonGroupOutside={props.renderButtonGroupOutside || true}
         additionalTransfrom={0}
         customButtonGroup={<ButtonGroup />}
         {...props}

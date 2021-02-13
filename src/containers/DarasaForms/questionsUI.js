@@ -43,11 +43,11 @@ const typeChooserOptions = [
     Value: "Check Boxes",
     icon: <FontAwesomeIcon icon="check-square" className="icon" />,
   },
-  {
-    the_key: "binary",
-    Value: "Yes/No",
-    icon: <FontAwesomeIcon icon="check" className="icon" />,
-  },
+  // {
+  //   the_key: "binary",
+  //   Value: "Yes/No",
+  //   icon: <FontAwesomeIcon icon="check" className="icon" />,
+  // },
 ];
 
 export default function QuestionsUI(

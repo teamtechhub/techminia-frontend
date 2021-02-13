@@ -97,7 +97,7 @@ export const Box2 = styled.div`
   padding-top: 25px;
   > span {
     font-family: "Barlow Condensed", sans-serif;
-    color: #652e8d;
+    color: #eb7525;
     font-size: 30px;
     font-weight: 700;
   }

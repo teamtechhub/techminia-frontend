@@ -5,12 +5,11 @@ import { WizardCard } from "pages/Dashboard/Dashboard.style";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { openModal } from "@redq/reuse-modal";
-import EmailVerificationModal from "containers/Authentication/emailVerificationModal";
-
 import "./payment.scss";
 import Button from "components/Button/Button";
 import { Spinner } from "components/Button/Button.style";
 import PaymentContainer from "containers/Payment/Payment";
+import PPModal from "./PPModal";
 
 const cards = [
   {
@@ -41,19 +40,36 @@ const cards = [
     color: "#ef5927",
   },
 ];
+
 export default function Payment() {
   const [initialValues, setInitialValues] = useState({});
   const [selectedContact, setSelectedContact] = useState();
   const [plan, setPlan] = useState();
 
-  const mpesaSocket = new WebSocket(`ws://127.0.0.1:8000/mpesa/`);
+  const newConnection = (transaction_id) => {
+    const mpesaSocket = new WebSocket(
+      `ws://127.0.0.1:8000/mpesa/${transaction_id ? transaction_id + "/" : ""}`
+    );
 
-  mpesaSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    console.log(data);
-  };
-  mpesaSocket.onclose = function (e) {
-    console.log("mpesa connection closed");
+    mpesaSocket.onmessage = function (e) {
+      const data = JSON.parse(e);
+      console.log(data);
+
+      // if (
+      //   data.message.Body.stkCallback.ResultDesc ===
+      //   "[STK_CB - ]Request cancelled by user"
+      // ) {
+      //   console.log("[STK_CB - ]Request cancelled by user");
+      // } else if (
+      //   data.message.Body.stkCallback.ResultDesc ===
+      //   "The service request is processed successfully."
+      // ) {
+      //   console.log("The service request is processed successfully.");
+      // }
+    };
+    mpesaSocket.onclose = function (e) {
+      console.log("mpesa connection closed");
+    };
   };
 
   useEffect(() => {
@@ -68,8 +84,9 @@ export default function Payment() {
       show: true,
       overlayClassName: "quick-view-overlay",
       closeOnClickOutside: true,
-      component: () => EmailVerificationModal(text, subtext),
+      component: PPModal,
       closeComponent: "",
+      componentProps: { text: text, subtext: subtext },
       config: {
         enableResizing: false,
         disableDragging: true,
@@ -83,8 +100,7 @@ export default function Payment() {
   const validationSchema = Yup.object({
     phone: Yup.string()
       .max(15, "Phone Number too long")
-      .min(12, "Phone Number is invalid")
-      .required("Phone Number is Required"),
+      .min(12, "Phone Number is invalid"),
   });
 
   const onSubmit = (values, { setErrors, setSubmitting }) => {
@@ -101,13 +117,14 @@ export default function Payment() {
       .then((res) => {
         console.log(res.data);
         if (res.status === 200) {
+          newConnection(res.data.id);
           handleModal(
             "Payment Processing ✔",
-            <>
+            <div>
               <Spinner />
               <br />
               <p>Check Phone {res.data.phone} and complete payment</p>
-            </>
+            </div>
           );
         }
 
@@ -115,6 +132,7 @@ export default function Payment() {
       })
       .error((err) => console.log(err));
   };
+
   return (
     <div style={{ padding: "0 0 60px 0" }}>
       <section className="section-plans" id="section-plans">
@@ -231,7 +249,7 @@ export default function Payment() {
                         paddingLeft: "15px",
                         paddingRight: "15px",
                       }}
-                      // disabled={!formik.isValid}
+                      disabled={plan & selectedContact}
                     />
                   </ProfileCardBody>
                 </WizardCard>

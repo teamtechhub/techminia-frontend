@@ -1971,8 +1971,8 @@ export const NoCartBag = () => {
           y2="1"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stopColor="#029477" />
-          <stop offset="1" stopColor="#009e7f" />
+          <stop offset="0" stopColor="#652e8d" />
+          <stop offset="1" stopColor="#b771e9" />
         </linearGradient>
       </defs>
       <g
@@ -1996,35 +1996,35 @@ export const NoCartBag = () => {
           data-name="Path 18691"
           d="M29.632,0H170.368A29.828,29.828,0,0,1,200,30.021V209.979A29.828,29.828,0,0,1,170.368,240H29.632A29.828,29.828,0,0,1,0,209.979V30.021A29.828,29.828,0,0,1,29.632,0Z"
           transform="translate(1403 381)"
-          fill="#009e7f"
+          fill="#b771e9"
         />
         <path
           id="Rectangle_1852"
           data-name="Rectangle 1852"
           d="M30,0H170a30,30,0,0,1,30,30v0a30,30,0,0,1-30,30H12.857A12.857,12.857,0,0,1,0,47.143V30A30,30,0,0,1,30,0Z"
           transform="translate(1403 381)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Rectangle_1853"
           data-name="Rectangle 1853"
           d="M42,0H158a42,42,0,0,1,42,42v0a18,18,0,0,1-18,18H18A18,18,0,0,1,0,42v0A42,42,0,0,1,42,0Z"
           transform="translate(1403 381)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18685"
           data-name="Path 18685"
           d="M446.31,246.056a30,30,0,1,1,30-30A30.034,30.034,0,0,1,446.31,246.056Zm0-53.294A23.3,23.3,0,1,0,469.9,216.056,23.471,23.471,0,0,0,446.31,192.762Z"
           transform="translate(1056.69 164.944)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18686"
           data-name="Path 18686"
           d="M446.31,375.181a30,30,0,1,1,30-30A30.034,30.034,0,0,1,446.31,375.181Zm0-53.294A23.3,23.3,0,1,0,469.9,345.181,23.471,23.471,0,0,0,446.31,321.887Z"
           transform="translate(1057.793 95.684)"
-          fill="#009e7f"
+          fill="#b771e9"
         />
         <circle
           id="Ellipse_2874"
@@ -2033,7 +2033,7 @@ export const NoCartBag = () => {
           cy="28.689"
           r="28.689"
           transform="translate(1473.823 511.046)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <circle
           id="Ellipse_2875"
@@ -2042,35 +2042,35 @@ export const NoCartBag = () => {
           cy="15.046"
           r="15.046"
           transform="translate(1481.401 547.854) rotate(-45)"
-          fill="#009e7f"
+          fill="#b771e9"
         />
         <path
           id="Path_18687"
           data-name="Path 18687"
           d="M399.71,531.27a71.755,71.755,0,0,1,12.65-13.6c3.4-2.863-1.5-7.726-4.882-4.882a78.392,78.392,0,0,0-13.73,15c-2.56,3.644,3.424,7.1,5.962,3.485Z"
           transform="translate(1060.579 -35.703)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18688"
           data-name="Path 18688"
           d="M412.913,527.786a78.419,78.419,0,0,0-13.73-15c-3.38-2.843-8.289,2.017-4.882,4.882a71.785,71.785,0,0,1,12.65,13.6c2.535,3.609,8.525.162,5.962-3.485Z"
           transform="translate(1060.566 -35.704)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18689"
           data-name="Path 18689"
           d="M583.278,527.786a78.417,78.417,0,0,0-13.73-15c-3.38-2.843-8.289,2.017-4.882,4.882a71.768,71.768,0,0,1,12.65,13.6c2.535,3.609,8.525.162,5.962-3.485Z"
           transform="translate(970.304 -35.704)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18690"
           data-name="Path 18690"
           d="M570.075,531.27a71.77,71.77,0,0,1,12.65-13.6c3.4-2.863-1.5-7.726-4.882-4.882a78.407,78.407,0,0,0-13.73,15c-2.56,3.644,3.424,7.1,5.962,3.485Z"
           transform="translate(970.318 -35.703)"
-          fill="#006854"
+          fill="#652e8d"
         />
         <path
           id="Path_18692"

@@ -36,13 +36,14 @@ export const MenuWrapper = styled.div`
 `;
 
 export const NavLink = styled(NavLinks)`
+  width: 100%;
   // width: calc(100% - 30px);
   outline: 0;
   color: black;
   display: flex;
   align-items: center;
   left: 0;
-  padding: 5px 30px;
+  padding: 5px 15px;
   text-decoration: none;
   transition: 0.15s ease-in-out;
 
@@ -94,11 +95,12 @@ export const LogoImage = styled.img`
 export const Header = styled.header(
   (props) =>
     css({
-      fontSize: props.depth === "parent" ? [15] : [12],
+      fontWeight: 800,
+      fontSize: props.depth === "parent" ? [17] : [14],
       // fontWeight: 6,
       display: "flex",
       alignItems: "center",
-      marginBottom: props.depth === "parent" ? 1 : 0,
+      // marginBottom: props.depth === "parent" ? 1 : 0,
       color:
         props.depth === "parent"
           ? props.open
@@ -115,7 +117,7 @@ export const Header = styled.header(
       },
     }),
   {
-    padding: "5px 0",
+    // padding: "5px 0",
     outline: 0,
   }
 );
@@ -157,11 +159,12 @@ export const Content = styled(animated.div)({
 export const Frame = styled.div(
   (props) =>
     css({
-      marginBottom: props.depth === "parent" ? "0" : "5px",
-      marginTop: props.depth === "parent" ? "5px" : "5px",
-      paddingLeft: props.depth === "child" ? 32 : 0,
+      marginBottom: props.depth === "parent" ? "5px" : 0,
+      marginTop: props.depth === "parent" ? 0 : "5px",
+      paddingLeft: props.depth === "child" ? 50 : 0,
     }),
   {
+    width: "100%",
     position: "relative",
 
     // overflowX: "hidden",

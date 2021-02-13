@@ -39,7 +39,7 @@ function App() {
   const desktop = useMedia("(min-width: 992px)");
 
   const alertOptions = {
-    timeout: 3000,
+    timeout: 5000,
     position: "top right",
     containerStyle: {
       top: "50px",

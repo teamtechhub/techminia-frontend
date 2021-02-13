@@ -14,18 +14,20 @@ import {
   ProfileCardHead,
 } from "../../Profile/Profile.style";
 import { AuthContext } from "contexts/auth/auth.context";
+import { useAlert } from "react-alert";
 
 export default function Subject(props) {
   const {
     authState: { extendedProfile },
   } = useContext(AuthContext);
-  const { classChange, subjectChange } = props;
+  const alert = useAlert();
+  const { classChange, subjectChange, globalState } = props;
   const [error, setError] = useState(false);
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
   const [update, setUpdate] = useState(false);
-  const [activeClass, setActiveClass] = useState(false);
-  const [activeSubject, setActiveSubject] = useState(false);
+  const [activeClass, setActiveClass] = useState(globalState.class);
+  const [activeSubject, setActiveSubject] = useState(global.subject);
 
   useEffect(() => {
     classChange(activeClass);
@@ -35,16 +37,37 @@ export default function Subject(props) {
         .patch(`/curriculum/class/${activeClass.id}/`, {
           teachers: [extendedProfile.id],
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          classChange(res.data);
+        })
         .catch((err) => console.log(err));
     }
-    if (activeSubject) {
-      axiosInstance
-        .patch(`/curriculum/subject/${activeSubject.id}/`, {
-          classes: [activeClass.id],
-        })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+    if (activeSubject && activeClass) {
+      const check = activeSubject.classes.includes(activeClass.id);
+      console.log(check);
+      if (!check) {
+        axiosInstance
+          .post(`/forums/topics/`, {
+            title: activeSubject.name + " " + activeClass.name,
+            description: "description to be added ...",
+          })
+          .then((res) => {
+            axiosInstance.patch(`/curriculum/subject/${activeSubject.id}/`, {
+              forums: [res.data.id],
+            });
+          });
+        axiosInstance
+          .patch(`/curriculum/subject/${activeSubject.id}/`, {
+            classes: [activeClass.id],
+          })
+          .then((res) => {
+            console.log(res);
+            subjectChange(res.data);
+            alert.success(`${res.data.name} added to ${activeClass.name}`);
+          })
+          .catch((err) => console.log(err));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeClass, activeSubject]);

@@ -58,6 +58,7 @@ class PrivateRoutes extends Component {
                     key={route.url}
                     component={Routes[route.component]}
                     path={`${this.props.match.path}${route.url}`}
+                    {...this.props}
                   />
                 ))}
                 <Route component={NotFound} />

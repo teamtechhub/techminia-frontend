@@ -30,6 +30,7 @@ import {
 import { signupValidationSchema } from "./validation.schema";
 import signupImg from "images/signup.jpg";
 import studentsignup from "images/studentsignup.jpg";
+import { tokenConfig } from "utils/axios";
 
 export default function SignOutModal() {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -216,13 +217,29 @@ export default function SignOutModal() {
 
           await new Promise((resolve) => setTimeout(resolve, 1000));
         }
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("response", res);
+        // CHECK TOKEN & LOAD USER
+        await axiosInstance
+          .get(`/auth/profile/`, tokenConfig())
+          .then(async (r) => {
+            let auth_profile = r.data;
+            addObjectToLocalStorageObject("darasa_auth_profile", auth_profile);
+            alert.success("Redirecting ...");
+            authDispatch({
+              type: "UPDATE",
+              payload: {
+                ...state,
+                profile: auth_profile,
+              },
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          });
+        console.log("response", r);
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
+
   const otpSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
@@ -250,7 +267,7 @@ export default function SignOutModal() {
       });
   };
 
-  const onSubmit = async (values, { props, setErrors, setSubmitting }) => {
+  const onSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
     recaptcha();

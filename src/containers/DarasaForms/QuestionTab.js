@@ -417,7 +417,6 @@ export default function QuestionTab({ formDetails }) {
     var optionsOfQuestion = [...questions];
     optionsOfQuestion[i].question_type = type;
     setQuestions(optionsOfQuestion);
-    console.log("the type", type);
   }
   function setImageFieldValue(img) {
     if (typeof img !== "string" && typeof img !== undefined && img !== null) {

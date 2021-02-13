@@ -25,6 +25,8 @@ import {
   ProfileListText,
 } from "pages/Profile/Profile.style";
 import Button from "components/Button/Button";
+import Moment from "react-moment";
+
 export default withRouter(function Sidebar({
   refs,
   style,
@@ -65,7 +67,7 @@ export default withRouter(function Sidebar({
         </Link>
       ) : null}
 
-      <MenuWrapper style={{ direction: "rtl" }}>
+      <MenuWrapper>
         <Menu
           data={routes}
           path={path}
@@ -89,15 +91,21 @@ export default withRouter(function Sidebar({
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Subcription Package</B>
-                      <A>Monthly</A>
+                      <A>{profile.subscription.reason}</A>
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Start Date</B>
-                      <A>1/11/2021</A>
+                      {/* <A>{moment(profile.subscription.start)}</A> */}
+                      <A>
+                        <Moment>{profile.subscription.start}</Moment>
+                      </A>
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Expiry Date</B>
-                      <A>2/11/2021</A>
+                      {/* <A>{moment(profile.subscription.end)}</A> */}
+                      <A>
+                        <Moment>{profile.subscription.end} </Moment>
+                      </A>
                     </Li>
                   </ListGroup>
                   <CardRow>
