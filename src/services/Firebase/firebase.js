@@ -11,6 +11,8 @@ import "firebase/auth";
 //   measurementId: "G-GGJC20S0LD",
 // };
 
+//Todo : add darasa firebase  ..
+
 const config = {
   apiKey: "AIzaSyB180-Eq1kXub0k3zM3R_8oduoLSjps-a8",
   authDomain: "upwatest.firebaseapp.com",
@@ -20,6 +22,22 @@ const config = {
   messagingSenderId: "602787972027",
   appId: "1:602787972027:web:444940142702e300463a9e",
 };
+
+// ken creditials
+
+// var config = {
+//   apiKey: "AIzaSyC7XzX7_9BudtaQl7Zku8DHdJXhm59HsL8",
+//   authDomain: "darasa-e7581.firebaseapp.com",
+//   databaseURL: "https://darasa-e7581-default-rtdb.firebaseio.com",
+//   projectId: "darasa-e7581",
+//   storageBucket: "darasa-e7581.appspot.com",
+//   messagingSenderId: "974265521857",
+//   appId: "1:974265521857:web:8840d348136f18a199a640",
+//   measurementId: "G-B19J7Y211G",
+// };
+// Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+// firebase.analytics();
 class firebaseApp {
   constructor() {
     if (!app.apps.length) {

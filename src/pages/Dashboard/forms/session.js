@@ -72,14 +72,14 @@ export default function Session(props) {
       name: "",
       is_video_link: false,
       video_url: "",
-      documents: null,
+      documents: [],
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sessionValidationSchema = Yup.object({
-    // video_url: Yup.string().required("Required"),
+    video_url: Yup.string().url("not valid url").required("Required"),
     notes: Yup.mixed().required("Required"),
     name: Yup.string().required("Required"),
   });

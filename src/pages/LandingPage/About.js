@@ -1,30 +1,30 @@
+import animvid from "images/animated_videos.png";
+import elib from "images/e-library.png";
+import perlearn from "images/person_learning.png";
+import tutexp from "images/tution_experts.png";
+import React, { useRef, useState } from "react";
+import Fade from "react-reveal/Fade";
+import { animated, useSpring } from "react-spring";
 import {
-  Container,
-  CardTitle,
   CardBody,
-  Wrapper,
-  Row,
+  CardTitle,
   Column,
+  Container,
   ImageContainer,
   ImageInnerConatiner,
   Ratio,
   RatioInner,
+  Row,
+  Wrapper,
 } from "./About.style";
 import { AreaHeading } from "./LandingPage.style";
-import React, { useRef, useState } from "react";
-import { useSpring, animated } from "react-spring";
-import Fade from "react-reveal/Fade";
-import Img1 from "images/for web 1.png";
-import Img2 from "images/for web 2.png";
-import Img3 from "images/for web 3.png";
-import Img4 from "images/for web 4.jpg";
 
 const cards = [
   {
     title: "Animated Video Lessons",
     description:
       "Enjoy learning like you never have before with our video lessons and interactive animations featuring our certified expert teachers.",
-    image: Img1, //"https://6jlvz1j5q3.csb.app/undraw_collection.svg",
+    image: animvid, //"https://6jlvz1j5q3.csb.app/undraw_collection.svg",
     imageRatio: 784 / 1016,
     bgColor:
       "linear-gradient(180deg, rgb(236, 118, 35) 0%, rgb(101, 46, 141) 100%)",
@@ -33,7 +33,7 @@ const cards = [
     title: "Personalized Learning",
     description:
       "Monitor your own path to academic excellence at your own pace and improve your grades with our fun and exciting module, which is structured to work for students with different strength levels and needs.",
-    image: Img2, //"https://6jlvz1j5q3.csb.app/undraw_upload.svg",
+    image: perlearn, //"https://6jlvz1j5q3.csb.app/undraw_upload.svg",
     imageRatio: 839 / 1133,
     bgColor:
       "linear-gradient(180deg, rgb(236, 118, 35) 0%, rgb(101, 46, 141) 100%)",
@@ -42,7 +42,7 @@ const cards = [
     title: "E-library",
     description:
       "Immerse yourself in our affordable online library filled with relevant curriculum books, fiction books and set books.",
-    image: Img3, //"https://6jlvz1j5q3.csb.app/undraw_static_assets.svg",
+    image: elib, //"https://6jlvz1j5q3.csb.app/undraw_static_assets.svg",
     imageRatio: 730 / 1030,
     bgColor:
       "linear-gradient(180deg, rgb(236, 118, 35) 0%, rgb(101, 46, 141) 100%)",
@@ -51,7 +51,7 @@ const cards = [
     title: "Tuition with expert teachers",
     description:
       "Our team of passionate and talented teachers are excited to give you a one on one learning experience to prepare you for examinations such as Mock Exams and KCSE exams.",
-    image: Img4, //"https://6jlvz1j5q3.csb.app/undraw_upload.svg",
+    image: tutexp, //"https://6jlvz1j5q3.csb.app/undraw_upload.svg",
     imageRatio: 839 / 1133,
     bgColor:
       "linear-gradient(180deg, rgb(236, 118, 35) 0%, rgb(101, 46, 141) 100%)",
@@ -168,8 +168,7 @@ function About() {
                   transition: "box-shadow 0.5s",
                   willChange: "transform",
                   borderRadius: "6px",
-                  background:
-                    "linear-gradient(180deg, rgb(236, 118, 35) 0%, rgb(101, 46, 141) 100%)",
+                  background: index % 2 === 0 ? "#c292c2" : "#f38a69",
                 }}
               >
                 <Card>

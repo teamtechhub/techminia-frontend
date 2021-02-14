@@ -86,6 +86,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-scroll": "^1.8.1",
+    "react-social-icons": "^4.1.0",
     "react-spring": "^8.0.27",
     "react-step-wizard": "^5.3.5",
     "react-sticky": "^6.0.3",

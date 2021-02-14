@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <>
       <Site style={{ marginTop: "50px" }}>
-        <Portfolio />
+        {/* <Portfolio /> */}
         <Subscribe />
       </Site>
 

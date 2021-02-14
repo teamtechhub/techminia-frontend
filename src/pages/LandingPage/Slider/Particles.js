@@ -10,9 +10,9 @@ function CustomParticles({ children }) {
         style={{
           position: "absolute",
           // zIndex: 1,
-          left: 0,
+          left: "50%",
           right: 0,
-          bottom: 0,
+          bottom: "70px",
           top: 0,
         }}
       />

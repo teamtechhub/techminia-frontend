@@ -127,7 +127,7 @@ export const FloatingImage = styled.img`
   position: fixed;
   bottom: -8px;
   right: 39%;
-  width: 300px;
+  width: 250px;
   animation: ${float} 6s ease-in-out infinite;
 `;
 

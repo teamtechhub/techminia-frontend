@@ -9,10 +9,13 @@ import blob from "images/home_page/blob.png";
 import { BannerWrapper, FloatingImage } from "./slider.style";
 import CustomParticles from "./Particles";
 import Button from "components/Button/Button";
-import boy from "images/guy-01.png";
+// import boy from "images/guy-01.png";
+import favboylap from "images/fav-lap.png";
 import { themeGet } from "@styled-system/theme-get";
 import { AuthContext } from "contexts/auth/auth.context";
 
+import lady from "images/lady.png";
+import leafs from "images/home_page/leaves.png";
 export const StyledAwesomeSlider = styled(AwesomeSlider)`
   height: 100vh;
   .awssld__controls__arrow-left:before,
@@ -63,7 +66,7 @@ function Slider() {
           <br />
           You deserve high-quility, affordable and easily accessible education
           <br /> to help you maximize your academic achievement <br />
-          and be the very best you can be as your journey towards
+          and be the very best you can be as you journey towards
           <br /> the future that awaits you beyond school.
         </div>
       ),
@@ -87,11 +90,12 @@ function Slider() {
       <BannerWrapper
         style={{
           width: "100%",
+          backgroundColor: "#d1eafd",
           backgroundImage: `linear-gradient(to right, #ffffff14, #ffffff14), url(${blob})`,
         }}
       >
-        <div style={{ position: "relative" }}>
-          <FloatingImage src={boy} alt="pics" />
+        <div style={{ position: "absolute", bottom: "50px" }}>
+          <FloatingImage src={favboylap} alt="pics" />
         </div>
         <Section
           heading={sections[0].heading}
@@ -117,6 +121,31 @@ function Slider() {
             </div>
           ))}
         </AutoplaySlider> */}
+        <div
+          style={{
+            position: "absolute",
+            left: "30px",
+            top: "520px",
+            zIndex: 9999,
+          }}
+        >
+          <img src={lady} height="220px" alt="lady  not found" width="150px" />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: "500px",
+            zIndex: 0,
+          }}
+        >
+          <img
+            src={leafs}
+            alt="leafs  not found"
+            height="150px"
+            width="150px"
+          />
+        </div>
       </BannerWrapper>{" "}
     </CustomParticles>
   );

@@ -17,7 +17,7 @@ import Firebase, { FirebaseContext } from "services/Firebase";
 import { Provider as AlertProvider } from "react-alert"; //, withAlert } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from "components/Alerts/Alerts";
-import { CartProvider } from "contexts/cart/use-cart";
+// import { CartProvider } from "contexts/cart/use-cart";
 
 import "typeface-dm-sans";
 import "typeface-poppins";
@@ -61,7 +61,7 @@ function App() {
           <Alerts />
           <FirebaseContext.Provider value={new Firebase()}>
             <SearchProvider query={query}>
-              <CartProvider>
+              {/* <CartProvider> */}
                 {/* <AppProvider> */}
                 <HeaderProvider>
                   <AuthProvider>
@@ -71,7 +71,7 @@ function App() {
                   </AuthProvider>
                 </HeaderProvider>
                 {/* </AppProvider> */}
-              </CartProvider>
+              {/* </CartProvider> */}
               <GlobalStyle />
             </SearchProvider>
           </FirebaseContext.Provider>

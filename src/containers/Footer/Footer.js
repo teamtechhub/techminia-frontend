@@ -1,14 +1,15 @@
 import React from "react";
 import Footer from "components/Footer/Footer";
-import { Location, Facebook, Twitter, Instagram } from "components/AllSvgIcon";
-import { SmartPhone } from "components/AllSvgIcon";
-import { Mail } from "components/AllSvgIcon";
+//import { Location, Facebook, Twitter, Instagram } from "components/AllSvgIcon";
+//import { SmartPhone } from "components/AllSvgIcon";
+//import { Mail } from "components/AllSvgIcon";
+import { SocialIcon } from "react-social-icons";
 
 export default function FooterContainer() {
   return (
     <>
       <Footer>
-        <Footer.Wrapper>
+        {/* <Footer.Wrapper>
           <Footer.Row>
             <Footer.Column>
               <Footer.Title>ABOUT DARASA</Footer.Title>
@@ -62,9 +63,106 @@ export default function FooterContainer() {
               <Footer.Link href="#">Library</Footer.Link>
               <Footer.Link href="#">Terms and Conditions</Footer.Link>
               <Footer.Link href="#">Privacy Policy</Footer.Link>
+            </Footer.Column>>
+                0719100719
+              </Footer.Text>
+              <Footer.Link href="mailto:info@darasa.co.ke">
+                <Mail />
+                info@darasa.co.ke
+              </Footer.Link>
+            </Footer.Column>
+            <Footer.Column style={{ display: "flex" }}>
+              <div>
+                <Footer.Title>FOLLOW US</Footer.Title>
+                <Footer.Link href="https://facebook.com">
+                  <Facebook />
+                </Footer.Link>
+                <Footer.Link href="https://www.instagram.com">
+                  <Instagram />
+                </Footer.Link>
+                <Footer.Link href="https://twitter.com">
+                  <Twitter />
+                </Footer.Link>
+              </div>
+            </Footer.Column>
+            <Footer.Column>
+              <Footer.Title>SECONDARY CLASSES</Footer.Title>
+              <Footer.Link href="#">Form 1</Footer.Link>
+              <Footer.Link href="#">Form 2</Footer.Link>
+              <Footer.Link href="#">Form 3</Footer.Link>
+              <Footer.Link href="#">Form 4</Footer.Link>
+            </Footer.Column>
+            <Footer.Column>
+              <Footer.Title>QUICK LINKS</Footer.Title>
+              <Footer.Link href="#">Classes</Footer.Link>
+              <Footer.Link href="#">Tuition</Footer.Link>
+              <Footer.Link href="#">Teacher Dashboard</Footer.Link>
+              <Footer.Link href="#">Student Dashboard</Footer.Link>
+              <Footer.Link href="#">Library</Footer.Link>
+              <Footer.Link href="#">Terms and Conditions</Footer.Link>
+              <Footer.Link href="#">Privacy Policy</Footer.Link>
             </Footer.Column>
           </Footer.Row>
-        </Footer.Wrapper>
+        </Footer.Wrapper> */}
+        <div
+          style={{
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            textAlign: "center",
+            width: "100%",
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
+          <h3 style={{ textAlign: "center", color: "yellow" }}>About Darasa</h3>
+          <p>
+            Darasa is an haven that embraces current age and revolutionizes the
+            way students learn and study for their exams in preparation for
+            higher education and what comes after
+          </p>
+          <p>
+            We believe that revision materials should be equally and easily
+            accessible to every student and candidate in kenya
+          </p>
+          <p>
+            {" "}
+            Using expert teachers, technology and media, we hope to make
+            learning a fun and exiciting experience for students
+          </p>
+          <h5 style={{ color: "yellow" }}> Contact Information</h5>
+          <p>Info@darasa.co.ke</p>
+          <p>+254202022002</p>
+          <p> Karen ,Nairobi</p>
+          <h5 style={{ color: "yellow" }}> Follow Us</h5>
+          {/* <div style={{ display: "flex", justifyContent: "center" }}>
+            <SocialIcon
+              url="https://pintrest.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+            <SocialIcon
+              url="https://www.tiktok.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+            <SocialIcon
+              url="https://facebook.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+            <SocialIcon
+              url="https://www.instagram.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+            <SocialIcon
+              url="https://twitter.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+            <SocialIcon
+              url="https://youtube.com"
+              style={{ width: "30px", height: "20px" }}
+            />
+          </div> */}
+        </div>
       </Footer>
       <Footer
         style={{

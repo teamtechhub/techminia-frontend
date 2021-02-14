@@ -1,6 +1,12 @@
-import { Plus, Minus } from "components/AllSvgIcon";
+//import { Plus, Minus } from "components/AllSvgIcon";
 import Na from "images/home_page/na.png";
-import Lady from "images/lady.png";
+//import Lady from "images/lady.png";
+import ab from "images/home_page/particles/a+b.png";
+import controller from "images/home_page/particles/controller.png";
+import floatingbook from "images/home_page/particles/floating_book.png";
+import football from "images/home_page/particles/football.png";
+import planetsat from "images/home_page/particles/planet_saturn.png";
+import xy from "images/home_page/particles/x+y.png";
 
 const ParticlesConfig = {
   particles: {
@@ -8,7 +14,7 @@ const ParticlesConfig = {
       value: 12,
       density: {
         enable: true,
-        value_area: 800,
+        value_area: 600,
       },
     },
     line_linked: {
@@ -19,15 +25,10 @@ const ParticlesConfig = {
       out_mode: "out",
     },
     shape: {
-      type: ["image", "svg", "star", "triangle"],
+      type: ["image"],
       image: [
         {
-          src: `${Plus}`,
-          height: 20,
-          width: 20,
-        },
-        {
-          src: `${Minus}`,
+          src: `${xy}`,
           height: 20,
           width: 20,
         },
@@ -37,19 +38,39 @@ const ParticlesConfig = {
           width: 20,
         },
         {
-          src: `${Lady}`,
+          src: `${controller}`,
+          height: 20,
+          width: 20,
+        },
+        {
+          src: `${ab}`,
+          height: 15,
+          width: 10,
+        },
+        {
+          src: `${floatingbook}`,
+          height: 15,
+          width: 10,
+        },
+        {
+          src: `${planetsat}`,
+          height: 15,
+          width: 10,
+        },
+        {
+          src: `${football}`,
           height: 15,
           width: 10,
         },
       ],
     },
-    color: { value: "#652e8d" },
+    // color: { value: "#652e8d" },
     size: {
       value: 40,
       random: false,
       anim: {
         enable: true,
-        speed: 4,
+        speed: 5,
         size_min: 10,
         sync: false,
       },
