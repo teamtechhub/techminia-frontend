@@ -232,8 +232,8 @@ export default function SignOutModal() {
               },
             });
             await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log("response", r);
           });
-        console.log("response", r);
       })
       .catch((err) => {
         console.log(err.response);

@@ -31,6 +31,8 @@ import "react-multi-carousel/lib/styles.css";
 import "@redq/reuse-modal/lib/index.css";
 import "video-react/dist/video-react.css";
 
+//tailwind css
+import "./tail-index.css";
 function App() {
   const queryParams = useRouterQuery();
   const [componentMounted] = useDarkMode();
@@ -62,15 +64,15 @@ function App() {
           <FirebaseContext.Provider value={new Firebase()}>
             <SearchProvider query={query}>
               {/* <CartProvider> */}
-                {/* <AppProvider> */}
-                <HeaderProvider>
-                  <AuthProvider>
-                    <StickyProvider>
-                      <BaseRouter deviceType={{ mobile, tablet, desktop }} />
-                    </StickyProvider>
-                  </AuthProvider>
-                </HeaderProvider>
-                {/* </AppProvider> */}
+              {/* <AppProvider> */}
+              <HeaderProvider>
+                <AuthProvider>
+                  <StickyProvider>
+                    <BaseRouter deviceType={{ mobile, tablet, desktop }} />
+                  </StickyProvider>
+                </AuthProvider>
+              </HeaderProvider>
+              {/* </AppProvider> */}
               {/* </CartProvider> */}
               <GlobalStyle />
             </SearchProvider>
