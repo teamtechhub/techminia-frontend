@@ -129,7 +129,13 @@ function Slider() {
             zIndex: 9999,
           }}
         >
-          <img src={lady} height="220px" alt="lady  not found" width="150px" />
+          <img
+            src={lady}
+            className="hidden  md:inline-block"
+            height="220px"
+            alt="lady  not found"
+            width="150px"
+          />
         </div>
         <div
           style={{

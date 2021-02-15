@@ -49,7 +49,7 @@ const HeaderWrapper = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: ${themeGet("colors.white", "#ffffff")};
+  background-color: "#d1eafd";
 
   background-image: url(${menuBG});
 
@@ -107,7 +107,7 @@ const HeaderWrapper = styled.header`
     background-repeat: no-repeat;
     background-size: cover;
 
-    background-color: ${themeGet("colors.white", "#ffffff")};
+    background-color: "#d1eafd";
     position: fixed;
     box-shadow: ${themeGet("shadows.header", "0 1px 2px rgba(0, 0, 0, 0.06)")};
     padding-top: 7px;
