@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Wrapper, Container, Heading, SubHeading } from "./SignInOutForm.style";
 import Error500 from "components/Error/Error500";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { openModal } from "@redq/reuse-modal";
 import EmailVerificationModal from "./emailVerificationModal";
 import SignInModal from "./SignIn";
@@ -87,7 +87,7 @@ function EmailVerification() {
     return <Error500 err={error} />;
   }
   if (loading) {
-    return <Loader />;
+    return <LoadingIndicator />;
   }
 
   return (

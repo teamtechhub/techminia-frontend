@@ -20,7 +20,7 @@ import {
   ProfileCardHead,
 } from "../Profile/Profile.style";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import DraftRenderer from "components/DraftRenderer/DraftRenderer";
 import Button from "components/Button/Button";
 import Video from "components/Video/Video";
@@ -196,10 +196,10 @@ export default function Session({ className, view }) {
     addAllClasses.push(className);
   }
   if (!treeItems && !cls && !subject && !teacher && loading) {
-    return <Loader />;
+    return <LoadingIndicator />;
   }
   // if (reload) {
-  //   return <Loader />;
+  //   return <LoadingIndicator />;
   // }
   return (
     <div>

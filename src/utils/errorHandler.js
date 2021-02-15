@@ -7,9 +7,11 @@ function ErrorHandler({ err }) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    console.log(err);
     if (!err.response) {
       // network error
-      console.log("Error: Network Error");
+      setError("Error: Network Error. Please report this server error");
+      setMessage("Error: Network Error. Please report this server error");
     } else if (err.response) {
       if (err.response.status) {
         if (err.response.status === 100) {
@@ -259,7 +261,13 @@ function ErrorHandler({ err }) {
         setError(err.response.data);
       }
     } else {
-      setError(err.message);
+      if (err.message === "Error: Network Error.") {
+        setError("Error: Network Error. Please report this server error");
+        setMessage("Error: Network Error. Please report this server error");
+      } else {
+        setError(err.message);
+        setMessage(err.message);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

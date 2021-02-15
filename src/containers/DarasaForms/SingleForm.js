@@ -1,4 +1,4 @@
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useRouteMatch } from "react-router-dom";
 import { axiosInstance, tokenConfig } from "utils/axios";
@@ -45,12 +45,12 @@ export default function SingleForm() {
   }, [match.params.formID]);
 
   if (formDetails.length) {
-    return <Loader />;
+    return <LoadingIndicator />;
   }
   return (
     <>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : isEditPage && profile.id === formDetails.creator ? (
         <EditForm formDetails={formDetails} />
       ) : (

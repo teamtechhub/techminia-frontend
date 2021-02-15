@@ -1,4 +1,4 @@
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { axiosInstance, tokenConfig } from "utils/axios";
@@ -36,7 +36,7 @@ export default function ViewForm() {
   return (
     <div style={{ alignItems: "center", margin: "0 auto" }}>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : (
         <>
           <ProfileContent style={{ width: "100%" }}>

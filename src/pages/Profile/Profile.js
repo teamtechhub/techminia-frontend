@@ -24,7 +24,7 @@ import { AuthContext } from "contexts/auth/auth.context";
 // import LogoImage from "images/logo.png";
 import { openModal } from "@redq/reuse-modal";
 import EmailVerificationModal from "containers/Authentication/emailVerificationModal";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import Error500 from "components/Error/Error500";
 import ProfileView from "./ProfileView";
 import { Br } from "styles/pages.style";
@@ -219,7 +219,7 @@ function Profile() {
         </h4>
       </CardWrapper>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : (
         <>
           {currentForm === "edit" && (

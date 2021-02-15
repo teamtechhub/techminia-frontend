@@ -114,7 +114,7 @@ function PasswordResetEmail() {
 
                 <Blank />
                 <Button type="submit" disabled={!formik.isValid}>
-                  {formik.isSubmitting ? <Loader /> : "Send Email"}
+                  {formik.isSubmitting ? <LoadingIndicator /> : "Send Email"}
                 </Button>
               </Form>
             );

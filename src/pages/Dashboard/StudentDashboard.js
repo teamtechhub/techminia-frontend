@@ -16,7 +16,7 @@ import Button from "components/Button/Button";
 import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import { CardWrapper, Row } from "pages/Students/Students.style";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
 // import tuit from "images/tuit.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -90,7 +90,7 @@ export default function StudentDashboard() {
   };
 
   if (classes === false) {
-    <Loader />;
+    <LoadingIndicator />;
   }
 
   return (
@@ -137,7 +137,7 @@ export default function StudentDashboard() {
             ))}
       </CardWrapper>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : (
         <>
           {subjects &&

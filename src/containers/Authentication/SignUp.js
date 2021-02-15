@@ -1,5 +1,5 @@
 import Error500 from "components/Error/Error500";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { TERMS_CONDITIONS } from "constants/routes.constants";
 import FormikControl from "containers/FormikContainer/FormikControl";
 import StepWizard from "containers/Multistep/Multistep";
@@ -420,7 +420,7 @@ export default function SignOutModal() {
           ) : (
             <>
               {loading ? (
-                <Loader />
+                <LoadingIndicator />
               ) : (
                 <>
                   <img

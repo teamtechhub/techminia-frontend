@@ -12,7 +12,7 @@ import {
   Title,
 } from "./Students.style";
 import { animated } from "react-spring";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
 
 function Students() {
@@ -117,7 +117,7 @@ function Students() {
             ))}
       </CardWrapper>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : (
         <Row>
           {subjects &&

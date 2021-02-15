@@ -138,7 +138,7 @@ export default function EditForm({ formDetails }) {
                           type="submit"
                           size="small"
                           title={
-                            formik.isSubmitting ? "Changing... " : "Change"
+                            formik.isSubmitting ? "Saving... " : "Save Form"
                           }
                           isSubmitting={formik.isSubmitting}
                           style={{

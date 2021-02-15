@@ -72,14 +72,19 @@ export default function Session(props) {
       name: "",
       is_video_link: false,
       video_url: "",
-      documents: null,
+      documents: [],
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sessionValidationSchema = Yup.object({
-    // video_url: Yup.string().required("Required"),
+    video_url: Yup.string()
+      .url()
+      .url("Please enter a valid URL, http:// or https://", {
+        allowLocal: true,
+      })
+      .required("Required"),
     notes: Yup.mixed().required("Required"),
     name: Yup.string().required("Required"),
   });
@@ -122,14 +127,12 @@ export default function Session(props) {
     formData.append("video_url", video_url);
     formData.append("name", name);
     formData.append("notes", JSON.stringify(notes));
-    // formData.append("documents", JSON.stringify(docs));
-    console.log("form data --------: ", [...formData]);
 
     axiosInstance
       .post(`/curriculum/session/`, formData, formTokenConfig())
       .then((res) => {
         console.log("res", res.data);
-        if (docs.length > 0) {
+        if (docs.length && docs.length > 0) {
           for (let i = 0; i < docs.length; i++) {
             let docsFormData = new FormData();
             const element = docs[i];
@@ -150,8 +153,7 @@ export default function Session(props) {
             title: `${res.data.name}`,
           })
           .then((results) => {
-            axiosInstance.put(`curriculum/session/${res.data.id}/`, {
-              ...res.data,
+            axiosInstance.patch(`curriculum/session/${res.data.id}/`, {
               forum: results.data.id,
             });
           });
@@ -165,7 +167,6 @@ export default function Session(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log("res errors", err.response.data);
         if (err.response) {
           if (err.response.data) {
             if (err.response.data.message) {
@@ -178,7 +179,6 @@ export default function Session(props) {
         } else {
           setError(err);
         }
-        console.log(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
