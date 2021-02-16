@@ -10,7 +10,7 @@ export const SETTINGS = "/dashboard/profile";
 
 //Todo  configure environment variable to app url.
 export const BASE_URL =
-  "http://68.183.19.253:8000" ||
   process.env.API_URL ||
+  "https://techminia.com" ||
   "https://darasa-backend.herokuapp.com";
 export const CURRENCY = "Ksh.";

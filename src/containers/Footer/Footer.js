@@ -3,7 +3,43 @@ import Footer from "components/Footer/Footer";
 //import { Location, Facebook, Twitter, Instagram } from "components/AllSvgIcon";
 //import { SmartPhone } from "components/AllSvgIcon";
 //import { Mail } from "components/AllSvgIcon";
-import { SocialIcon } from "react-social-icons";
+
+//
+// import SocialFooterComponent from "./social_component";
+// const socialLinksAndNames = [
+//   {
+//     name: "facebook",
+//     url: "https://www.facebook.com/",
+//   },
+//   {
+//     name: "twitter",
+//     url: "https://www.twitter.com/",
+//   },
+//   {
+//     name: "instagram",
+//     url: "https://www.instagram.com/",
+//   },
+//   {
+//     name: "tiktok",
+//     url: "https://www.tiktok.com/",
+//   },
+//   {
+//     name: "tiktok",
+//     url: "https://www.tiktok.com/",
+//   },
+//   {
+//     name: "pintrest",
+//     url: "https://www.pintrest.com/",
+//   },
+//   {
+//     name: "youtube",
+//     url: "https://www.youtube.com/",
+//   },
+//   {
+//     name: "linkedin",
+//     url: "https://www.linkedin.com/",
+//   },
+// ];
 
 export default function FooterContainer() {
   return (
@@ -137,30 +173,9 @@ export default function FooterContainer() {
           <p> Karen ,Nairobi</p>
           <h5 style={{ color: "yellow" }}> Follow Us</h5>
           {/* <div style={{ display: "flex", justifyContent: "center" }}>
-            <SocialIcon
-              url="https://pintrest.com"
-              style={{ width: "30px", height: "20px" }}
-            />
-            <SocialIcon
-              url="https://www.tiktok.com"
-              style={{ width: "30px", height: "20px" }}
-            />
-            <SocialIcon
-              url="https://facebook.com"
-              style={{ width: "30px", height: "20px" }}
-            />
-            <SocialIcon
-              url="https://www.instagram.com"
-              style={{ width: "30px", height: "20px" }}
-            />
-            <SocialIcon
-              url="https://twitter.com"
-              style={{ width: "30px", height: "20px" }}
-            />
-            <SocialIcon
-              url="https://youtube.com"
-              style={{ width: "30px", height: "20px" }}
-            />
+            {socialLinksAndNames.map((link) => (
+              <SocialFooterComponent url={link.url} name={link.name} />
+            ))}
           </div> */}
         </div>
       </Footer>

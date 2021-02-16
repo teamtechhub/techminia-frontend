@@ -9,6 +9,7 @@ import "firebase/auth";
 import { Form, Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
+
 import {
   addArrayToLocalStorage,
   addObjectToLocalStorageObject,
@@ -31,6 +32,7 @@ import { signupValidationSchema } from "./validation.schema";
 import signupImg from "images/signup.jpg";
 import studentsignup from "images/studentsignup.jpg";
 import { tokenConfig } from "utils/axios";
+import LoadingIndicator from "components/LoadingIndicator";
 
 export default function SignOutModal() {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -42,6 +44,7 @@ export default function SignOutModal() {
   const [phoneValues, setPhoneValues] = useState({});
   const [validating, setValidating] = useState(Boolean());
   const [confirmationResult, setConfirmationResult] = useState({});
+  const [redirecting, setRedirecting] = useState(false);
   const [isTeacher, setIsTeacher] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [switchTab, setSwitchTab] = useState(true);
@@ -225,12 +228,16 @@ export default function SignOutModal() {
             addObjectToLocalStorageObject("darasa_auth_profile", auth_profile);
             alert.success("Redirecting ...");
             authDispatch({
+              type: "SIGNUP_SUCCESS",
+            });
+            authDispatch({
               type: "UPDATE",
               payload: {
                 ...state,
                 profile: auth_profile,
               },
             });
+            history.push("/dashboard");
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("response", r);
           });
@@ -240,7 +247,7 @@ export default function SignOutModal() {
       });
   };
 
-  const otpSubmit = async (values, { setErrors, setSubmitting }) => {
+  const otpSubmit = (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
     console.log("otp values", values);
@@ -249,9 +256,9 @@ export default function SignOutModal() {
     window.confirmationResult = confirmationResult;
     confirmationResult
       .confirm(code)
-      .then(async (result) => {
+      .then((result) => {
         console.log("result after successful otp confirm: ", result);
-        await handlePhoneConfirm();
+        handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
       })
@@ -264,6 +271,7 @@ export default function SignOutModal() {
         }
         setSubmitting(false);
         setValidating(false);
+        setRedirecting(true);
       });
   };
 
@@ -385,42 +393,49 @@ export default function SignOutModal() {
       ) : (
         <Container>
           {verifyOTP ? (
-            <>
-              <Heading>Verify Phone Number</Heading>
-              <SubHeading>Check your phone for the sent code</SubHeading>
-              <Formik
-                initialValues={otpInitialValues}
-                validationSchema={otpValidationSchema}
-                onSubmit={otpSubmit}
-              >
-                {(formik) => {
-                  return (
-                    <Form>
-                      <FormikControl
-                        control="input"
-                        type="code"
-                        label="Confirmation Code"
-                        name="code"
-                      />
+            redirecting ? (
+              <>
+                <h4>Redirecting ...</h4>
+                <LoadingIndicator />
+              </>
+            ) : (
+              <>
+                <Heading>Verify Phone Number</Heading>
+                <SubHeading>Check your phone for the sent code</SubHeading>
+                <Formik
+                  initialValues={otpInitialValues}
+                  validationSchema={otpValidationSchema}
+                  onSubmit={otpSubmit}
+                >
+                  {(formik) => {
+                    return (
+                      <Form>
+                        <FormikControl
+                          control="input"
+                          type="code"
+                          label="Confirmation Code"
+                          name="code"
+                        />
 
-                      <Button
-                        type="submit"
-                        disabled={!formik.isValid && validating}
-                        fullwidth
-                        title={validating ? "Verifying Number... " : "Verify"}
-                        style={{ color: "#ffffff" }}
-                      />
-                      <Offer style={{ padding: "20px 0" }}></Offer>
-                      <div id="recaptcha-container" ref={captchaRef} />
-                    </Form>
-                  );
-                }}
-              </Formik>
-            </>
+                        <Button
+                          type="submit"
+                          disabled={!formik.isValid && validating}
+                          fullwidth
+                          title={validating ? "Verifying Number... " : "Verify"}
+                          style={{ color: "#ffffff" }}
+                        />
+                        <Offer style={{ padding: "20px 0" }}></Offer>
+                        <div id="recaptcha-container" ref={captchaRef} />
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              </>
+            )
           ) : (
             <>
               {loading ? (
-                <Loader />
+                <LoadingIndicator />
               ) : (
                 <>
                   <img
