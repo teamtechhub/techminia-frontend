@@ -18,7 +18,6 @@ import { axiosInstance, tokenConfig } from "utils/axios";
 import {
   Button,
   Container,
-  Divider,
   LinkButton,
   Offer,
   OfferSection,

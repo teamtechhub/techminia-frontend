@@ -1,4 +1,4 @@
-import Portfolio from "pages/LandingPage/Portfolio";
+// import Portfolio from "pages/LandingPage/Portfolio";
 import Subscribe from "pages/LandingPage/Subscribe";
 import FooterContainer from "containers/Footer/Footer";
 import React from "react";
