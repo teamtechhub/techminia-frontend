@@ -1,5 +1,9 @@
 import Error500 from "components/Error/Error500";
+<<<<<<< HEAD
 // import Loader from "components/Loader/Loader";
+=======
+import LoadingIndicator from "components/LoadingIndicator";
+>>>>>>> forums
 import { TERMS_CONDITIONS } from "constants/routes.constants";
 import FormikControl from "containers/FormikContainer/FormikControl";
 import StepWizard from "containers/Multistep/Multistep";

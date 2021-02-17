@@ -13,7 +13,7 @@ import Button from "components/Button/Button";
 import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import { CardWrapper, Row } from "pages/Students/Students.style";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -119,7 +119,7 @@ export default function TeacherClassses({ setView }) {
         {classes.length === 0 ? <p>No Classes Here</p> : null}
       </CardWrapper>
       {loading ? (
-        <Loader />
+        <LoadingIndicator />
       ) : (
         <>
           {subjects &&

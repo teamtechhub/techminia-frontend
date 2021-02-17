@@ -126,7 +126,7 @@ export default function CustomCarousel({
     deviceType = "tablet";
   }
   return (
-    <div dir="ltr">
+    <div key={data.id} dir="ltr">
       <Carousel
         arrows={false}
         responsive={responsive}

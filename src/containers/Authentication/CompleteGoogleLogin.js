@@ -1,7 +1,7 @@
 import { closeModal } from "@redq/reuse-modal";
 
 import Error500 from "components/Error/Error500";
-import Loader from "components/Loader/Loader";
+import LoadingIndicator from "components/LoadingIndicator";
 import { TERMS_CONDITIONS } from "constants/routes.constants";
 import FormikControl from "containers/FormikContainer/FormikControl";
 import { AuthContext } from "contexts/auth/auth.context";
@@ -390,7 +390,7 @@ export default function CompleteGoogleLogin() {
         ) : (
           <>
             {loading ? (
-              <Loader />
+              <LoadingIndicator />
             ) : (
               <>
                 <Heading>Google Auth Successful ✔</Heading>

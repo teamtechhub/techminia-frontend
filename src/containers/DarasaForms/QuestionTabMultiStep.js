@@ -312,7 +312,10 @@ export default function QuestionTabWizard({ form }) {
                           <QCIcon />
                         </QuestionInfoCategoryIcon>
                         <QCTitle>
-                          <h3>Geography</h3>
+                          <h3>
+                            {form.class_names}
+                            {form.subject_names}
+                          </h3>
                         </QCTitle>
                       </QuestionInfoCategory>
                       <QuestionInfo>By Teacher: ...</QuestionInfo>
