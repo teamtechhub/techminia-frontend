@@ -14,11 +14,6 @@ import {
   unhashPassword,
 } from "utils";
 import { axiosInstance, tokenConfig } from "utils/axios";
-<<<<<<< HEAD
-//import GoogleSocialAuth from "./GoogleSocialAuth";
-=======
-// import GoogleSocialAuth from "./GoogleSocialAuth";
->>>>>>> forums
 import {
   Button,
   Container,
@@ -307,16 +302,6 @@ export default function SignInModal() {
             style={{ margin: "10px 0", color: "#ffffff" }}
           />
         )}
-
-        {/* <Divider>
-          <span>or</span>
-        </Divider>
-
-<<<<<<< HEAD
-
-=======
-        {/* <GoogleSocialAuth /> */}
->>>>>>> forums
 
         <Offer style={{ padding: "20px 0" }}>
           Don't have any account?{" "}

@@ -58,6 +58,14 @@ export const Wrapper = styled.div`
   background-color: #ffffff;
 `;
 
+export const Btn = styled(Buttons)`
+  &: hover :{
+    transform:translateY(-3px);
+    box-shadow: 0 1rem 2rem rgb(0 0 0 / 20%);
+  }
+  transition: all 0.2s;
+`;
+
 export const Container = styled.div`
   padding: 40px 60px 0;
 

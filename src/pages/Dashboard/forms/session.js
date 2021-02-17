@@ -80,16 +80,12 @@ export default function Session(props) {
   }, []);
 
   const sessionValidationSchema = Yup.object({
-<<<<<<< HEAD
-    video_url: Yup.string().url("not valid url").required("Required"),
-=======
     video_url: Yup.string()
       .url()
       .url("Please enter a valid URL, http:// or https://", {
         allowLocal: true,
       })
       .required("Required"),
->>>>>>> forums
     notes: Yup.mixed().required("Required"),
     name: Yup.string().required("Required"),
   });
