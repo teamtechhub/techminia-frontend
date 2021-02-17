@@ -25,7 +25,7 @@ import {
   ProfileListText,
 } from "pages/Profile/Profile.style";
 import Button from "components/Button/Button";
-import Moment from "react-moment";
+import moment from "moment";
 
 export default withRouter(function Sidebar({
   refs,
@@ -74,11 +74,15 @@ export default withRouter(function Sidebar({
           setActiveLink={setLink}
           active={activeLink}
         />
-        <div style={{ direction: "ltr", position: "absolute", bottom: 0 }}>
+        <div style={{ direction: "ltr", marginTop: "auto" }}>
           {profile.is_student &&
             (profile.subscription && profile.subscription.state === 1 ? (
               <ProfileCard
-                style={{ backgroundColor: "#ffffff00", color: "#fff" }}
+                style={{
+                  backgroundColor: "#ffffff00",
+                  color: "#fff",
+                  margin: 0,
+                }}
               >
                 <ProfileCardHead className="card-topline">
                   <header>Account Details</header>
@@ -91,20 +95,21 @@ export default withRouter(function Sidebar({
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Subcription Package</B>
-                      <A>{profile.subscription.reason}</A>
+                      <A>{profile.subscription.reference}</A>
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Start Date</B>
                       {/* <A>{moment(profile.subscription.start)}</A> */}
                       <A>
-                        <Moment>{profile.subscription.start}</Moment>
+                        {moment(profile.subscription.start).format(
+                          "D MMM YYYY"
+                        )}
                       </A>
                     </Li>
                     <Li style={{ padding: 0, backgroundColor: "#ffffff00" }}>
                       <B>Expiry Date</B>
-                      {/* <A>{moment(profile.subscription.end)}</A> */}
                       <A>
-                        <Moment>{profile.subscription.end} </Moment>
+                        {moment(profile.subscription.end).format("D MMM YYYY")}
                       </A>
                     </Li>
                   </ListGroup>
@@ -120,7 +125,10 @@ export default withRouter(function Sidebar({
                       <ProfileListTitle
                         style={{ color: "#fff", margin: "0 10px" }}
                       >
-                        8
+                        {moment(profile.subscription.end, "YYYY-MM-DD").diff(
+                          moment(new Date(), "YYYY-MM-DD"),
+                          "days"
+                        )}
                       </ProfileListTitle>
                       <ProfileListText style={{ color: "#fff" }}>
                         Days to Next Payment

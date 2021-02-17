@@ -8,6 +8,7 @@ import { WizardCard } from "pages/Dashboard/Dashboard.style";
 import Button from "components/Button/Button";
 import { AuthContext } from "contexts/auth/auth.context";
 import QuestionTabWizard from "./QuestionTabMultiStep";
+import PaymentModal from "components/PaymentModal";
 
 export default function ViewForm() {
   const {
@@ -73,7 +74,14 @@ export default function ViewForm() {
                 })`,
               }}
             />
-            <QuestionTabWizard form={form} />
+            {profile.is_teacher ? (
+              <QuestionTabWizard form={form} />
+            ) : profile.subscription &&
+              profile.subscription.state.toString() === "1" ? (
+              <QuestionTabWizard form={form} />
+            ) : (
+              PaymentModal
+            )}
           </div>
         </>
       )}

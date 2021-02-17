@@ -53,7 +53,6 @@ function Students() {
         });
     }
   }, [selectedClass]);
-
   useEffect(() => {
     axiosInstance.get(`account/teachers/`, tokenConfig()).then((res) => {
       setTeachers(res.data.results);

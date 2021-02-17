@@ -14,6 +14,8 @@ import SingleForm from "./SingleForm";
 import "./style.scss";
 import LoadingIndicator from "components/LoadingIndicator";
 import { AuthContext } from "contexts/auth/auth.context";
+import PaymentModal from "components/PaymentModal";
+import { openModal } from "@redq/reuse-modal";
 
 export default function DarasaForms() {
   const {
@@ -74,6 +76,24 @@ export default function DarasaForms() {
     }, []);
   }
 
+  const handleModal = () => {
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: true,
+      component: PaymentModal,
+      closeComponent: "",
+
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
   const renderCard = (singleForm) => {
     return (
       <div
@@ -121,67 +141,87 @@ export default function DarasaForms() {
   };
 
   return (
-    <>
-      <ProfileContent style={{ width: "100%", marginBottom: "75px" }}>
-        <WizardCard>
-          <ProfileCardHead
-            className="card-topline"
-            style={{ textAlign: "center" }}
-          >
-            Forms
-          </ProfileCardHead>
-          <ProfileCardBody style={{ textAlign: "center" }}>
-            {profile.is_teacher ? (
-              <Button
-                onClick={createForm}
-                title={forms.length > 0 ? `New Assessment` : `Add Assessment`}
-              />
-            ) : null}
-            <br />
-            <br />
+    <ProfileContent
+      style={
+        profile.is_teacher
+          ? { width: "100%", marginBottom: "75px" }
+          : profile.subscription &&
+            profile.subscription.state.toString() === "1"
+          ? { width: "100%", marginBottom: "75px" }
+          : {
+              width: "100%",
+              marginBottom: "75px",
+              pointerEvents: "none",
+              cursor: "help",
+            }
+      }
+      onClick={
+        profile.is_teacher
+          ? null
+          : profile.subscription &&
+            profile.subscription.state.toString() === "1"
+          ? null
+          : handleModal
+      }
+    >
+      <WizardCard>
+        <ProfileCardHead
+          className="card-topline"
+          style={{ textAlign: "center" }}
+        >
+          Forms
+        </ProfileCardHead>
+        <ProfileCardBody style={{ textAlign: "center" }}>
+          {profile.is_teacher ? (
+            <Button
+              onClick={createForm}
+              title={forms.length > 0 ? `New Assessment` : `Add Assessment`}
+            />
+          ) : null}
+          <br />
+          <br />
 
-            {all_forms === null ? <LoadingIndicator /> : null}
-            {all_forms !== null &&
-              all_forms.map((subject_cat, _i) => {
-                return (
-                  <div key={_i}>
-                    <h4 style={{ float: "left", color: "#652e8d" }}>
-                      {subject_cat.subject} ({subject_cat.class})
-                    </h4>
-                    <br />
-                    <br />
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {subject_cat.forms.length > 0 ? (
-                        <>
-                          {subject_cat.forms
-                            .slice(0, more)
-                            .map((singleForm, i) => {
-                              return renderCard(singleForm);
-                            })}
-                          {subject_cat.forms.length > more && (
-                            <Button
-                              style={{ margin: "auto 0" }}
-                              onClick={() => setMore(more + 3)}
-                              title={`View More`}
-                            />
-                          )}
-                        </>
-                      ) : (
-                        <h5>Oops! No Assessments Yet</h5>
-                      )}
-                    </div>
+          {all_forms === null ? <LoadingIndicator /> : null}
+          {all_forms !== null &&
+            all_forms.map((subject_cat, _i) => {
+              return (
+                <div key={_i}>
+                  <h4 style={{ float: "left", color: "#652e8d" }}>
+                    {subject_cat.subject} ({subject_cat.class})
+                  </h4>
+                  <br />
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {subject_cat.forms.length > 0 ? (
+                      <>
+                        {subject_cat.forms
+                          .slice(0, more)
+                          .map((singleForm, i) => {
+                            return renderCard(singleForm);
+                          })}
+                        {subject_cat.forms.length > more && (
+                          <Button
+                            style={{ margin: "auto 0" }}
+                            onClick={() => setMore(more + 3)}
+                            title={`View More`}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <h5>Oops! No Assessments Yet</h5>
+                    )}
                   </div>
-                );
-              })}
-          </ProfileCardBody>
-        </WizardCard>
-      </ProfileContent>
-    </>
+                </div>
+              );
+            })}
+        </ProfileCardBody>
+      </WizardCard>
+    </ProfileContent>
   );
 }
