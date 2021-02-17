@@ -10,7 +10,7 @@ import Button from "components/Button/Button";
 import { Br } from "styles/pages.style";
 import Error500 from "components/Error/Error500";
 import { useAlert } from "react-alert";
-import { WizardCard, WizardLeftSideCard } from "../Dashboard.style";
+import { WizardCard, WizardLeftSideCard, Btn } from "../Dashboard.style";
 import {
   ProfileContent,
   ProfileCardBody,
@@ -20,6 +20,7 @@ import { formTokenConfig } from "utils/axios";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "contexts/auth/auth.context";
 import { slugify } from "utils";
+import { apiErrorHandler } from "utils";
 
 export default function Session(props) {
   const {
@@ -120,7 +121,7 @@ export default function Session(props) {
           });
           return acc;
         }, [])
-      : null;
+      : [];
     console.log(docs);
 
     formData.append("topic", selectedTopic ? selectedTopic.id : null);
@@ -157,11 +158,17 @@ export default function Session(props) {
               forum: results.data.id,
             });
           });
-        setInitialValues(res.data);
+        setInitialValues({
+          description: "",
+          notes: null,
+          name: "",
+          is_video_link: false,
+          video_url: "",
+          documents: [],
+        });
         setActiveSession(res.data);
         alert.success(`Lesson Created Successfully ✔`);
-        setEditting(true);
-        setInitialValues(res.data);
+        setEditting(false);
         addObjectToLocalStorageObject("darasa_session_profile", res.data);
         setSubmitting(false);
         setLoading(false);
@@ -258,6 +265,20 @@ export default function Session(props) {
         setLoading(false);
       });
   };
+  const deleteSession = (s) => {
+    axiosInstance
+      .delete(`/curriculum/session/${s.id}/`)
+      .then((res) => {
+        let qs = allSessions;
+        qs.splice(allSessions.indexOf(s), 1);
+        setAllSessions(qs);
+        alert.info(`${res.data.name} Deleted`);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        alert.error(`${apiErrorHandler(err)}`);
+      });
+  };
 
   if (error) {
     return <Error500 err={error} />;
@@ -272,12 +293,42 @@ export default function Session(props) {
                 <WizardCard style={{ minHeight: 0 }}>
                   <ProfileCardHead className="card-topline">
                     {i + 1}.{" "}
-                    <header
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleViewLesson(sess)}
-                    >
-                      {sess.name} ~ {sess.video_url}
+                    <header>
+                      {sess.name} - {sess.video_url}
                     </header>
+                    <Btn
+                      style={{
+                        background: "#ef592b",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => {
+                        setInitialValues({ ...sess });
+                        setEditting(true);
+                      }}
+                      title="Edit"
+                    />
+                    <Btn
+                      style={{
+                        background: "#e90b0bbf",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => deleteSession(sess)}
+                      title="Delete"
+                    />
+                    <Btn
+                      style={{
+                        background: "##652e8d",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => handleViewLesson(sess)}
+                      title="View Lesson"
+                    />
                   </ProfileCardHead>
                 </WizardCard>
               </ProfileContent>
@@ -288,6 +339,7 @@ export default function Session(props) {
         <Formik
           initialValues={initialValues}
           validationSchema={sessionValidationSchema}
+          enableReinitialize
           onSubmit={editting ? onChangeSubmit : onAddSubmit}
         >
           {(formik) => {
@@ -296,7 +348,7 @@ export default function Session(props) {
                 <WizardLeftSideCard>
                   <WizardCard>
                     <ProfileCardHead className="card-topline">
-                      <header>Add Video URL/ Link For your lesson</header>
+                      <header>Add Video URL/Link For your lesson</header>
                     </ProfileCardHead>
                     <ProfileCardBody>
                       <FormikControl
