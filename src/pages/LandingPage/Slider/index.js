@@ -64,7 +64,7 @@ function Slider() {
         <div>
           Darasa is the first of its kind in Kenya!
           <br />
-          You deserve high-quility, affordable and easily accessible education
+          You deserve high-quality, affordable and easily accessible education
           <br /> to help you maximize your academic achievement <br />
           and be the very best you can be as you journey towards
           <br /> the future that awaits you beyond school.
