@@ -5,41 +5,41 @@ import Footer from "components/Footer/Footer";
 //import { Mail } from "components/AllSvgIcon";
 
 //
-// import SocialFooterComponent from "./social_component";
-// const socialLinksAndNames = [
-//   {
-//     name: "facebook",
-//     url: "https://www.facebook.com/",
-//   },
-//   {
-//     name: "twitter",
-//     url: "https://www.twitter.com/",
-//   },
-//   {
-//     name: "instagram",
-//     url: "https://www.instagram.com/",
-//   },
-//   {
-//     name: "tiktok",
-//     url: "https://www.tiktok.com/",
-//   },
-//   {
-//     name: "tiktok",
-//     url: "https://www.tiktok.com/",
-//   },
-//   {
-//     name: "pintrest",
-//     url: "https://www.pintrest.com/",
-//   },
-//   {
-//     name: "youtube",
-//     url: "https://www.youtube.com/",
-//   },
-//   {
-//     name: "linkedin",
-//     url: "https://www.linkedin.com/",
-//   },
-// ];
+import SocialFooterComponent from "./social_component";
+const socialLinksAndNames = [
+  {
+    name: "facebook",
+    url: "https://www.facebook.com/",
+  },
+  {
+    name: "twitter",
+    url: "https://www.twitter.com/",
+  },
+  {
+    name: "instagram",
+    url: "https://www.instagram.com/",
+  },
+  {
+    name: "tiktok",
+    url: "https://www.tiktok.com/",
+  },
+  {
+    name: "tiktok",
+    url: "https://www.tiktok.com/",
+  },
+  {
+    name: "pintrest",
+    url: "https://www.pintrest.com/",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/",
+  },
+  {
+    name: "linkedin",
+    url: "https://www.linkedin.com/",
+  },
+];
 
 export default function FooterContainer() {
   return (
@@ -170,13 +170,11 @@ export default function FooterContainer() {
           <h5 style={{ color: "yellow" }}> Contact Information</h5>
           <p>Info@darasa.co.ke</p>
           <p>+254202022002</p>
-          <p> Karen ,Nairobi</p>
+          <p> Nairobi</p>
           <h5 style={{ color: "yellow" }}> Follow Us</h5>
-          {/* <div style={{ display: "flex", justifyContent: "center" }}>
-            {socialLinksAndNames.map((link) => (
-              <SocialFooterComponent url={link.url} name={link.name} />
-            ))}
-          </div> */}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <SocialFooterComponent />
+          </div>
         </div>
       </Footer>
       <Footer
@@ -204,19 +202,19 @@ export default function FooterContainer() {
                   <small>HOME</small>
                 </Footer.Link>
 
-                <Footer.Link href="#">
+                {/* <Footer.Link href="#">
                   <small>TUITION</small>
-                </Footer.Link>
-                <Footer.Link href="#">
+                </Footer.Link> */}
+                {/* <Footer.Link href="#">
                   <small>CLASSES</small>
-                </Footer.Link>
+                </Footer.Link> */}
                 <Footer.Link href="#">
                   <small>LIBRARY</small>
                 </Footer.Link>
-                <Footer.Link href="#">
+                <Footer.Link href="">
                   <small>BECOME A TEACHER</small>
                 </Footer.Link>
-                <Footer.Link href="#">
+                <Footer.Link href="/contact">
                   <small>CONTACT</small>
                 </Footer.Link>
               </div>

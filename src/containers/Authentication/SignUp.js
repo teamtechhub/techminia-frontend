@@ -175,7 +175,7 @@ export default function SignOutModal() {
     });
     history.push("/auth");
   };
-  const handlePhoneConfirm = () => {
+  const handlePhoneConfirm = async () => {
     console.log("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, phoneValues)
@@ -190,7 +190,7 @@ export default function SignOutModal() {
       });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log("login values", loginValues);
     axiosInstance
       .post(`/auth/login/`, loginValues)
@@ -225,7 +225,6 @@ export default function SignOutModal() {
           .then(async (r) => {
             let auth_profile = r.data;
             addObjectToLocalStorageObject("darasa_auth_profile", auth_profile);
-            alert.success("Redirecting ...");
             authDispatch({
               type: "SIGNUP_SUCCESS",
             });
@@ -236,7 +235,7 @@ export default function SignOutModal() {
                 profile: auth_profile,
               },
             });
-            history.push("/dashboard");
+
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("response", r);
           });
@@ -255,11 +254,13 @@ export default function SignOutModal() {
     window.confirmationResult = confirmationResult;
     confirmationResult
       .confirm(code)
-      .then((result) => {
+      .then(async (result) => {
         console.log("result after successful otp confirm: ", result);
-        handlePhoneConfirm();
+        await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
+        alert.success("Account created , now you can login");
+        history.push("/dashboard");
       })
       .catch((error) => {
         console.log("error on otp submit: ", error);
@@ -270,7 +271,6 @@ export default function SignOutModal() {
         }
         setSubmitting(false);
         setValidating(false);
-        setRedirecting(true);
       });
   };
 

@@ -9,7 +9,8 @@ export const SETTINGS = "/dashboard/profile";
 // export const BASE_URL = process.env.API_URL || "http://127.0.0.1:8000";
 
 //Todo  configure environment variable to app url.
-export const BASE_URL = "https://darasa-mvp.herokuapp.com";
+export const BASE_URL = "http://localhost:8000";
+// export const BASE_URL = "https://darasa-mvp.herokuapp.com";
 
 export const CURRENCY = "Ksh.";
 

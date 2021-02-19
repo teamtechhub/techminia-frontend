@@ -165,8 +165,8 @@ export default function Video(props) {
       <VideoPlayer
         role="region"
         tabIndex="-1"
-        className="player-wrapper"
-        // style={{ height: "100%" }}
+        className="player-wrapper "
+        style={{ height: "60vh", width: "100%" }}
         // style="padding-top: 42.5781%;"
       >
         <ReactPlayer

@@ -7,57 +7,49 @@ import youtube from "../../images/home_page/social-icons/youtube.png";
 import linkedin from "../../images/home_page/social-icons/linkedin.png";
 import instagram from "../../images/home_page/social-icons/instagram.png";
 
-function getIconUrlFromName(name) {
-  let icon;
-  switch (name) {
-    case "facebook":
-      icon = "../../images/home_page/social-icons/facebook.png";
-      break;
+let socialIcons = [
+  {
+    socialIcon: facebook,
+    link: "",
+  },
+  {
+    socialIcon: tiktok,
+    link: "",
+  },
+  {
+    socialIcon: twitter,
+    link: "",
+  },
+  {
+    socialIcon: youtube,
+    link: "",
+  },
+  {
+    socialIcon: linkedin,
+    link: "",
+  },
+  {
+    socialIcon: instagram,
+    link: "",
+  },
+  {
+    socialIcon: pintrest,
+    link: "",
+  },
+];
 
-    case "twitter":
-      icon = "../../images/home_page/social-icons/twitter.png";
-      break;
-
-    case "whatsapp":
-      icon = "../../images/home_page/social-icons/whatsapp.png";
-      break;
-
-    case "tiktok":
-      icon = "../../images/home_page/social-icons/tiktok.png";
-      break;
-    case "youtube":
-      icon = "../../images/home_page/social-icons/youtube.png";
-      break;
-
-    case "pintrest":
-      icon = "../../images/home_page/social-icons/pintrest.png";
-      break;
-
-    case "instagram":
-      icon = "../../images/home_page/social-icons/instagram.png";
-      break;
-
-    case "linkedin":
-      icon = "../../images/home_page/social-icons/linkedin.png";
-      break;
-
-    default:
-      break;
-  }
-  return icon;
-}
-
-const SocialFooterComponent = (url, name) => {
-  let icon = getIconUrlFromName(name);
+const SocialFooterComponent = () => {
   return (
-    <div>
-      <a target="_blank" href="www.facebook.com" rel="noreferrer">
-        <img
-          src={icon}
-          alt={`unable to load the ${name} icon `}
-          className="h-7 w-10 p-2 "
-        />
-      </a>
+    <div className="flex">
+      {socialIcons.map((icon) => (
+        <a target="_blank" href="http://google.com">
+          <img
+            src={icon.socialIcon}
+            alt={`unable to load the icon `}
+            className="h-10 w-10 p-2 "
+          />
+        </a>
+      ))}
     </div>
   );
 };

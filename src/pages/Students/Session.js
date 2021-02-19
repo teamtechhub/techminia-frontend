@@ -472,7 +472,7 @@ export default function Session({ className, view }) {
                 <ProfileCard>
                   <ProfileCardHead className="card-topline">
                     <header>
-                      {subject.name} ~ {cls.name} by {teacher.name}
+                      {subject.name} ~ {cls.name}
                     </header>
                     {profile.is_teacher &&
                     profile.extended_profile.id === teacher.id ? (
@@ -490,7 +490,11 @@ export default function Session({ className, view }) {
                   </ProfileCardHead>
                   <ProfileCardBody>
                     {/* <img src={session.video_url} alt="tuition" /> */}
-                    <Video url={session.video_url} playercontrols={false} />
+                    <Video
+                      url={session.video_url}
+                      playercontrols={false}
+                      className=" h-96 w-2/3"
+                    />
                   </ProfileCardBody>
                 </ProfileCard>
               </ProfileContent>
