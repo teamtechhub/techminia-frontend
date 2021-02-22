@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import LandingPage from "pages/LandingPage/LandingPage";
 import TermsPage from "pages/TermsConditions/TermsPage";
+import ComingSoon from "pages/coming/coming-soon";
 import PrivacyPage from "pages/TermsConditions/PrivacyPage";
 import NotFound from "pages/NotFound";
 import ColorPicker from "theme/ColorPage";
@@ -24,6 +25,9 @@ const PublicRoutes = ({ deviceType }) => (
       </Route>
       <Route exact path={`/contact-us`}>
         <Contact deviceType={deviceType} />
+      </Route>
+      <Route exact path={`/coming-soon`}>
+        <ComingSoon deviceType={deviceType} />
       </Route>
       <Route
         exact

@@ -15,8 +15,8 @@ function LandingPage({ deviceType }) {
       <Site>
         {/* <Services /> */}
 
-        <About />
-        <PaymentPlan />
+        <About deviceType={deviceType} />
+        <PaymentPlan deviceType={deviceType} />
         <VideoCarousel deviceType={deviceType} />
       </Site>
       <FooterContainer />

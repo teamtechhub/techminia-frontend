@@ -93,6 +93,38 @@ const videos = [
   },
 ];
 
+const sampleVideos = [
+  {
+    title: "Pyramid of Numbers",
+    class: "Form Three Biology",
+    video_url: "https://youtu.be/Zj9SgGIJk-U",
+    placeholder: tuit,
+  },
+  {
+    title: "States Of Matter",
+    class: "Form One Chemistry",
+    video_url: "https://youtu.be/apF2rfFnUqY",
+    placeholder: tuit,
+  },
+  {
+    title: "Symbiosis",
+    class: "Form Three Biology",
+    video_url: "https://youtu.be/j-wXKjpIr1w",
+    placeholder: tuit,
+  },
+  {
+    title: "Ecology",
+    class: "Form Three Biology",
+    video_url: "https://youtu.be/NTuLYXQMnQE",
+    placeholder: tuit,
+  },
+  {
+    title: "Form One Physics",
+    class: "Pressure",
+    video_url: "https://youtu.be/51Frb55m66Y",
+    placeholder: tuit,
+  },
+];
 function VideoCarousel({ deviceType }) {
   const history = useHistory();
   const {
@@ -126,9 +158,9 @@ function VideoCarousel({ deviceType }) {
       <Wrapper>
         <Carousel
           deviceType={deviceType}
-          autoPlay={false}
+          autoPlay={true}
           infinite={true}
-          data={videos}
+          data={sampleVideos}
           component={(video, idx) => (
             <Fade key={idx} bottom duration={800} delay={idx * 100}>
               <Video onClick={() => selectVideo(video)}>

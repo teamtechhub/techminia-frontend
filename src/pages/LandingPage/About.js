@@ -2,8 +2,13 @@ import animvid from "images/animated_videos.png";
 import elib from "images/e-library.png";
 import perlearn from "images/person_learning.png";
 import tutexp from "images/tution_experts.png";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Fade from "react-reveal/Fade";
+import { AuthContext } from "contexts/auth/auth.context";
+import { useHistory } from "react-router-dom";
+import { openModal, closeModal } from "@redq/reuse-modal";
+import AuthenticationForm from "containers/Authentication/Form";
+
 import { animated, useSpring } from "react-spring";
 import {
   CardBody,
@@ -147,7 +152,57 @@ function Image({ ratio, src }) {
     </ImageContainer>
   );
 }
-function About() {
+
+function About({ deviceType }) {
+  const history = useHistory();
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = useContext(AuthContext);
+
+  const handleJoin = () => {
+    authDispatch({
+      type: "SIGNIN",
+    });
+
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: false,
+      component: AuthenticationForm,
+      componentProps: { deviceType, closeModal },
+      closeComponent: "div",
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
+  function cardNavigation(index, isAuthenticated) {
+    switch (index) {
+      case 0:
+        isAuthenticated ? history.push("/dashboard/classes") : handleJoin();
+        break;
+      case 1:
+        isAuthenticated
+          ? history.push("/dashboard/classes")
+          : console.log("to push the auth popup");
+        break;
+      case 2:
+        history.push("/coming-soon");
+        break;
+      case 3:
+        history.push("/coming-soon");
+        break;
+
+      default:
+        break;
+    }
+  }
   return (
     <Container>
       <AreaHeading>
@@ -159,6 +214,7 @@ function About() {
           {cards.map((card, index) => (
             <Fade key={index} bottom duration={800} delay={index * 100}>
               <Column
+                onClick={() => cardNavigation(index, isAuthenticated)}
                 style={{
                   height: "100%",
                   display: "flex",

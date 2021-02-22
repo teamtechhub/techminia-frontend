@@ -28,7 +28,7 @@ import {
   Wrapper,
 } from "./SignInOutForm.style";
 import { signupValidationSchema } from "./validation.schema";
-import signupImg from "images/signup.jpg";
+import signupImg from "images/signup.png";
 import studentsignup from "images/studentsignup.jpg";
 import { tokenConfig } from "utils/axios";
 import LoadingIndicator from "components/LoadingIndicator";
@@ -235,6 +235,7 @@ export default function SignOutModal() {
                 profile: auth_profile,
               },
             });
+            //redirect to dashboard
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("response", r);
@@ -366,11 +367,13 @@ export default function SignOutModal() {
   return (
     <Wrapper>
       {switchTab ? (
-        <div style={{ display: "block", margin: "5px" }}>
-          <h5 style={{ color: "#f1592a" }}>
-            Hey there, I'm <strong style={{ color: "#652e8d" }}>Arif</strong>
-          </h5>
-          <h6 style={{ color: "#f1592a" }}>here to help.</h6>
+        <div style={{ display: "block", margin: "5px" }} className="h-full">
+          <div className="mb-5 mt-5 space-y-1">
+            <h5 style={{ color: "#f1592a" }}>
+              Hey there, I'm <strong style={{ color: "#652e8d" }}>Arif</strong>
+            </h5>
+            <h6 style={{ color: "#f1592a" }}>here to help.</h6>
+          </div>
 
           <div>
             <img src={signupImg} alt="signup" />

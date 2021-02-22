@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "components/Button/Button";
 import { AuthContext } from "contexts/auth/auth.context";
-import signupImg from "images/signup.jpg";
+import signupImg from "images/signup.png";
 
 export default function PaymentModal() {
   const history = useHistory();

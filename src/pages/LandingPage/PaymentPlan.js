@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   A,
   Amount,
@@ -12,6 +12,10 @@ import {
 } from "./PaymentPlan.style";
 import { AreaHeading } from "./LandingPage.style";
 import Fade from "react-reveal/Fade";
+import { AuthContext } from "contexts/auth/auth.context";
+import { useHistory } from "react-router-dom";
+import { openModal, closeModal } from "@redq/reuse-modal";
+import AuthenticationForm from "containers/Authentication/Form";
 
 const cards = [
   {
@@ -36,7 +40,38 @@ const cards = [
     color: "#ef5927",
   },
 ];
-function PaymentPlan() {
+function PaymentPlan(deviceType) {
+  const history = useHistory();
+  const {
+    authState: { isAuthenticated },
+    authDispatch,
+  } = useContext(AuthContext);
+
+  const handleJoin = () => {
+    authDispatch({
+      type: "SIGNIN",
+    });
+
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: false,
+      component: AuthenticationForm,
+      componentProps: { deviceType, closeModal },
+      closeComponent: "div",
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
+  function navigateToPaymentPage() {
+    isAuthenticated ? history.replace(`/dashboard/payment`) : handleJoin();
+  }
   return (
     <Container>
       <AreaHeading>
@@ -48,6 +83,7 @@ function PaymentPlan() {
           {cards.map((card, index) => (
             <Fade key={index} bottom duration={800} delay={index * 100}>
               <Column
+                onClick={navigateToPaymentPage}
                 style={{
                   height: "100%",
                   display: "flex",
