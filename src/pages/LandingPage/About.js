@@ -188,9 +188,7 @@ function About({ deviceType }) {
         isAuthenticated ? history.push("/dashboard/classes") : handleJoin();
         break;
       case 1:
-        isAuthenticated
-          ? history.push("/dashboard/classes")
-          : console.log("to push the auth popup");
+        isAuthenticated ? history.push("/dashboard/classes") : handleJoin();
         break;
       case 2:
         history.replace("/coming-soon");

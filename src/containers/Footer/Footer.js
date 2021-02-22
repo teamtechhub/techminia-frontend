@@ -7,40 +7,40 @@ import { Link } from "react-router-dom";
 
 //
 import SocialFooterComponent from "./social_component";
-const socialLinksAndNames = [
-  {
-    name: "facebook",
-    url: "https://www.facebook.com/",
-  },
-  {
-    name: "twitter",
-    url: "https://www.twitter.com/",
-  },
-  {
-    name: "instagram",
-    url: "https://www.instagram.com/",
-  },
-  {
-    name: "tiktok",
-    url: "https://www.tiktok.com/",
-  },
-  {
-    name: "tiktok",
-    url: "https://www.tiktok.com/",
-  },
-  {
-    name: "pintrest",
-    url: "https://www.pintrest.com/",
-  },
-  {
-    name: "youtube",
-    url: "https://www.youtube.com/",
-  },
-  {
-    name: "linkedin",
-    url: "https://www.linkedin.com/",
-  },
-];
+// const socialLinksAndNames = [
+//   {
+//     name: "facebook",
+//     url: "https://www.facebook.com/",
+//   },
+//   {
+//     name: "twitter",
+//     url: "https://www.twitter.com/",
+//   },
+//   {
+//     name: "instagram",
+//     url: "https://www.instagram.com/",
+//   },
+//   {
+//     name: "tiktok",
+//     url: "https://www.tiktok.com/",
+//   },
+//   {
+//     name: "tiktok",
+//     url: "https://www.tiktok.com/",
+//   },
+//   {
+//     name: "pintrest",
+//     url: "https://www.pintrest.com/",
+//   },
+//   {
+//     name: "youtube",
+//     url: "https://www.youtube.com/",
+//   },
+//   {
+//     name: "linkedin",
+//     url: "https://www.linkedin.com/",
+//   },
+// ];
 
 export default function FooterContainer() {
   return (
