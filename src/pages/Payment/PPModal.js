@@ -1,10 +1,13 @@
 import React from "react";
 
 export default function PPModal(props) {
-  console.log(props);
   const { text, subtext } = props;
   return (
-    <div>
+    <div
+      style={{
+        textAlign: "center",
+      }}
+    >
       {text}
       <br />
       {subtext}

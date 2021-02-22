@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import {
   Col2,
   CourseTitle,
@@ -16,9 +16,14 @@ import { CardWrapper, Row } from "pages/Students/Students.style";
 import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AuthContext } from "contexts/auth/auth.context";
 
 export default function TeacherClassses({ setView }) {
   const history = useHistory();
+  const {
+    authState: { profile },
+  } = useContext(AuthContext);
+
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(false);
   const [subjects, setSubjects] = useState(false);
@@ -83,13 +88,14 @@ export default function TeacherClassses({ setView }) {
   return (
     <>
       <CardWrapper>
-        <Button
-          onClick={() => {
-            setView(false);
-          }}
-          style={{ float: "right", margin: "5px" }}
-          title={`Add Lessons`}
-        />
+        {profile.is_teacher && profile.extended_profile.is_darasa_teacher ? (
+          <Button
+            onClick={() => setView(false)}
+            style={{ float: "right", margin: "5px" }}
+            title={`Add Lessons`}
+          />
+        ) : null}
+
         <br />
         {classes && selectedTeacher
           ? classes

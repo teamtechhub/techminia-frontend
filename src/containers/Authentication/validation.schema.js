@@ -61,11 +61,11 @@ export const signupValidationSchema = (is_teacher) => {
           document_id: Yup.string()
             .min(6, "Document Number is short")
             .required("Required"),
-          tsc_id: Yup.string().required("Required"),
+          // tsc_id: Yup.string().required("Required"),
         })
       : Yup.object({
           class_level: Yup.string().required("Required"),
-          student_id: Yup.string().required("Required"),
+          // student_id: Yup.string().required("Required"),
         }),
   });
 };

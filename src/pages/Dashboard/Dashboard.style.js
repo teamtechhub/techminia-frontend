@@ -52,18 +52,16 @@ export const Button = styled(Buttons)`
     margin-bottom: 10px;
   }
 `;
-
-export const Wrapper = styled.div`
-  text-align: center;
-  background-color: #ffffff;
-`;
-
 export const Btn = styled(Buttons)`
-  &: hover :{
-    transform:translateY(-3px);
+  &:hover : {
+    transform: translateY(-3px);
     box-shadow: 0 1rem 2rem rgb(0 0 0 / 20%);
   }
   transition: all 0.2s;
+`;
+export const Wrapper = styled.div`
+  text-align: center;
+  background-color: #ffffff;
 `;
 
 export const Container = styled.div`

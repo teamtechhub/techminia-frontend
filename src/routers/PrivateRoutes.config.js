@@ -9,6 +9,7 @@ import Common from "pages/Common/Common";
 import Classes from "pages/Students/Classes";
 import DarasaForms from "containers/DarasaForms";
 import Payment from "pages/Payment/Payment";
+import Forums from "containers/Forums";
 
 export {
   Dashboard,
@@ -21,4 +22,5 @@ export {
   Classes,
   DarasaForms,
   Payment,
+  Forums,
 };

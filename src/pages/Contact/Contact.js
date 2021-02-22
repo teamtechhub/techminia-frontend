@@ -7,8 +7,10 @@ import { Site } from "pages/LandingPage/LandingPage.style";
 export default function Contact() {
   return (
     <>
-      {/* <Portfolio /> */}
-      <Subscribe />
+      <Site style={{ marginTop: "50px" }}>
+        {/* <Portfolio /> */}
+        <Subscribe />
+      </Site>
 
       <FooterContainer />
     </>

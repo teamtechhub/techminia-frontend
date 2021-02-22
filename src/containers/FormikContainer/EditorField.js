@@ -24,6 +24,7 @@ function EditorField({
   wrapperClassName,
   toolbarClassName,
   editorClassName,
+  ...rest
 }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
@@ -47,6 +48,11 @@ function EditorField({
     }
   }, [field.value, form.dirty]);
 
+  const isValidLength = (contentState) => {
+    const maxLength = rest.maxLength || 1000;
+    return contentState.getPlainText("").length <= maxLength;
+  };
+
   function onEditorStateChange(editorState) {
     setEditorState(editorState);
     form.setFieldValue(
@@ -66,7 +72,7 @@ function EditorField({
         editorState.getSelection(),
         new List(contentBlock.contentBlocks)
       );
-      if (!this.isValidLength(contentState)) {
+      if (!isValidLength(contentState)) {
         return "handled";
       }
       onChange(
@@ -81,7 +87,7 @@ function EditorField({
       text,
       editorState.getCurrentInlineStyle()
     );
-    if (!this.isValidLength(newState)) {
+    if (!isValidLength(newState)) {
       return "handled";
     }
     onChange(EditorState.push(editorState, newState, "insert-characters"));

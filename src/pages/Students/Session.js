@@ -246,10 +246,9 @@ export default function Session({ className, view }) {
           : { pointerEvents: "none", cursor: "help" }
       }
       onClick={
-        profile.is_teacher
-          ? null
-          : profile.subscription &&
-            profile.subscription.state.toString() === "1"
+        profile.is_student &&
+        profile.subscription &&
+        profile.subscription.state.toString() === "1"
           ? null
           : handleModal
       }
@@ -472,7 +471,7 @@ export default function Session({ className, view }) {
                 <ProfileCard>
                   <ProfileCardHead className="card-topline">
                     <header>
-                      {subject.name} ~ {cls.name}
+                      {subject.name} ~ {cls.name} by {teacher.name}
                     </header>
                     {profile.is_teacher &&
                     profile.extended_profile.id === teacher.id ? (
@@ -490,11 +489,7 @@ export default function Session({ className, view }) {
                   </ProfileCardHead>
                   <ProfileCardBody>
                     {/* <img src={session.video_url} alt="tuition" /> */}
-                    <Video
-                      url={session.video_url}
-                      playercontrols={false}
-                      className=" h-96 w-2/3"
-                    />
+                    <Video url={session.video_url} playercontrols={false} />
                   </ProfileCardBody>
                 </ProfileCard>
               </ProfileContent>

@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
   text-align: center;
   background-color: ${themeGet("colors.white", "#ffffff")};
   margin: auto;
-  margin-top: 5px;
 `;
 
 export const Container = styled.div`

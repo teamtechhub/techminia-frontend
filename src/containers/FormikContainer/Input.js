@@ -34,6 +34,7 @@ function Input(props) {
           {({ form, field }) => {
             const { setFieldValue } = form;
             const { value } = field;
+            console.log(field, form);
             return (
               <Uploader
                 id={name}

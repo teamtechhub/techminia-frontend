@@ -28,6 +28,7 @@ import {
   ProfileListText,
 } from "pages/Profile/Profile.style";
 import moment from "moment";
+import { BASE_WEBSOCKET_URL } from "constants/constants";
 
 const cards = [
   {
@@ -36,7 +37,7 @@ const cards = [
     price: 999,
     name: "Basic",
     save: 0,
-    mpesa_amount: 999,
+    mpesa_amount: 1,
     color: "#ac3581",
   },
   {
@@ -45,7 +46,7 @@ const cards = [
     price: 5000,
     name: "Plus",
     save: 1000,
-    mpesa_amount: 5000,
+    mpesa_amount: 2,
     color: "#ed145b",
   },
   {
@@ -54,7 +55,7 @@ const cards = [
     price: 10000,
     name: "Pro",
     save: 2000,
-    mpesa_amount: 10000,
+    mpesa_amount: 3,
     color: "#ef5927",
   },
 ];
@@ -68,11 +69,12 @@ export default function Payment() {
   const [selectedContact, setSelectedContact] = useState();
   const [plan, setPlan] = useState();
   const alert = useAlert();
-  console.log(profile);
 
   const newConnection = (transaction_id) => {
     const mpesaSocket = new WebSocket(
-      `ws://127.0.0.1:8000/mpesa/${transaction_id ? transaction_id + "/" : ""}`
+      `${BASE_WEBSOCKET_URL}/mpesa/${
+        transaction_id ? transaction_id + "/" : ""
+      }`
     );
 
     mpesaSocket.onmessage = function (e) {
@@ -306,7 +308,7 @@ export default function Payment() {
                             paddingLeft: "15px",
                             paddingRight: "15px",
                           }}
-                          disabled={plan & selectedContact}
+                          disabled={!plan || !selectedContact}
                         />
                       </ProfileCardBody>
                     </WizardCard>

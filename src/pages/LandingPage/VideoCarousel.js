@@ -158,7 +158,7 @@ function VideoCarousel({ deviceType }) {
       <Wrapper>
         <Carousel
           deviceType={deviceType}
-          autoPlay={true}
+          autoPlay={false}
           infinite={true}
           data={sampleVideos}
           component={(video, idx) => (

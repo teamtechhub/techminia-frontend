@@ -7,6 +7,7 @@ import CheckboxGroup from "./CheckboxGroup";
 import CustomDatePicker from "./DatePicker";
 import ToggleSwitch from "./Switch";
 import Color from "./Color";
+import ContentEditor from "./ContentEditor";
 
 function FormikControl(props) {
   const { control, ...rest } = props;
@@ -27,6 +28,8 @@ function FormikControl(props) {
       return <ToggleSwitch {...rest} />;
     case "date":
       return <CustomDatePicker {...rest} />;
+    case "content":
+      return <ContentEditor {...rest} />;
     default:
       return null;
   }

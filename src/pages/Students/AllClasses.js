@@ -12,8 +12,8 @@ import {
   Title,
 } from "./Students.style";
 import { animated } from "react-spring";
-import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
+import LoadingIndicator from "components/LoadingIndicator";
 
 function AllClasses() {
   const history = useHistory();
@@ -109,6 +109,7 @@ function AllClasses() {
           />
         ))}
         <br />
+        {!classes && <LoadingIndicator />}
         {classes &&
           selectedTitle &&
           classes

@@ -13,10 +13,10 @@ export const Text = styled.span`
 export const VideoPlayer = styled.div`
   width: 100%;
   max-width: 100%;
-  .player-wrapper {
-    width: 480px;
-    height: 270px;
-  }
+  // .player-wrapper {
+  //   width: 480px;
+  //   height: 270px;
+  // }
 
   display: block;
   vertical-align: top;
@@ -31,6 +31,10 @@ export const VideoPlayer = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  iframe {
+    width: 100%;
+    height: inherit;
+  }
 `;
 
 export const ControlBar = styled.div`

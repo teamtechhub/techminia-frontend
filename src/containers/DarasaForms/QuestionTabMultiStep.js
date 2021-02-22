@@ -219,6 +219,10 @@ export default function QuestionTabWizard({ form }) {
                     <QuestionInfoContainer>
                       <QuestionInfoCategory>
                         <QCTitle>
+                          <h5>
+                            {form.class_names} {form.subject_names}
+                          </h5>
+                          <br />
                           {handleAnswerCheck(ques) ? (
                             <h6>Wow! You've nailed it</h6>
                           ) : answerArray(ques).length > 0 ? (
@@ -226,6 +230,7 @@ export default function QuestionTabWizard({ form }) {
                           ) : null}
                         </QCTitle>
                       </QuestionInfoCategory>
+                      <QuestionInfo>By {form.teacher}</QuestionInfo>
                     </QuestionInfoContainer>
                   </QuestionHeader>
                   <Answers>
@@ -312,13 +317,12 @@ export default function QuestionTabWizard({ form }) {
                           <QCIcon />
                         </QuestionInfoCategoryIcon>
                         <QCTitle>
-                          <h3>
-                            {form.class_names}
-                            {form.subject_names}
-                          </h3>
+                          <h5>
+                            {form.class_names} {form.subject_names}
+                          </h5>
                         </QCTitle>
                       </QuestionInfoCategory>
-                      <QuestionInfo>By Teacher: ...</QuestionInfo>
+                      <QuestionInfo>By {form.teacher}</QuestionInfo>
                     </QuestionInfoContainer>
                   </QuestionHeader>
                   {ques.background_image ? (

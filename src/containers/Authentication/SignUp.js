@@ -1,4 +1,5 @@
 import Error500 from "components/Error/Error500";
+import LoadingIndicator from "components/LoadingIndicator";
 import { TERMS_CONDITIONS } from "constants/routes.constants";
 import FormikControl from "containers/FormikContainer/FormikControl";
 import StepWizard from "containers/Multistep/Multistep";
@@ -8,7 +9,6 @@ import "firebase/auth";
 import { Form, Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-
 import {
   addArrayToLocalStorage,
   addObjectToLocalStorageObject,
@@ -28,10 +28,9 @@ import {
   Wrapper,
 } from "./SignInOutForm.style";
 import { signupValidationSchema } from "./validation.schema";
-import signupImg from "images/signup.png";
+import signupImg from "images/signup.jpg";
 import studentsignup from "images/studentsignup.jpg";
 import { tokenConfig } from "utils/axios";
-import LoadingIndicator from "components/LoadingIndicator";
 
 export default function SignOutModal() {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -43,8 +42,8 @@ export default function SignOutModal() {
   const [phoneValues, setPhoneValues] = useState({});
   const [validating, setValidating] = useState(Boolean());
   const [confirmationResult, setConfirmationResult] = useState({});
-  const [redirecting, setRedirecting] = useState(false);
   const [isTeacher, setIsTeacher] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [switchTab, setSwitchTab] = useState(true);
   const [classes, setClasses] = useState([]);
@@ -139,13 +138,13 @@ export default function SignOutModal() {
     extended_user: isTeacher
       ? {
           document_id: "",
-          tsc_id: "",
+          // tsc_id: "",
           honorofic_title: "",
         }
       : {
           // hobbies: [],
           class_level: "",
-          student_id: "",
+          // student_id: "",
         },
   };
   const otpInitialValues = {
@@ -175,7 +174,7 @@ export default function SignOutModal() {
     });
     history.push("/auth");
   };
-  const handlePhoneConfirm = async () => {
+  const handlePhoneConfirm = () => {
     console.log("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, phoneValues)
@@ -183,7 +182,7 @@ export default function SignOutModal() {
         console.log("phone confirm res", res);
         handleLogin();
 
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       })
       .catch((err) => {
         console.log(err.response);
@@ -226,21 +225,19 @@ export default function SignOutModal() {
             let auth_profile = r.data;
             addObjectToLocalStorageObject("darasa_auth_profile", auth_profile);
             authDispatch({
-              type: "SIGNUP_SUCCESS",
-            });
-            authDispatch({
               type: "UPDATE",
               payload: {
                 ...state,
                 profile: auth_profile,
               },
             });
-            //redirect to dashboard
-            history.push("/dashboard");
-
+            authDispatch({
+              type: "SIGNUP_SUCCESS",
+            });
+            history.push(`/dashboard`);
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log("response", r);
           });
+        console.log("response", res);
       })
       .catch((err) => {
         console.log(err.response);
@@ -261,6 +258,7 @@ export default function SignOutModal() {
         await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
+        // setRedirecting(true);
         alert.success("Account created , now you can login");
       })
       .catch((error) => {
@@ -367,7 +365,10 @@ export default function SignOutModal() {
   return (
     <Wrapper>
       {switchTab ? (
-        <div style={{ display: "block", margin: "5px" }} className="h-full">
+        <div
+          style={{ width: "100%", display: "block", margin: "5px" }}
+          className="h-full"
+        >
           <div className="mb-5 mt-5 space-y-1">
             <h5 style={{ color: "#f1592a" }}>
               Hey there, I'm <strong style={{ color: "#652e8d" }}>Arif</strong>
@@ -375,18 +376,18 @@ export default function SignOutModal() {
             <h6 style={{ color: "#f1592a" }}>here to help.</h6>
           </div>
 
-          <div>
-            <img src={signupImg} alt="signup" />
+          <div style={{ width: "100%" }}>
+            <img style={{ width: "100%" }} src={signupImg} alt="signup" />
           </div>
           <p>Select an option so I can get you started.</p>
           <div style={{ display: "flex", margin: "5px" }}>
             <Button
-              style={{ margin: "15px", width: "100%" }}
+              style={{ margin: "0 5px", width: "100%" }}
               title={`Teacher`}
               onClick={() => history.push(`/auth/teacher`)}
             />
             <Button
-              style={{ margin: "15px", width: "100%" }}
+              style={{ margin: "0 5px", width: "100%" }}
               title={`Student`}
               onClick={() => history.push(`/auth/student`)}
             />
@@ -397,7 +398,7 @@ export default function SignOutModal() {
           {verifyOTP ? (
             redirecting ? (
               <>
-                <h4>Redirecting ...</h4>
+                <h4>Redirecting . . . </h4>
                 <LoadingIndicator />
               </>
             ) : (
@@ -570,12 +571,12 @@ export default function SignOutModal() {
                                     name="extended_user.class_level"
                                     options={classes}
                                   />
-                                  <FormikControl
+                                  {/* <FormikControl
                                     control="input"
                                     type="text"
                                     label="NEMIS Number"
                                     name="extended_user.student_id"
-                                  />
+                                  /> */}
                                 </>
                               )}
                               {isTeacher && (
@@ -592,12 +593,12 @@ export default function SignOutModal() {
                                     label="National Document ID"
                                     name="extended_user.document_id"
                                   />
-                                  <FormikControl
+                                  {/* <FormikControl
                                     control="input"
                                     type="text"
                                     label="TSC Number"
                                     name="extended_user.tsc_id"
-                                  />
+                                  /> */}
                                 </>
                               )}
                               <HelperText style={{ padding: "20px 0 30px" }}>

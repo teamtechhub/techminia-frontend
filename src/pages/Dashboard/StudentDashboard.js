@@ -1,13 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  Col1,
+  // Col1,
   Col2,
   CourseTitle,
   Instructor,
   MGrid,
   Video,
   VideoPreview,
-  VideoTeachers,
+  // VideoTeachers,
   VideoText,
   WatchButton,
   Wrapper,
@@ -18,20 +18,28 @@ import { axiosInstance } from "utils/axios";
 import { CardWrapper, Row } from "pages/Students/Students.style";
 import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
-// import tuit from "images/tuit.png";
+import { openModal } from "@redq/reuse-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VideoCast from "components/Video/Video";
+import PaymentModal from "components/PaymentModal";
+import { AuthContext } from "contexts/auth/auth.context";
 
 export default function StudentDashboard() {
+  const {
+    authState: { profile },
+  } = useContext(AuthContext);
   const history = useHistory();
   const [classes, setClasses] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState("Form");
   const [selectedClass, setSelectedClass] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(false);
   const [subjects, setSubjects] = useState(false);
   const [treeItems, setTreeItems] = useState();
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(false);
+  const [videoCount, setVideoCount] = useState(0);
+
   console.log(selectedTeacher);
 
   const titles = [
@@ -83,10 +91,41 @@ export default function StudentDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [treeItems]);
 
+  const handleModal = () => {
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: true,
+      component: PaymentModal,
+      closeComponent: "",
+
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
   const onSelectSession = (session, topic, subject) => {
-    history.push(
-      `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
-    );
+    if (videoCount === 0) {
+      setVideoCount(videoCount + 1);
+      setSelectedSession(session);
+    } else {
+      if (selectedSession && selectedSession.id !== session.id) {
+        if (profile.is_student && profile.subscription) {
+          if (profile.subscription.state.toString() === "1") {
+            history.push(
+              `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
+            );
+          } else {
+            handleModal();
+          }
+        }
+      }
+    }
   };
 
   if (classes === false) {
@@ -178,7 +217,7 @@ export default function StudentDashboard() {
                         />
                       ))}
 
-                  <Wrapper>
+                  <Wrapper style={{ maxWidth: "100%" }}>
                     {treeItems
                       .filter(
                         (filteredItem) => filteredItem.subject === item.id
@@ -194,7 +233,13 @@ export default function StudentDashboard() {
                             <Row key={indx}>
                               {topic.sessions.slice(0, 4).map((session, id) => {
                                 return (
-                                  <Video key={id}>
+                                  <Video
+                                    onClick={() =>
+                                      onSelectSession(session, topic, item)
+                                    }
+                                    style={{ margin: "5px" }}
+                                    key={id}
+                                  >
                                     <VideoPreview>
                                       <VideoCast
                                         url={session.video_url}
@@ -211,13 +256,13 @@ export default function StudentDashboard() {
                                         {item.name} {selectedClass.name}
                                       </Instructor>
 
-                                      <MGrid>
+                                      {/* <MGrid>
                                         <Col1>
                                           <VideoTeachers>
                                             {selectedTeacher.name}
                                           </VideoTeachers>
                                         </Col1>
-                                      </MGrid>
+                                      </MGrid> */}
                                       <MGrid className="action-row">
                                         <Col2>
                                           <WatchButton
