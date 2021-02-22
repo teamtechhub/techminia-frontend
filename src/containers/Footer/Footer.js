@@ -3,6 +3,7 @@ import Footer from "components/Footer/Footer";
 //import { Location, Facebook, Twitter, Instagram } from "components/AllSvgIcon";
 //import { SmartPhone } from "components/AllSvgIcon";
 //import { Mail } from "components/AllSvgIcon";
+import { Link } from "react-router-dom";
 
 //
 import SocialFooterComponent from "./social_component";
@@ -197,10 +198,10 @@ export default function FooterContainer() {
               </Footer.Text>
             </Footer.Column>
             <Footer.Column style={{ display: "flex" }}>
-              <div>
-                <Footer.Link href="#">
+              <div className="space-x-3">
+                <Link to="/">
                   <small>HOME</small>
-                </Footer.Link>
+                </Link>
 
                 {/* <Footer.Link href="#">
                   <small>TUITION</small>
@@ -208,15 +209,15 @@ export default function FooterContainer() {
                 {/* <Footer.Link href="#">
                   <small>CLASSES</small>
                 </Footer.Link> */}
-                <Footer.Link href="#">
+                <Link to="/coming-soon">
                   <small>LIBRARY</small>
-                </Footer.Link>
-                <Footer.Link href="">
+                </Link>
+                <Link to="/auth/teacher">
                   <small>BECOME A TEACHER</small>
-                </Footer.Link>
-                <Footer.Link href="/contact">
+                </Link>
+                <Link to="/contact-us">
                   <small>CONTACT</small>
-                </Footer.Link>
+                </Link>
               </div>
             </Footer.Column>
           </Footer.Row>
