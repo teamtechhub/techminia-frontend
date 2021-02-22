@@ -165,7 +165,7 @@ function VideoCarousel({ deviceType }) {
             <Fade key={idx} bottom duration={800} delay={idx * 100}>
               <Video onClick={() => selectVideo(video)}>
                 <VideoPreview>
-                  <VideoCast url={Video.video_url} playercontrols={false} />
+                  <VideoCast url={video.video_url} playercontrols={false} />
                 </VideoPreview>
                 <VideoText>
                   <CourseTitle>{video.title}</CourseTitle>

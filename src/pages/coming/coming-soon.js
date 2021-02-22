@@ -3,13 +3,13 @@ import { Site } from "pages/LandingPage/LandingPage.style";
 
 const ComingSoon = () => {
   return (
-    <Site className="fixed">
-      <div className=" mt-20">
-        <h1 className="text-center text-purple-500 text-bold">
-          Comming soon Page to be added
+    <>
+      <div className="mt-0 relative h-screen">
+        <h1 className="text-center text-purple-500 absolute top-7  mt-20 font-extrabold text-bold">
+          Service Coming soon
         </h1>
       </div>
-    </Site>
+    </>
   );
 };
 

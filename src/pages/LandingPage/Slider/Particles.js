@@ -13,6 +13,7 @@ function CustomParticles({ children }) {
           left: "50%",
           right: 0,
           bottom: "70px",
+          opacity: 1,
           top: 0,
         }}
       />

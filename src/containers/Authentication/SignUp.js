@@ -236,6 +236,7 @@ export default function SignOutModal() {
               },
             });
             //redirect to dashboard
+            history.push("/dashboard");
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("response", r);
@@ -261,7 +262,6 @@ export default function SignOutModal() {
         setSubmitting(false);
         setValidating(false);
         alert.success("Account created , now you can login");
-        history.push("/dashboard");
       })
       .catch((error) => {
         console.log("error on otp submit: ", error);

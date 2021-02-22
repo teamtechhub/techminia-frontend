@@ -11,7 +11,7 @@ import xy from "images/home_page/particles/x+y.png";
 const ParticlesConfig = {
   particles: {
     number: {
-      value: 12,
+      value: 25,
       density: {
         enable: true,
         value_area: 600,
@@ -21,8 +21,10 @@ const ParticlesConfig = {
       enable: false,
     },
     move: {
-      speed: 1,
-      out_mode: "out",
+      enable: false,
+    },
+    opacity: {
+      value: 1.0,
     },
     shape: {
       type: ["image"],

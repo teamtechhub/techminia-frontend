@@ -193,10 +193,10 @@ function About({ deviceType }) {
           : console.log("to push the auth popup");
         break;
       case 2:
-        history.push("/coming-soon");
+        history.replace("/coming-soon");
         break;
       case 3:
-        history.push("/coming-soon");
+        history.replace("/coming-soon");
         break;
 
       default:

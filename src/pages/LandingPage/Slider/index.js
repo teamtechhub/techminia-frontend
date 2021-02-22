@@ -74,6 +74,7 @@ function Slider() {
         <Button
           title="Get Started"
           onClick={handleGetStarted}
+          className=" lg:ml-64"
           style={{
             fontWeight: "500",
             fontSize: 15,
@@ -94,8 +95,8 @@ function Slider() {
           backgroundImage: `linear-gradient(to right, #ffffff14, #ffffff14), url(${blob})`,
         }}
       >
-        <div style={{ position: "absolute", bottom: "50px" }}>
-          <FloatingImage src={favboylap} alt="pics" />
+        <div style={{ position: "relative", bottom: "50px" }}>
+          <FloatingImage src={favboylap} alt="pics" className=" ml-32" />
         </div>
         <Section
           heading={sections[0].heading}
