@@ -6,7 +6,7 @@ export const SETTINGS = "/dashboard/profile";
 
 // export const BASE_URL = process.env.API_URL || "https://techminia.com";
 export const BASE_URL =
-  process.env.API_URL || "http://darasa-mvp.herokuapp.com";
+  process.env.API_URL || "https://darasa-mvp.herokuapp.com";
 export const BASE_WEBSOCKET_URL =
   process.env.API_WEBSOCKET_URL || "wss://127.0.0.1:8000";
 // export const BASE_WEBSOCKET_URL =
