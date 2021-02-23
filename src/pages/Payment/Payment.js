@@ -32,32 +32,41 @@ import { BASE_WEBSOCKET_URL } from "constants/constants";
 
 const cards = [
   {
-    id: 1,
-    frequency: "Monthly",
-    price: 999,
+    id: 0,
+    frequency: "Daily",
+    price: 50,
     name: "Basic",
     save: 0,
     mpesa_amount: 1,
     color: "#ac3581",
   },
   {
+    id: 1,
+    frequency: "Monthly",
+    price: 999,
+    name: "Plus",
+    save: 0,
+    mpesa_amount: 2,
+    color: "#ac3581",
+  },
+  {
     id: 2,
     frequency: "Semi Annually",
     price: 5000,
-    name: "Plus",
+    name: "Pro",
     save: 1000,
-    mpesa_amount: 2,
+    mpesa_amount: 3,
     color: "#ed145b",
   },
-  {
-    id: 3,
-    frequency: "Annually",
-    price: 10000,
-    name: "Pro",
-    save: 2000,
-    mpesa_amount: 3,
-    color: "#ef5927",
-  },
+  // {
+  //   id: 3,
+  //   frequency: "Annually",
+  //   price: 10000,
+  //   name: "Ultimate",
+  //   save: 2000,
+  //   mpesa_amount: 4,
+  //   color: "#ef5927",
+  // },
 ];
 
 export default function Payment() {
