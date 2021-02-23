@@ -8,7 +8,8 @@ export const SETTINGS = "/dashboard/profile";
 export const BASE_URL =
   process.env.API_URL || "https://darasa-mvp.herokuapp.com";
 export const BASE_WEBSOCKET_URL =
-  process.env.API_WEBSOCKET_URL || "wss://127.0.0.1:8000";
+  process.env.API_WEBSOCKET_URL || "wss://darasa-mvp.herokuapp.com";
+
 // export const BASE_WEBSOCKET_URL =
 //   process.env.API_WEBSOCKET_URL || "wss://techminia.com";
 export const CURRENCY = "Ksh.";
