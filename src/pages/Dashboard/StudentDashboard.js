@@ -109,20 +109,51 @@ export default function StudentDashboard() {
     });
   };
 
+  const redirectSession = (session, topic, subject) => {
+    // handleModal();
+    history.push(
+      `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
+    );
+  };
+  console.log(selectedSession);
+  console.log(selectedSession.length);
+
   const onSelectSession = (session, topic, subject) => {
+    console.log(videoCount);
+    handleModal();
     if (videoCount === 0) {
       setVideoCount(videoCount + 1);
       setSelectedSession(session);
     } else {
-      if (selectedSession && selectedSession.id !== session.id) {
-        if (profile.is_student && profile.subscription) {
+      if (selectedSession.id !== session.id) {
+        if (profile.is_student) {
+          if (profile.subscription !== null) {
+            if (profile.subscription.state.toString() === "1") {
+              history.push(
+                `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
+              );
+            } else {
+              console.log("handlemodal");
+              handleModal();
+            }
+          } else {
+            console.log("handlemodal");
+            handleModal();
+          }
+        }
+      } else if (profile.is_student) {
+        if (profile.subscription !== null) {
           if (profile.subscription.state.toString() === "1") {
             history.push(
               `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
             );
           } else {
+            console.log("handlemodal");
             handleModal();
           }
+        } else {
+          console.log("handlemodal");
+          handleModal();
         }
       }
     }
@@ -233,58 +264,69 @@ export default function StudentDashboard() {
                             <Row key={indx}>
                               {topic.sessions.slice(0, 4).map((session, id) => {
                                 return (
-                                  <Video
+                                  <div
                                     onClick={() =>
                                       onSelectSession(session, topic, item)
                                     }
-                                    style={{ margin: "5px" }}
                                     key={id}
                                   >
-                                    <VideoPreview>
-                                      <VideoCast
-                                        url={session.video_url}
-                                        playercontrols={false}
-                                      />
-                                    </VideoPreview>
-                                    <VideoText>
-                                      <CourseTitle>
-                                        {session.name
-                                          ? session.name
-                                          : topic.name}
-                                      </CourseTitle>
-                                      <Instructor>
-                                        {item.name} {selectedClass.name}
-                                      </Instructor>
+                                    <Video style={{ margin: "5px" }}>
+                                      <VideoPreview
+                                        style={
+                                          selectedSession &&
+                                          selectedSession.id === session.id
+                                            ? {}
+                                            : {
+                                                pointerEvents: "none",
+                                                cursor: "help",
+                                              }
+                                        }
+                                      >
+                                        <VideoCast
+                                          url={session.video_url}
+                                          playercontrols={false}
+                                        />
+                                      </VideoPreview>
+                                      <VideoText>
+                                        <CourseTitle>
+                                          {session.name
+                                            ? session.name
+                                            : topic.name}
+                                        </CourseTitle>
+                                        <Instructor>
+                                          {item.name} {selectedClass.name}
+                                        </Instructor>
 
-                                      {/* <MGrid>
+                                        {/* <MGrid>
                                         <Col1>
                                           <VideoTeachers>
                                             {selectedTeacher.name}
                                           </VideoTeachers>
                                         </Col1>
                                       </MGrid> */}
-                                      <MGrid className="action-row">
-                                        <Col2>
-                                          <WatchButton
-                                            onClick={() =>
-                                              onSelectSession(
-                                                session,
-                                                topic,
-                                                item
-                                              )
-                                            }
-                                          >
-                                            <h3>
-                                              <FontAwesomeIcon
-                                                icon={"play-circle"}
-                                              />{" "}
-                                              VIEW CLASS
-                                            </h3>
-                                          </WatchButton>
-                                        </Col2>
-                                      </MGrid>
-                                    </VideoText>
-                                  </Video>
+                                        <MGrid className="action-row">
+                                          <Col2>
+                                            <WatchButton
+                                              onClick={() =>
+                                                redirectSession(
+                                                  session,
+                                                  topic,
+                                                  item
+                                                )
+                                              }
+                                            >
+                                              <h3>
+                                                <FontAwesomeIcon
+                                                  icon={"play-circle"}
+                                                />{" "}
+                                                VIEW CLASS
+                                              </h3>
+                                            </WatchButton>
+                                          </Col2>
+                                        </MGrid>
+                                      </VideoText>
+                                    </Video>
+                                  </div>
                                 );
                               })}
                             </Row>
