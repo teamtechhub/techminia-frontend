@@ -88,7 +88,11 @@ export default function Payment() {
 
     mpesaSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
+
+
+
       if (data.response) {
+        console.log(data.response);
         if (data.response.result_description === "Request cancelled by user") {
           handleModal(
             "Payment Unsuccessful",

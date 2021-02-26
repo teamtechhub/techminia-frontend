@@ -176,6 +176,10 @@ export default function Video(props) {
           // style={{ minHeight: "400px" }}
           width="100%"
           height="100%"
+          //prevent downloading the video
+          config={{ file: { attributes: { controlsList: "nodownload" } } }}
+          //prevent right clicking to download
+          onContextMenu={(e) => e.preventDefault()}
           url={state.url}
           pip={state.pip}
           playing={state.playing}

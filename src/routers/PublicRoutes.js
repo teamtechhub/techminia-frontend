@@ -37,7 +37,7 @@ const PublicRoutes = ({ deviceType }) => (
       />
       <Route
         exact
-        path={`/auth/:userType`}
+        path={`/auth/:userType[A-Da-z0-9]+`}
         component={Authentication}
         deviceType={deviceType}
       />

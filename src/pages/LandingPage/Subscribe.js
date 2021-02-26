@@ -52,8 +52,7 @@ function Subscribe() {
             <Content>
               <H3>Like👍 our service? Subscribe👌</H3>
               <P>
-                We have more than thousand of students and creative teachers and
-                stat joining our e-learning platform
+                We are exicted to connect with you
               </P>
             </Content>
           </Fade>
