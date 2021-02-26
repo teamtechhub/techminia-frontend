@@ -208,6 +208,7 @@ export default function Session({ className, view }) {
   }
 
   const handleModal = () => {
+    console.log("modal clicked but nothing happens");
     openModal({
       show: true,
       overlayClassName: "quick-view-overlay",
@@ -237,357 +238,370 @@ export default function Session({ className, view }) {
   }
   return (
     <div
-      style={
-        profile.is_teacher
-          ? {}
-          : profile.subscription &&
-            profile.subscription.state.toString() === "1"
-          ? {}
-          : { pointerEvents: "none", cursor: "help" }
-      }
       onClick={
-        profile.is_student &&
-        profile.subscription &&
-        profile.subscription.state.toString() === "1"
-          ? null
-          : handleModal
+        profile.is_student
+          ? profile.subscription !== null
+            ? profile.subscription.state.toString() === "1"
+              ? null
+              : handleModal
+            : handleModal
+          : null
       }
     >
-      {edit ? (
-        <EditDeleteSession session={session} setEdit={setEdit} />
-      ) : (
-        <>
-          <ProfileSidebar>
-            <ProfileCard>
-              <Collapse
-                accordion={true}
-                className={addAllClasses.join(" ")}
-                defaultActiveKey="active"
-                expandIcon={expandIcon}
-                style={{ background: "#fff" }}
-              >
-                {subject && (
-                  <Panel
-                    header={
-                      <h6
-                        style={{
-                          fontWeight: 500,
-                          color: "#652e8d",
-                          textTransform: "uppercase",
-                          margin: "0 10px",
-                        }}
-                      >
-                        {`Table of Contents - ${
-                          subject.name ? subject.name : null
-                        }`}
-                      </h6>
-                    }
-                    headerClass="accordion-title card-topline"
-                  >
-                    <div>
-                      {view === "subject" ? (
-                        <>
-                          <p>select teacher</p>
-                          {teacher &&
-                            teacher
-                              .filter((filteredTeacher) =>
-                                treeItems.find(
-                                  (a) =>
-                                    a.attending_teacher.id ===
-                                    filteredTeacher.id
+      <div
+        style={
+          profile.is_student
+            ? profile.subscription !== null
+              ? profile.subscription.state.toString() === "1"
+                ? {}
+                : { pointerEvents: "none", cursor: "help" }
+              : { pointerEvents: "none", cursor: "help" }
+            : {}
+        }
+      >
+        {edit ? (
+          <EditDeleteSession session={session} setEdit={setEdit} />
+        ) : (
+          <>
+            <ProfileSidebar>
+              <ProfileCard>
+                <Collapse
+                  accordion={true}
+                  className={addAllClasses.join(" ")}
+                  defaultActiveKey="active"
+                  expandIcon={expandIcon}
+                  style={{ background: "#fff" }}
+                >
+                  {subject && (
+                    <Panel
+                      header={
+                        <h6
+                          style={{
+                            fontWeight: 500,
+                            color: "#652e8d",
+                            textTransform: "uppercase",
+                            margin: "0 10px",
+                          }}
+                        >
+                          {`Table of Contents - ${
+                            subject.name ? subject.name : null
+                          }`}
+                        </h6>
+                      }
+                      headerClass="accordion-title card-topline"
+                    >
+                      <div>
+                        {view === "subject" ? (
+                          <>
+                            <p>select teacher</p>
+                            {teacher &&
+                              teacher
+                                .filter((filteredTeacher) =>
+                                  treeItems.find(
+                                    (a) =>
+                                      a.attending_teacher.id ===
+                                      filteredTeacher.id
+                                  )
                                 )
-                              )
-                              .map((tchr, i) => (
-                                <Button
-                                  key={i}
-                                  size="small"
-                                  onClick={() => setSelectedTeacher(tchr)}
-                                  title={tchr.name}
-                                  style={{
-                                    padding: "2px",
-                                    fontSize: "13px",
-                                    height: "auto",
-                                    margin: "5px",
-                                  }}
-                                />
-                              ))}
-                        </>
-                      ) : null}
-                      <Column
-                        style={{
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: "20px",
-                          boxShadow: "0px 10px 30px -5px rgba(0, 0, 0, 0.3)",
-                          transition: "box-shadow 0.5s",
-                          willChange: "transform",
-                          borderRadius: "6px",
-                          background: "#652e8d",
-                        }}
-                        key={subject.id}
-                      >
-                        {treeItems &&
-                          treeItems
-                            .filter(
-                              (filteredItem) =>
-                                filteredItem.subject === subject.id
-                            )
-                            .filter(
-                              (filteredTreeItem) =>
-                                `${
-                                  view === "subject"
-                                    ? selectedTeacher.id
-                                    : match.params.teacherID
-                                }` ===
-                                filteredTreeItem.attending_teacher.id.toString()
-                            )
-                            .map((treeItem, ind) => (
-                              <Frame
-                                style={{ borderBottom: "1px solid #e6e6e6" }}
-                                depth={"parent"}
-                                key={ind}
-                              >
-                                <Header
-                                  open={true}
-                                  depth={"parent"}
-                                  className={"parent"}
-                                >
-                                  <Title
+                                .map((tchr, i) => (
+                                  <Button
+                                    key={i}
+                                    size="small"
+                                    onClick={() => setSelectedTeacher(tchr)}
+                                    title={tchr.name}
                                     style={{
-                                      fontWeight: 700,
-                                      fontSize: "large",
-                                      color: "#fff",
-                                      textTransform: "uppercase",
+                                      padding: "2px",
+                                      fontSize: "13px",
+                                      height: "auto",
+                                      margin: "5px",
                                     }}
-                                  >
-                                    {treeItem.name}
-                                  </Title>
-                                </Header>
-
-                                <Content style={{}}>
-                                  <animated.div
-                                    children={treeItem.topics.map(
-                                      (topic, indx) => (
-                                        <Frame
-                                          style={{ background: "transparent" }}
-                                          depth={"child"}
-                                          key={indx}
-                                        >
-                                          <Header
-                                            open={true}
-                                            depth={"child"}
-                                            className={"child"}
-                                          >
-                                            <Title
-                                              style={{
-                                                fontWeight: 300,
-                                                fontSize: "large",
-                                                color: "#fff",
-                                                textDecoration:
-                                                  view === "topic"
-                                                    ? tpcID ===
-                                                      topic.id.toString()
-                                                      ? "line-through"
-                                                      : "none"
-                                                    : "none",
-                                              }}
-                                            >
-                                              {indx + 1}. {topic.name}
-                                            </Title>
-                                          </Header>
-
-                                          <Content style={{}}>
-                                            <animated.div
-                                              style={{}}
-                                              children={topic.sessions.map(
-                                                (session, id) => (
-                                                  <Frame
-                                                    style={{
-                                                      background: "transparent",
-                                                    }}
-                                                    depth={"child"}
-                                                    key={id}
-                                                  >
-                                                    <Header
-                                                      open={true}
-                                                      depth={"child"}
-                                                      className={"child"}
-                                                    >
-                                                      <Title
-                                                        onClick={() =>
-                                                          onSelectSession(
-                                                            session,
-                                                            topic
-                                                          )
-                                                        }
-                                                        style={{
-                                                          fontWeight: 200,
-                                                          textDecoration:
-                                                            sessID ===
-                                                            session.id.toString()
-                                                              ? "line-through"
-                                                              : "none",
-                                                          color: "#fff",
-                                                        }}
-                                                      >
-                                                        <span>● </span>
-                                                        {session.name ? (
-                                                          session.name
-                                                        ) : (
-                                                          <>Session {id + 1}</>
-                                                        )}
-                                                      </Title>
-                                                    </Header>
-
-                                                    <Content style={{}}>
-                                                      <animated.div
-                                                        style={{}}
-                                                        // children={}
-                                                      />
-                                                    </Content>
-                                                  </Frame>
-                                                )
-                                              )}
-                                            />
-                                          </Content>
-                                        </Frame>
-                                      )
-                                    )}
                                   />
-                                </Content>
-                              </Frame>
+                                ))}
+                          </>
+                        ) : null}
+                        <Column
+                          style={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            padding: "20px",
+                            boxShadow: "0px 10px 30px -5px rgba(0, 0, 0, 0.3)",
+                            transition: "box-shadow 0.5s",
+                            willChange: "transform",
+                            borderRadius: "6px",
+                            background: "#652e8d",
+                          }}
+                          key={subject.id}
+                        >
+                          {treeItems &&
+                            treeItems
+                              .filter(
+                                (filteredItem) =>
+                                  filteredItem.subject === subject.id
+                              )
+                              .filter(
+                                (filteredTreeItem) =>
+                                  `${
+                                    view === "subject"
+                                      ? selectedTeacher.id
+                                      : match.params.teacherID
+                                  }` ===
+                                  filteredTreeItem.attending_teacher.id.toString()
+                              )
+                              .map((treeItem, ind) => (
+                                <Frame
+                                  style={{ borderBottom: "1px solid #e6e6e6" }}
+                                  depth={"parent"}
+                                  key={ind}
+                                >
+                                  <Header
+                                    open={true}
+                                    depth={"parent"}
+                                    className={"parent"}
+                                  >
+                                    <Title
+                                      style={{
+                                        fontWeight: 700,
+                                        fontSize: "large",
+                                        color: "#fff",
+                                        textTransform: "uppercase",
+                                      }}
+                                    >
+                                      {treeItem.name}
+                                    </Title>
+                                  </Header>
+
+                                  <Content style={{}}>
+                                    <animated.div
+                                      children={treeItem.topics.map(
+                                        (topic, indx) => (
+                                          <Frame
+                                            style={{
+                                              background: "transparent",
+                                            }}
+                                            depth={"child"}
+                                            key={indx}
+                                          >
+                                            <Header
+                                              open={true}
+                                              depth={"child"}
+                                              className={"child"}
+                                            >
+                                              <Title
+                                                style={{
+                                                  fontWeight: 300,
+                                                  fontSize: "large",
+                                                  color: "#fff",
+                                                  textDecoration:
+                                                    view === "topic"
+                                                      ? tpcID ===
+                                                        topic.id.toString()
+                                                        ? "line-through"
+                                                        : "none"
+                                                      : "none",
+                                                }}
+                                              >
+                                                {indx + 1}. {topic.name}
+                                              </Title>
+                                            </Header>
+
+                                            <Content style={{}}>
+                                              <animated.div
+                                                style={{}}
+                                                children={topic.sessions.map(
+                                                  (session, id) => (
+                                                    <Frame
+                                                      style={{
+                                                        background:
+                                                          "transparent",
+                                                      }}
+                                                      depth={"child"}
+                                                      key={id}
+                                                    >
+                                                      <Header
+                                                        open={true}
+                                                        depth={"child"}
+                                                        className={"child"}
+                                                      >
+                                                        <Title
+                                                          onClick={() =>
+                                                            onSelectSession(
+                                                              session,
+                                                              topic
+                                                            )
+                                                          }
+                                                          style={{
+                                                            fontWeight: 200,
+                                                            textDecoration:
+                                                              sessID ===
+                                                              session.id.toString()
+                                                                ? "line-through"
+                                                                : "none",
+                                                            color: "#fff",
+                                                          }}
+                                                        >
+                                                          <span>● </span>
+                                                          {session.name ? (
+                                                            session.name
+                                                          ) : (
+                                                            <>
+                                                              Session {id + 1}
+                                                            </>
+                                                          )}
+                                                        </Title>
+                                                      </Header>
+
+                                                      <Content style={{}}>
+                                                        <animated.div
+                                                          style={{}}
+                                                          // children={}
+                                                        />
+                                                      </Content>
+                                                    </Frame>
+                                                  )
+                                                )}
+                                              />
+                                            </Content>
+                                          </Frame>
+                                        )
+                                      )}
+                                    />
+                                  </Content>
+                                </Frame>
+                              ))}
+                        </Column>
+                      </div>
+                    </Panel>
+                  )}
+                </Collapse>
+              </ProfileCard>
+            </ProfileSidebar>
+            {session && view !== "topic" && view !== "subject" && (
+              <>
+                <ProfileContent>
+                  <ProfileCard>
+                    <ProfileCardHead className="card-topline">
+                      <header>
+                        {subject.name} ~ {cls.name} by {teacher.name}
+                      </header>
+                      {profile.is_teacher &&
+                      profile.extended_profile.id === teacher.id ? (
+                        <Btn
+                          style={{
+                            background: "#ef592b",
+                            margin: "5px",
+                            height: "25px",
+                            padding: "0 10px",
+                          }}
+                          onClick={() => setEdit(true)}
+                          title="Edit Lesson"
+                        />
+                      ) : null}
+                    </ProfileCardHead>
+                    <ProfileCardBody>
+                      {/* <img src={session.video_url} alt="tuition" /> */}
+                      <Video url={session.video_url} playercontrols={false} />
+                    </ProfileCardBody>
+                  </ProfileCard>
+                </ProfileContent>
+                <ProfileContent>
+                  <ProfileCard>
+                    {session && (
+                      <>
+                        <ProfileCardHead className="card-topline">
+                          <header>
+                            {btns.map((item, p) => (
+                              <Button
+                                key={p}
+                                onClick={() => {
+                                  setActiveButton(item.title);
+                                }}
+                                title={`${item.title}`}
+                                style={{
+                                  backgroundColor:
+                                    activeButton === item.title
+                                      ? "#652e8d"
+                                      : "#000",
+                                  padding: "2px",
+                                  fontSize: "13px",
+                                  height: "auto",
+                                  margin: "5px",
+                                  textTransform: "lowercase",
+                                }}
+                              />
                             ))}
-                      </Column>
-                    </div>
-                  </Panel>
-                )}
-              </Collapse>
-            </ProfileCard>
-          </ProfileSidebar>
-          {session && view !== "topic" && view !== "subject" && (
-            <>
+                          </header>
+                        </ProfileCardHead>
+                        {activeButton === "Comments" && cls && subject && (
+                          <>
+                            {session.forum && (
+                              <ThreadPage
+                                minimal={true}
+                                tpcslg={topicSlug}
+                                thID={session.forum}
+                              />
+                            )}
+                          </>
+                        )}
+                        {activeButton === "Notes" && (
+                          <ProfileCardBody>
+                            <div style={{ textAlign: "center" }}>
+                              <span>
+                                Class Notes prepared by {teacher.name}
+                              </span>
+                            </div>
+
+                            <Notes>
+                              <DraftRenderer content={session.notes} />
+                            </Notes>
+                          </ProfileCardBody>
+                        )}
+                        {/* {activeButton === "Files" && (
+                    <ProfileCardBody>Some Docs</ProfileCardBody>
+                  )} */}
+                      </>
+                    )}
+                  </ProfileCard>
+                </ProfileContent>
+              </>
+            )}
+            {view === "subject" && (
               <ProfileContent>
                 <ProfileCard>
                   <ProfileCardHead className="card-topline">
-                    <header>
-                      {subject.name} ~ {cls.name} by {teacher.name}
-                    </header>
-                    {profile.is_teacher &&
-                    profile.extended_profile.id === teacher.id ? (
-                      <Btn
-                        style={{
-                          background: "#ef592b",
-                          margin: "5px",
-                          height: "25px",
-                          padding: "0 10px",
-                        }}
-                        onClick={() => setEdit(true)}
-                        title="Edit Lesson"
-                      />
-                    ) : null}
+                    <header>{subject.name}</header>
                   </ProfileCardHead>
                   <ProfileCardBody>
-                    {/* <img src={session.video_url} alt="tuition" /> */}
-                    <Video url={session.video_url} playercontrols={false} />
+                    <VideoPreview style={{ color: "#fff" }}>
+                      <img
+                        src={subject.background_image}
+                        alt={subject.background_image_alt}
+                      />
+                    </VideoPreview>
                   </ProfileCardBody>
                 </ProfileCard>
               </ProfileContent>
+            )}
+            {view === "topic" && (
               <ProfileContent>
                 <ProfileCard>
-                  {session && (
-                    <>
-                      <ProfileCardHead className="card-topline">
-                        <header>
-                          {btns.map((item, p) => (
-                            <Button
-                              key={p}
-                              onClick={() => {
-                                setActiveButton(item.title);
-                              }}
-                              title={`${item.title}`}
-                              style={{
-                                backgroundColor:
-                                  activeButton === item.title
-                                    ? "#652e8d"
-                                    : "#000",
-                                padding: "2px",
-                                fontSize: "13px",
-                                height: "auto",
-                                margin: "5px",
-                                textTransform: "lowercase",
-                              }}
-                            />
-                          ))}
-                        </header>
-                      </ProfileCardHead>
-                      {activeButton === "Comments" && cls && subject && (
-                        <>
-                          {session.forum && (
-                            <ThreadPage
-                              minimal={true}
-                              tpcslg={topicSlug}
-                              thID={session.forum}
-                            />
-                          )}
-                        </>
-                      )}
-                      {activeButton === "Notes" && (
-                        <ProfileCardBody>
-                          <div style={{ textAlign: "center" }}>
-                            <span>Class Notes prepared by {teacher.name}</span>
-                          </div>
-
-                          <Notes>
-                            <DraftRenderer content={session.notes} />
-                          </Notes>
-                        </ProfileCardBody>
-                      )}
-                      {/* {activeButton === "Files" && (
-                    <ProfileCardBody>Some Docs</ProfileCardBody>
-                  )} */}
-                    </>
-                  )}
+                  <ProfileCardHead className="card-topline">
+                    <header>{topic.name}</header>
+                  </ProfileCardHead>
+                  <ProfileCardBody>
+                    <VideoPreview style={{ color: "#fff" }}>
+                      <img
+                        src={topic.background_image}
+                        alt={topic.background_image_alt}
+                      />
+                    </VideoPreview>
+                  </ProfileCardBody>
                 </ProfileCard>
               </ProfileContent>
-            </>
-          )}
-          {view === "subject" && (
-            <ProfileContent>
-              <ProfileCard>
-                <ProfileCardHead className="card-topline">
-                  <header>{subject.name}</header>
-                </ProfileCardHead>
-                <ProfileCardBody>
-                  <VideoPreview style={{ color: "#fff" }}>
-                    <img
-                      src={subject.background_image}
-                      alt={subject.background_image_alt}
-                    />
-                  </VideoPreview>
-                </ProfileCardBody>
-              </ProfileCard>
-            </ProfileContent>
-          )}
-          {view === "topic" && (
-            <ProfileContent>
-              <ProfileCard>
-                <ProfileCardHead className="card-topline">
-                  <header>{topic.name}</header>
-                </ProfileCardHead>
-                <ProfileCardBody>
-                  <VideoPreview style={{ color: "#fff" }}>
-                    <img
-                      src={topic.background_image}
-                      alt={topic.background_image_alt}
-                    />
-                  </VideoPreview>
-                </ProfileCardBody>
-              </ProfileCard>
-            </ProfileContent>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

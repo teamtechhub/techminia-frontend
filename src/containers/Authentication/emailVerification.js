@@ -91,7 +91,7 @@ function EmailVerification() {
   }
 
   return (
-    <Wrapper style={{ paddingTop: "55px" }}>
+    <Wrapper style={{ paddingTop: "80px" }}>
       <Container>
         <Heading>Email Verification</Heading>
 

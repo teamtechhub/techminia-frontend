@@ -14,10 +14,10 @@ import { HeaderProvider } from "contexts/header/header.provider";
 // import { useTimer } from "utils";
 import Fade from "react-reveal/Fade";
 import Firebase, { FirebaseContext } from "services/Firebase";
+import BigBlueButton, { BigBlueButtonContext } from "services/BigBlueButton";
 import { Provider as AlertProvider } from "react-alert"; //, withAlert } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from "components/Alerts/Alerts";
-// import { CartProvider } from "contexts/cart/use-cart";
 
 import "typeface-dm-sans";
 import "typeface-poppins";
@@ -31,8 +31,6 @@ import "react-multi-carousel/lib/styles.css";
 import "@redq/reuse-modal/lib/index.css";
 import "video-react/dist/video-react.css";
 
-//tailwind css
-import "./tail-index.css";
 function App() {
   const queryParams = useRouterQuery();
   const [componentMounted] = useDarkMode();
@@ -62,20 +60,18 @@ function App() {
         <OriginalThemeProvider theme={defaultTheme}>
           <Alerts />
           <FirebaseContext.Provider value={new Firebase()}>
-            <SearchProvider query={query}>
-              {/* <CartProvider> */}
-              {/* <AppProvider> */}
-              <HeaderProvider>
-                <AuthProvider>
-                  <StickyProvider>
-                    <BaseRouter deviceType={{ mobile, tablet, desktop }} />
-                  </StickyProvider>
-                </AuthProvider>
-              </HeaderProvider>
-              {/* </AppProvider> */}
-              {/* </CartProvider> */}
-              <GlobalStyle />
-            </SearchProvider>
+            <BigBlueButtonContext.Provider value={new BigBlueButton()}>
+              <SearchProvider query={query}>
+                <HeaderProvider>
+                  <AuthProvider>
+                    <StickyProvider>
+                      <BaseRouter deviceType={{ mobile, tablet, desktop }} />
+                    </StickyProvider>
+                  </AuthProvider>
+                </HeaderProvider>
+                <GlobalStyle />
+              </SearchProvider>
+            </BigBlueButtonContext.Provider>
           </FirebaseContext.Provider>
         </OriginalThemeProvider>
       </AlertProvider>

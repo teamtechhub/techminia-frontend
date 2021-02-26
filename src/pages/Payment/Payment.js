@@ -3,7 +3,7 @@ import { axiosInstance, tokenConfig } from "utils/axios";
 import { WizardCard } from "pages/Dashboard/Dashboard.style";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { openModal } from "@redq/reuse-modal";
+import { closeModal, openModal } from "@redq/reuse-modal";
 import "./payment.scss";
 import Button from "components/Button/Button";
 import PaymentContainer from "containers/Payment/Payment";
@@ -78,6 +78,10 @@ export default function Payment() {
   const [selectedContact, setSelectedContact] = useState();
   const [plan, setPlan] = useState();
   const alert = useAlert();
+
+  useEffect(() => {
+    closeModal();
+  }, []);
 
   const newConnection = (transaction_id) => {
     const mpesaSocket = new WebSocket(
