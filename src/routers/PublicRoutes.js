@@ -23,18 +23,18 @@ const PublicRoutes = ({ deviceType }) => (
       <Route exact path={`/privacy-policy`}>
         <PrivacyPage deviceType={deviceType} />
       </Route>
-      <Route exact path={`/library`}>
+      {/* <Route exact path={`/library`}>
         <Library deviceType={deviceType} />
-      </Route>
+      </Route> */}
       <Route exact path={`/contact-us`}>
         <Contact deviceType={deviceType} />
       </Route>
-      <Route exact path={`/product/:slug`}>
+      {/* <Route exact path={`/product/:slug`}>
         <ProductPage deviceType={deviceType} />
       </Route>
       <Route exact path={`/checkout`}>
         <CheckoutPage deviceType={deviceType} />
-      </Route>
+      </Route> */}
       <Route exact path={`/bbb`}>
         <BigBlueButton deviceType={deviceType} />
       </Route>
