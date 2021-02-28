@@ -482,7 +482,7 @@ export default function Session({ className, view }) {
                   <ProfileCard>
                     <ProfileCardHead className="card-topline">
                       <header>
-                        {subject.name} ~ {cls.name} by {teacher.name}
+                        {subject.name} ~ {cls.name}
                       </header>
                       {profile.is_teacher &&
                       profile.extended_profile.id === teacher.id ? (

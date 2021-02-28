@@ -4,6 +4,7 @@ import LandingPage from "pages/LandingPage/LandingPage";
 import TermsPage from "pages/TermsConditions/TermsPage";
 import PrivacyPage from "pages/TermsConditions/PrivacyPage";
 import NotFound from "pages/NotFound";
+import ComingSoon from "pages/coming/coming-soon";
 import ColorPicker from "theme/ColorPage";
 import EmailVerification from "containers/Authentication/emailVerification";
 import Authentication from "containers/Authentication/Authentication";
@@ -62,6 +63,11 @@ const PublicRoutes = ({ deviceType }) => (
       <Route
         path={`/color-picker`}
         component={ColorPicker}
+        deviceType={deviceType}
+      />
+      <Route
+        path={`/coming-soon`}
+        component={ComingSoon}
         deviceType={deviceType}
       />
       <Route component={NotFound} deviceType={deviceType} />

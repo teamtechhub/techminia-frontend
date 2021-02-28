@@ -96,7 +96,7 @@ function Slider() {
         }}
       >
         <div style={{ position: "relative", bottom: "50px" }}>
-          <FloatingImage src={favboylap} alt="pics" className=" ml-32" />
+          <FloatingImage src={favboylap} alt="pics" className="ml-32 ml-5 " />
         </div>
         <Section
           heading={sections[0].heading}
