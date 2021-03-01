@@ -17,9 +17,9 @@ import {
   B,
   A,
   ProfileDescription,
-  ProfileListCol,
-  ProfileListTitle,
-  ProfileListText,
+  // ProfileListCol,
+  // ProfileListTitle,
+  // ProfileListText,
   Ul,
 } from "./Profile.style";
 import { AuthContext } from "contexts/auth/auth.context";
@@ -120,7 +120,7 @@ const ProfileView = () => {
                 </>
               )}
             </ListGroup>
-            <CardRow className="list-seperated profile-stat">
+            {/* <CardRow className="list-seperated profile-stat">
               {profile.is_teacher && (
                 <>
                   <ProfileListCol>
@@ -155,7 +155,7 @@ const ProfileView = () => {
                   </ProfileListCol>
                 </>
               )}
-            </CardRow>
+            </CardRow> */}
           </ProfileCardBody>
         </ProfileCard>
         <ProfileCard>

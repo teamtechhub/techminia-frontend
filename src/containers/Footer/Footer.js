@@ -155,8 +155,8 @@ export default function FooterContainer() {
         >
           <h3 style={{ textAlign: "center", color: "yellow" }}>About Darasa</h3>
           <p>
-            Darasa is an haven that embraces current age and revolutionizes the
-            way students learn and study for their exams in preparation for
+            Darasa is a haven that embraces the current age and revolutionizes
+            the way students learn and study for their exams in preparation for
             higher education and what comes after
           </p>
           <p>
@@ -171,7 +171,6 @@ export default function FooterContainer() {
           <h5 style={{ color: "yellow" }}> Contact Information</h5>
           <p>Info@darasa.co.ke</p>
           <p>+254202022002</p>
-          <p> Nairobi</p>
           <h5 style={{ color: "yellow" }}> Follow Us</h5>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <SocialFooterComponent />

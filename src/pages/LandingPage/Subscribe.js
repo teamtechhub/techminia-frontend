@@ -42,7 +42,7 @@ function Subscribe() {
     <Section>
       <Container>
         <Fade bottom duration={800} delay={100}>
-          <AreaHeading>
+          <AreaHeading className="mt-7">
             <h3>Join Our Email List</h3>
           </AreaHeading>
         </Fade>
@@ -51,9 +51,7 @@ function Subscribe() {
           <Fade left duration={800} delay={200}>
             <Content>
               <H3>Like👍 our service? Subscribe👌</H3>
-              <P>
-                We are exicted to connect with you
-              </P>
+              <P>We are exicted to connect with you</P>
             </Content>
           </Fade>
           <Fade right duration={800} delay={300}>

@@ -138,7 +138,7 @@ export default function SignOutModal() {
     extended_user: isTeacher
       ? {
           document_id: "",
-          // tsc_id: "",
+          tsc_id: "",
           honorofic_title: "",
         }
       : {
@@ -593,12 +593,12 @@ export default function SignOutModal() {
                                     label="National Document ID"
                                     name="extended_user.document_id"
                                   />
-                                  {/* <FormikControl
+                                  <FormikControl
                                     control="input"
                                     type="text"
                                     label="TSC Number"
                                     name="extended_user.tsc_id"
-                                  /> */}
+                                  />
                                 </>
                               )}
                               <HelperText style={{ padding: "20px 0 30px" }}>

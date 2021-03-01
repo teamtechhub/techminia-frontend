@@ -166,13 +166,13 @@ export default function Video(props) {
         role="region"
         tabIndex="-1"
         className="player-wrapper "
-        style={{ height: "60vh", width: "100%" }}
+        // style={{ height: "60vh", width: "100%" }}
         // style="padding-top: 42.5781%;"
       >
         <ReactPlayer
           onClick={handlePlayPause}
           ref={ref}
-          // className="react-player"
+          className="react-player m-0 p-0"
           // style={{ minHeight: "400px" }}
           width="100%"
           height="100%"

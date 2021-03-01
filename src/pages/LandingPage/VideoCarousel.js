@@ -173,11 +173,11 @@ function VideoCarousel({ deviceType }) {
 
                   <MGrid className="action-row">
                     <Col2>
-                      <WatchButton>
+                      {/* <WatchButton>
                         <h3>
                           <FontAwesomeIcon icon={"play-circle"} /> WATCH VIDEO
                         </h3>
-                      </WatchButton>
+                      </WatchButton> */}
                     </Col2>
                   </MGrid>
                 </VideoText>

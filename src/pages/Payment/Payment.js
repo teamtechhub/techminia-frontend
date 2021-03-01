@@ -37,7 +37,7 @@ const cards = [
     price: 50,
     name: "Basic",
     save: 0,
-    mpesa_amount: 1,
+    mpesa_amount: 50,
     color: "#ac3581",
   },
   {
@@ -46,7 +46,7 @@ const cards = [
     price: 999,
     name: "Plus",
     save: 0,
-    mpesa_amount: 2,
+    mpesa_amount: 999,
     color: "#ac3581",
   },
   {
@@ -55,7 +55,7 @@ const cards = [
     price: 5000,
     name: "Pro",
     save: 1000,
-    mpesa_amount: 3,
+    mpesa_amount: 5000,
     color: "#ed145b",
   },
   // {
@@ -92,8 +92,6 @@ export default function Payment() {
 
     mpesaSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
-
-
 
       if (data.response) {
         console.log(data.response);

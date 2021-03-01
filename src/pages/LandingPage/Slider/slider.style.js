@@ -125,8 +125,8 @@ export const GetStarted = styled.div`
 
 export const FloatingImage = styled.img`
   position: fixed;
-  bottom: -8px;
-  right: 30%;
+  bottom: 12px;
+  right: 36%;
   width: 250px;
   animation: ${float} 6s ease-in-out infinite;
 `;
