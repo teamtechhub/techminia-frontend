@@ -95,9 +95,9 @@ import { AuthContext } from "contexts/auth/auth.context";
 
 const sampleVideos = [
   {
-    title: "Pyramid of Numbers",
-    class: "Form Three Biology",
-    video_url: "https://youtu.be/Zj9SgGIJk-U",
+    title: "Pressure",
+    class: "Form One Physics",
+    video_url: "https://youtu.be/51Frb55m66Y",
     placeholder: tuit,
   },
   {
@@ -113,15 +113,15 @@ const sampleVideos = [
     placeholder: tuit,
   },
   {
-    title: "Ecology",
+    title: "Pyramid of Numbers",
     class: "Form Three Biology",
-    video_url: "https://youtu.be/NTuLYXQMnQE",
+    video_url: "https://youtu.be/Zj9SgGIJk-U",
     placeholder: tuit,
   },
   {
-    title: "Form One Physics",
-    class: "Pressure",
-    video_url: "https://youtu.be/51Frb55m66Y",
+    title: "Ecology",
+    class: "Form Three Biology",
+    video_url: "https://youtu.be/NTuLYXQMnQE",
     placeholder: tuit,
   },
 ];

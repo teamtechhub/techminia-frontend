@@ -140,7 +140,7 @@ export default function SignInModal() {
                   profile: auth_profile,
                 },
               });
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              await new Promise((resolve) => setTimeout(resolve, 500));
               setSubmitting(false);
               setIsLoading(false);
             })

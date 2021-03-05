@@ -13,7 +13,7 @@ import Button from "components/Button/Button";
 import favboylap from "images/fav-lap.png";
 import { themeGet } from "@styled-system/theme-get";
 import { AuthContext } from "contexts/auth/auth.context";
-import Sticky from 'react-stickynode';
+import Sticky from "react-stickynode";
 
 import lady from "images/lady.png";
 import leafs from "images/home_page/leaves.png";
@@ -88,25 +88,25 @@ function Slider() {
     },
   ];
   return (
-    <CustomParticles>
-      <BannerWrapper
-        style={{
-          width: "100%",
-          backgroundColor: "#d1eafd",
-          backgroundImage: `linear-gradient(to right, #ffffff14, #ffffff14), url(${blob})`,
-        }}
-      >
-        <div style={{ position: "relative", bottom: "50px" }}>
+    // <CustomParticles>
+    <BannerWrapper
+      style={{
+        width: "100%",
+        backgroundColor: "#d1eafd",
+        backgroundImage: `linear-gradient(to right, #ffffff14, #ffffff14), url(${blob})`,
+      }}
+    >
+      {/* <div style={{ position: "relative", bottom: "50px" }}>
           <FloatingImage src={favboylap} alt="pics" className="ml-32 lg:right-2/3" />
-        </div>
-        <Section
-          heading={sections[0].heading}
-          subHeading={sections[0].subHeading}
-          bannerCaption={sections[0].bannerCaption}
-          cta={sections[0].cta}
-        />
+        </div> */}
+      <Section
+        heading={sections[0].heading}
+        subHeading={sections[0].subHeading}
+        bannerCaption={sections[0].bannerCaption}
+        cta={sections[0].cta}
+      />
 
-        {/* <AutoplaySlider
+      {/* <AutoplaySlider
           play={true}
           cancelOnInteraction={false} // should stop playing on user interaction
           interval={20000}
@@ -123,40 +123,34 @@ function Slider() {
             </div>
           ))}
         </AutoplaySlider> */}
-        <div
-          style={{
-            position: "absolute",
-            left: "30px",
-            top: "520px",
-            zIndex: 9999,
-          }}
-        >
-          <img
-            src={lady}
-            className="hidden  md:inline-block"
-            height="220px"
-            alt="lady  not found"
-            width="150px"
-          />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            top:"540px",
-            zIndex: 0,
-          }}
-        >
-          <img
-            src={leafs}
-            alt="leafs  not found"
-            height="150px"
-            width="150px"
-
-          />
-        </div>
-      </BannerWrapper>{" "}
-    </CustomParticles>
+      <div
+        style={{
+          position: "absolute",
+          left: "30px",
+          top: "520px",
+          zIndex: 9999,
+        }}
+      >
+        <img
+          src={lady}
+          className="hidden  md:inline-block"
+          height="220px"
+          alt="lady  not found"
+          width="150px"
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          right: 0,
+          top: "540px",
+          zIndex: 0,
+        }}
+      >
+        <img src={leafs} alt="leafs  not found" height="150px" width="150px" />
+      </div>
+    </BannerWrapper>
+    // </CustomParticles>
   );
 }
 export default Slider;
