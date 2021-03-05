@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import Button from "components/Button/Button";
 import { AuthContext } from "contexts/auth/auth.context";
 import signupImg from "images/signup.jpg";
+import { closeModal } from "@redq/reuse-modal";
 
 export default function PaymentModal() {
   const history = useHistory();
@@ -27,7 +28,10 @@ export default function PaymentModal() {
       />
       <br />
       <Button
-        onClick={() => history.push(`/dashboard/payment`)}
+        onClick={() => {
+          history.push(`/dashboard/payment`);
+          closeModal();
+        }}
         title={`Make Payment`}
       />
     </div>
