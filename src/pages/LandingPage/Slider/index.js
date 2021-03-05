@@ -13,6 +13,7 @@ import Button from "components/Button/Button";
 import favboylap from "images/fav-lap.png";
 import { themeGet } from "@styled-system/theme-get";
 import { AuthContext } from "contexts/auth/auth.context";
+import Sticky from 'react-stickynode';
 
 import lady from "images/lady.png";
 import leafs from "images/home_page/leaves.png";
@@ -96,7 +97,7 @@ function Slider() {
         }}
       >
         <div style={{ position: "relative", bottom: "50px" }}>
-          <FloatingImage src={favboylap} alt="pics" className="ml-32 ml-5 " />
+          <FloatingImage src={favboylap} alt="pics" className="ml-32 lg:right-2/3" />
         </div>
         <Section
           heading={sections[0].heading}
@@ -142,7 +143,7 @@ function Slider() {
           style={{
             position: "absolute",
             right: 0,
-            top: "500px",
+            top:"540px",
             zIndex: 0,
           }}
         >
@@ -151,6 +152,7 @@ function Slider() {
             alt="leafs  not found"
             height="150px"
             width="150px"
+
           />
         </div>
       </BannerWrapper>{" "}

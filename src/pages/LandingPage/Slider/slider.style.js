@@ -126,9 +126,14 @@ export const GetStarted = styled.div`
 export const FloatingImage = styled.img`
   position: fixed;
   bottom: 12px;
-  right: 36%;
+  right: 30%;
   width: 250px;
   animation: ${float} 6s ease-in-out infinite;
+
+  @media only screen and (min-width: 1024px) {
+    right: 25%;
+    bottom: 15%;
+  }
 `;
 
 export const Row = styled.div``;
