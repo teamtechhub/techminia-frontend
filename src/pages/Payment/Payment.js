@@ -3,7 +3,7 @@ import { axiosInstance, tokenConfig } from "utils/axios";
 import { WizardCard } from "pages/Dashboard/Dashboard.style";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { closeModal, openModal } from "@redq/reuse-modal";
+import { openModal } from "@redq/reuse-modal";
 import "./payment.scss";
 import Button from "components/Button/Button";
 import PaymentContainer from "containers/Payment/Payment";
@@ -79,10 +79,6 @@ export default function Payment() {
   const [plan, setPlan] = useState();
   const alert = useAlert();
 
-  useEffect(() => {
-    closeModal();
-  }, []);
-
   const newConnection = (transaction_id) => {
     const mpesaSocket = new WebSocket(
       `${BASE_WEBSOCKET_URL}/mpesa/${
@@ -92,9 +88,7 @@ export default function Payment() {
 
     mpesaSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
-
       if (data.response) {
-        console.log(data.response);
         if (data.response.result_description === "Request cancelled by user") {
           handleModal(
             "Payment Unsuccessful",
@@ -215,7 +209,7 @@ export default function Payment() {
 
   return (
     <>
-      {profile.subscription === null ? (
+      {profile.subscription && profile.subscription.state.toString() !== "1" ? (
         <div style={{ padding: "0 0 60px 0" }}>
           <section className="section-plans" id="section-plans">
             <div className="u-center-text u-margin-bottom-big">

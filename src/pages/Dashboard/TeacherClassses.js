@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Col2,
   CourseTitle,
@@ -88,14 +88,15 @@ export default function TeacherClassses({ setView }) {
   return (
     <>
       <CardWrapper>
-        {profile.is_teacher && profile.extended_profile.is_darasa_teacher ? (
-          <Button
-            onClick={() => setView(false)}
-            style={{ float: "right", margin: "5px" }}
-            title={`Add Lessons`}
-          />
-        ) : null}
-
+        {profile.is_teacher
+          ? profile.extended_profile.is_darasa_teacher && (
+              <Button
+                onClick={() => setView(false)}
+                style={{ float: "right", margin: "5px" }}
+                title={`Add Lessons`}
+              />
+            )
+          : null}
         <br />
         {classes && selectedTeacher
           ? classes

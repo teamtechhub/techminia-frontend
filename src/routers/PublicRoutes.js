@@ -24,27 +24,12 @@ const PublicRoutes = ({ deviceType }) => (
       <Route exact path={`/privacy-policy`}>
         <PrivacyPage deviceType={deviceType} />
       </Route>
-      {/* <Route exact path={`/library`}>
-        <Library deviceType={deviceType} />
-      </Route> */}
       <Route exact path={`/contact-us`}>
         <Contact deviceType={deviceType} />
       </Route>
-      {/* <Route exact path={`/product/:slug`}>
-        <ProductPage deviceType={deviceType} />
-      </Route>
-      <Route exact path={`/checkout`}>
-        <CheckoutPage deviceType={deviceType} />
-      </Route> */}
       <Route exact path={`/bbb`}>
         <BigBlueButton deviceType={deviceType} />
       </Route>
-
-      {/* <Route path="/new-topic" component={NewTopicPage} /> */}
-      {/* <Route
-        path="/topics/:topicSlug([A-Za-z0-9_\-\.]+)/new-thread"
-        component={NewThreadPage}
-      /> */}
       <Route
         exact
         path={`/auth`}

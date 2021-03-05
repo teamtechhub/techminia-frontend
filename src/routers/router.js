@@ -7,7 +7,6 @@ import { AuthContext } from "contexts/auth/auth.context";
 import PrivateRoutes from "./PrivateRoutes";
 
 function BaseRouter({ deviceType }) {
-  console.log(deviceType);
   const { isAuthenticated } = useContext(AuthContext);
   const authentication = () =>
     isAuthenticated ? (
