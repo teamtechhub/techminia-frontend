@@ -31,42 +31,42 @@ import moment from "moment";
 import { BASE_WEBSOCKET_URL } from "constants/constants";
 
 const cards = [
+  // {
+  //   id: 0,
+  //   frequency: "Daily",
+  //   price: 50,
+  //   name: "Basic",
+  //   save: 0,
+  //   mpesa_amount: 50,
+  //   color: "#ac3581",
+  // },
   {
-    id: 0,
-    frequency: "Montly",
+    id: 1,
+    frequency: "Monthly",
     price: 999,
-    name: "Basic",
+    name: "Plus",
     save: 0,
     mpesa_amount: 999,
     color: "#ac3581",
   },
   {
-    id: 1,
-    frequency: "6 Months",
-    price: 5000,
-    name: "Plus",
-    save: 0,
-    mpesa_amount: 5000,
-    color: "#ac3581",
-  },
-  {
     id: 2,
-    frequency: "12 Months",
-    price: 10000,
+    frequency: "Semi Annually",
+    price: 5000,
     name: "Pro",
     save: 1000,
-    mpesa_amount: 10000,
+    mpesa_amount: 5000,
     color: "#ed145b",
   },
-  // {
-  //   id: 3,
-  //   frequency: "Annually",
-  //   price: 10000,
-  //   name: "Ultimate",
-  //   save: 2000,
-  //   mpesa_amount: 4,
-  //   color: "#ef5927",
-  // },
+  {
+    id: 3,
+    frequency: "Annually",
+    price: 10000,
+    name: "Ultimate",
+    save: 2000,
+    mpesa_amount: 4,
+    color: "#ef5927",
+  },
 ];
 
 export default function Payment() {
