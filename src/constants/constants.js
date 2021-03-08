@@ -14,10 +14,9 @@ export const BASE_WEBSOCKET_URL =
   process.env.API_WEBSOCKET_URL || "wss://techminia.com";
 export const CURRENCY = "Ksh.";
 
-
-
 //for local developement
 
-// export const BASE_WEBSOCKET_URL = process.env.API_WEBSOCKET_URL || "ws://localhost:8000.com";
+// export const BASE_WEBSOCKET_URL =
+//   process.env.API_WEBSOCKET_URL || "ws://localhost:8000";
 
-// export const BASE_URL = process.env.API_URL || "http://localhost:8000.com";
+// export const BASE_URL = process.env.API_URL || "http://localhost:8000";

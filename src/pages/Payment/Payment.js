@@ -224,7 +224,9 @@ export default function Payment() {
                       <div className={`card__side card__side--front-${i + 1}`}>
                         <div className={`card__title card__title--${i + 1}`}>
                           <i className="fas fa-paper-plane"></i>
-                          <h4 className="card__heading">{card.name}</h4>
+                          <h5 className="card__heading text-5xl">
+                            {card.name}
+                          </h5>
                         </div>
                       </div>
                       <div
