@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "darasa.co.ke",
+  "Id": "6a3d22ba-868f-494b-ac23-f5046b45200e"
+}
