@@ -286,158 +286,162 @@ export default function Session(props) {
     return <Error500 err={error} />;
   }
 
-  return useMemo(
-    () => (
-      <>
-        {allSessions.length > 0
-          ? allSessions.map((sess, i) => {
-              return (
-                <ProfileContent key={i} style={{ width: "100%" }}>
-                  <WizardCard style={{ minHeight: 0 }}>
+  //removed the usememo hook to fix the addlesson button bug
+  //Todo check why use memo hook causes the state addlesson not to update after button click
+
+  return (
+    <>
+      {allSessions.length > 0
+        ? allSessions.map((sess, i) => {
+            return (
+              <ProfileContent key={i} style={{ width: "100%" }}>
+                <WizardCard style={{ minHeight: 0 }}>
+                  <ProfileCardHead className="card-topline">
+                    {i + 1}.{" "}
+                    <header>
+                      {sess.name} - {sess.video_url}
+                    </header>
+                    <Btn
+                      style={{
+                        background: "#ef592b",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => {
+                        setInitialValues({ ...sess });
+                        setEditting(true);
+                      }}
+                      title="Edit"
+                    />
+                    <Btn
+                      style={{
+                        background: "#e90b0bbf",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => deleteSession(sess)}
+                      title="Delete"
+                    />
+                    <Btn
+                      style={{
+                        background: "##652e8d",
+                        margin: "5px",
+                        height: "25px",
+                        padding: "0 10px",
+                      }}
+                      onClick={() => handleViewLesson(sess)}
+                      title="View Lesson"
+                    />
+                  </ProfileCardHead>
+                </WizardCard>
+              </ProfileContent>
+            );
+          })
+        : null}
+      {addLesson ? (
+        <Formik
+          initialValues={initialValues}
+          validationSchema={sessionValidationSchema}
+          enableReinitialize
+          onSubmit={editting ? onChangeSubmit : onAddSubmit}
+        >
+          {(formik) => {
+            return (
+              <Form>
+                <WizardLeftSideCard>
+                  <WizardCard>
                     <ProfileCardHead className="card-topline">
-                      {i + 1}.{" "}
-                      <header>
-                        {sess.name} - {sess.video_url}
-                      </header>
-                      <Btn
-                        style={{
-                          background: "#ef592b",
-                          margin: "5px",
-                          height: "25px",
-                          padding: "0 10px",
-                        }}
-                        onClick={() => {
-                          setInitialValues({ ...sess });
-                          setEditting(true);
-                        }}
-                        title="Edit"
-                      />
-                      <Btn
-                        style={{
-                          background: "#e90b0bbf",
-                          margin: "5px",
-                          height: "25px",
-                          padding: "0 10px",
-                        }}
-                        onClick={() => deleteSession(sess)}
-                        title="Delete"
-                      />
-                      <Btn
-                        style={{
-                          background: "##652e8d",
-                          margin: "5px",
-                          height: "25px",
-                          padding: "0 10px",
-                        }}
-                        onClick={() => handleViewLesson(sess)}
-                        title="View Lesson"
-                      />
+                      <header>Add Video URL/Link For your lesson</header>
                     </ProfileCardHead>
+                    <ProfileCardBody>
+                      <FormikControl
+                        control="input"
+                        type="text"
+                        label="Lesson Name"
+                        name="name"
+                        style={{
+                          height: "50px",
+                          borderRight: "transparent",
+                          borderLeft: "transparent",
+                          borderTop: "transparent",
+                          fontWeight: "50px",
+                          fontSize: "20px",
+                          borderBottom: "10px black",
+                        }}
+                      />
+                      <FormikControl
+                        control="input"
+                        type="text"
+                        label="Copy Video Link Here"
+                        name="video_url"
+                        style={{
+                          height: "50px",
+                          borderRight: "transparent",
+                          borderLeft: "transparent",
+                          borderTop: "transparent",
+                          fontWeight: "50px",
+                          fontSize: "20px",
+                          borderBottom: "10px black",
+                        }}
+                      />
+
+                      <FormikControl
+                        control="input"
+                        type="file"
+                        doc={true}
+                        multiple={true}
+                        label="Lesson Documents"
+                        name="documents"
+                      />
+                    </ProfileCardBody>
+                  </WizardCard>
+                </WizardLeftSideCard>
+                <ProfileContent>
+                  <WizardCard>
+                    <ProfileCardHead className="card-topline">
+                      <header>Lesson Summary Notes</header>
+                    </ProfileCardHead>
+                    <ProfileCardBody>
+                      <FormikControl
+                        control="textarea"
+                        name="notes"
+                        rte={true}
+                      />
+                      <Br />
+                      <Br />
+                      <Button
+                        type="submit"
+                        size="small"
+                        fullWidth
+                        isLoading={loading}
+                        title={editting ? `Edit Lesson` : "Create Lesson"}
+                        style={{ width: "100%", fontSize: 15, color: "#fff" }}
+                        //   disabled={!formik.isValid}
+                      />
+                    </ProfileCardBody>
                   </WizardCard>
                 </ProfileContent>
-              );
-            })
-          : null}
-        {addLesson ? (
-          <Formik
-            initialValues={initialValues}
-            validationSchema={sessionValidationSchema}
-            enableReinitialize
-            onSubmit={editting ? onChangeSubmit : onAddSubmit}
-          >
-            {(formik) => {
-              return (
-                <Form>
-                  <WizardLeftSideCard>
-                    <WizardCard>
-                      <ProfileCardHead className="card-topline">
-                        <header>Add Video URL/Link For your lesson</header>
-                      </ProfileCardHead>
-                      <ProfileCardBody>
-                        <FormikControl
-                          control="input"
-                          type="text"
-                          label="Lesson Name"
-                          name="name"
-                          style={{
-                            height: "50px",
-                            borderRight: "transparent",
-                            borderLeft: "transparent",
-                            borderTop: "transparent",
-                            fontWeight: "50px",
-                            fontSize: "20px",
-                            borderBottom: "10px black",
-                          }}
-                        />
-                        <FormikControl
-                          control="input"
-                          type="text"
-                          label="Copy Video Link Here"
-                          name="video_url"
-                          style={{
-                            height: "50px",
-                            borderRight: "transparent",
-                            borderLeft: "transparent",
-                            borderTop: "transparent",
-                            fontWeight: "50px",
-                            fontSize: "20px",
-                            borderBottom: "10px black",
-                          }}
-                        />
-
-                        <FormikControl
-                          control="input"
-                          type="file"
-                          doc={true}
-                          multiple={true}
-                          label="Lesson Documents"
-                          name="documents"
-                        />
-                      </ProfileCardBody>
-                    </WizardCard>
-                  </WizardLeftSideCard>
-                  <ProfileContent>
-                    <WizardCard>
-                      <ProfileCardHead className="card-topline">
-                        <header>Lesson Summary Notes</header>
-                      </ProfileCardHead>
-                      <ProfileCardBody>
-                        <FormikControl
-                          control="textarea"
-                          name="notes"
-                          rte={true}
-                        />
-                        <Br />
-                        <Br />
-                        <Button
-                          type="submit"
-                          size="small"
-                          fullWidth
-                          isLoading={loading}
-                          title={editting ? `Edit Lesson` : "Create Lesson"}
-                          style={{ width: "100%", fontSize: 15, color: "#fff" }}
-                          //   disabled={!formik.isValid}
-                        />
-                      </ProfileCardBody>
-                    </WizardCard>
-                  </ProfileContent>
-                </Form>
-              );
-            }}
-          </Formik>
-        ) : (
-          <Button
-            size="small"
-            onClick={() => setAddLesson(true)}
-            title={"Add Lesson"}
-            style={{ width: "100%", fontSize: 15, color: "#fff" }}
-            //   disabled={!formik.isValid}
-          />
-        )}
-      </>
-    ),
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [allSessions, initialValues, loading]
+              </Form>
+            );
+          }}
+        </Formik>
+      ) : (
+        <Button
+          size="small"
+          onClick={() => {
+            console.log("button clickedto add video");
+            setAddLesson((l) => true);
+            console.log(`the value of add lesson is ${addLesson}`);
+          }}
+          title={"Add Lesson"}
+          style={{ width: "100%", fontSize: 15, color: "#fff" }}
+          //   disabled={!formik.isValid}
+        />
+      )}
+    </>
   );
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }
