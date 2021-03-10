@@ -124,6 +124,7 @@ export default function TeacherWizard() {
 const WizardController = ({ SW, globalState }) => {
   const history = useHistory();
   function createForm() {
+    console.log("the button was pressd-- for adding assessment")
     axiosInstance.post(`/form/`, {}, tokenConfig()).then((res) => {
       axiosInstance
         .patch(
