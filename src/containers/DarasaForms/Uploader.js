@@ -13,6 +13,7 @@ import { UploadIcon } from "../AllSvgIcon";
 import Button from "components/Button/Button";
 import { PicInput } from "containers/DarasaForms/df.style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileImage } from "@fortawesome/fontawesome-free-solid";
 
 function Uploader({ onChange, imageURL, doc, multiple, minimal, preview }) {
   const [files, setFiles] = useState(
@@ -94,7 +95,7 @@ function Uploader({ onChange, imageURL, doc, multiple, minimal, preview }) {
             <PicInput>
               <input {...getInputProps()} />
               <FontAwesomeIcon
-                icon={"file-image"}
+                icon={faFileImage}
                 className="icon"
                 style={{
                   height: "100%",

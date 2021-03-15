@@ -1,3 +1,4 @@
+import { faAlignLeft, faCheck, faCheckCircle, faCheckSquare, faEye, faParagraph, faTrash } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { openModal } from "@redq/reuse-modal";
 import AccordionWrapper from "components/Accordion/Accordion.style";
@@ -186,27 +187,27 @@ export default function QuestionTab() {
     {
       key: "txt",
       Value: "Short Text",
-      icon: <FontAwesomeIcon icon="align-left" className="icon" />,
+      icon: <FontAwesomeIcon icon={faAlignLeft} className="icon" />,
     },
     {
       key: "lng_txt",
       Value: "Long Answer",
-      icon: <FontAwesomeIcon icon="paragraph" className="icon" />,
+      icon: <FontAwesomeIcon icon={faParagraph} className="icon" />,
     },
     {
       key: "mcq_one",
       Value: "Multiple Choice",
-      icon: <FontAwesomeIcon icon="check-circle" className="icon" />,
+      icon: <FontAwesomeIcon icon={faCheckCircle} className="icon" />,
     },
     {
       key: "mcq_many",
       Value: "Check Boxes",
-      icon: <FontAwesomeIcon icon="check-square" className="icon" />,
+      icon: <FontAwesomeIcon icon={faCheckSquare} className="icon" />,
     },
     {
       key: "binary",
       Value: "Yes/No",
-      icon: <FontAwesomeIcon icon="check" className="icon" />,
+      icon: <FontAwesomeIcon icon={faCheck} className="icon" />,
     },
   ];
 
@@ -1624,7 +1625,7 @@ export default function QuestionTab() {
                             textTransform: "none",
                           }}
                           title={
-                            <FontAwesomeIcon icon="eye" className="icon" />
+                            <FontAwesomeIcon icon={faEye} className="icon" />
                           }
                         />
                         <Button
@@ -1638,7 +1639,7 @@ export default function QuestionTab() {
                             textTransform: "none",
                           }}
                           title={
-                            <FontAwesomeIcon icon="trash" className="icon" />
+                            <FontAwesomeIcon icon={faTrash} className="icon" />
                           }
                         />
                         <Button

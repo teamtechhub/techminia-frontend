@@ -17,6 +17,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "contexts/auth/auth.context";
+import { faPlayCircle } from "@fortawesome/fontawesome-free-solid";
 
 export default function TeacherClassses({ setView }) {
   const history = useHistory();
@@ -186,7 +187,7 @@ export default function TeacherClassses({ setView }) {
                                             >
                                               <h3>
                                                 <FontAwesomeIcon
-                                                  icon={"play-circle"}
+                                                  icon={faPlayCircle}
                                                 />{" "}
                                                 VIEW LESSON
                                               </h3>

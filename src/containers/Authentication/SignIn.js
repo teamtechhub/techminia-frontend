@@ -1,4 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import  {FontAwesomeIcon}  from "@fortawesome/react-fontawesome";
+import { faEnvelope, faPhone } from '@fortawesome/fontawesome-free-solid'
+
 import { closeModal } from "@redq/reuse-modal";
 import Error500 from "components/Error/Error500";
 import FormikControl from "containers/FormikContainer/FormikControl";
@@ -276,7 +278,7 @@ export default function SignInModal() {
             fullwidth
             title={
               <>
-                <FontAwesomeIcon icon={"phone"} /> Log in using phone
+                <FontAwesomeIcon   icon={faPhone}  className="mr-2"/> Log in using phone
               </>
             }
             onClick={handlePhoneButtonClick}
@@ -284,6 +286,7 @@ export default function SignInModal() {
               margin: "10px 0",
               background: "#ec7623",
               color: "#ffffff",
+
             }}
           />
         )}
@@ -296,7 +299,7 @@ export default function SignInModal() {
             fullwidth
             title={
               <>
-                <FontAwesomeIcon icon={"envelope"} /> Log in using email
+                <FontAwesomeIcon   icon={faEnvelope} className="mr-2"/> Log in using email
               </>
             }
             onClick={handleEmailButtonClick}

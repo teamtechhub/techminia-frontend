@@ -7,6 +7,8 @@ import PhoneInput from "react-phone-input-2";
 import { themeGet } from "@styled-system/theme-get";
 import ReactCodeInput from "react-code-input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye , faEyeSlash } from '@fortawesome/fontawesome-free-solid'
+
 
 function setImageFieldValue(img) {
   if (typeof img !== "string" && typeof img !== undefined && img !== null) {
@@ -102,7 +104,7 @@ function Input(props) {
         <>
           {type === "password" ? (
             <FontAwesomeIcon
-              icon={show ? "eye" : "eye-slash"}
+              icon={show ? faEye : faEyeSlash}
               className="icon"
               onClick={handleShow}
               style={{

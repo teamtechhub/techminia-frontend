@@ -1,4 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from '@fortawesome/fontawesome-free-solid'
+
 import React from "react";
 import { Col, Counter, CounterText, ListItem, Row } from "./style";
 
@@ -7,7 +9,7 @@ export default function TopicListItem(props) {
     <ListItem onClick={props.onClick}>
       <Row>
         <Col>
-          <FontAwesomeIcon icon={"comments"} />
+          <FontAwesomeIcon icon={faComment} />
         </Col>
         <Col md={10}>
           <h4>{props.item.title}</h4>

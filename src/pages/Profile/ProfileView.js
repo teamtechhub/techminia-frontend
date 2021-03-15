@@ -27,6 +27,7 @@ import ImageWrapper from "components/Image/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PasswordChange from "containers/Authentication/passwordChange";
 import DraftRenderer from "components/DraftRenderer/DraftRenderer";
+import { faCircle } from "@fortawesome/fontawesome-free-solid";
 
 const ProfileView = () => {
   const {
@@ -166,7 +167,7 @@ const ProfileView = () => {
             <Ul className="performance-list">
               <li>
                 <a href="/">
-                  <FontAwesomeIcon icon={"circle"} className="icon" /> Total
+                  <FontAwesomeIcon icon={faCircle} className="icon" /> Total
                   Classes
                   <span>22</span>
                 </a>

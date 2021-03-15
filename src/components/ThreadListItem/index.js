@@ -1,4 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from '@fortawesome/fontawesome-free-solid'
+
 import React from "react";
 import { Col, Counter, CounterText, ListItem, Row } from "./styles";
 
@@ -7,7 +9,7 @@ function ThreadListItem(props) {
     <ListItem action onClick={props.onClick}>
       <Row className="row">
         <Col md={1}>
-          <FontAwesomeIcon icon={"comment"} />
+          <FontAwesomeIcon icon={faComment} />
         </Col>
         <Col md={10}>
           <h5>{props.item.title}</h5>

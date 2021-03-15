@@ -18,6 +18,7 @@ import Button from "components/Button/Button";
 import Topic from "./forms/topic";
 import { axiosInstance, tokenConfig } from "utils/axios";
 import { useHistory } from "react-router-dom";
+import { faBook, faPlayCircle } from "@fortawesome/fontawesome-free-solid";
 
 export default function TeacherWizard() {
   const [state, updateState] = useState({
@@ -82,20 +83,20 @@ export default function TeacherWizard() {
           globalState={globalState}
           subjectChange={setSubject}
           classChange={setTeacherClass}
-          Icon={<FontAwesomeIcon icon={"book"} className="icon" />}
+          Icon={<FontAwesomeIcon icon={faBook} className="icon" />}
         />
         <Syllabus
           name={"Syllabus"}
           syllabusChange={setSyllabus}
           selectedClass={teacherClass}
           selectedSubject={subject}
-          Icon={<FontAwesomeIcon icon={"play-circle"} className="icon" />}
+          Icon={<FontAwesomeIcon icon={faPlayCircle} className="icon" />}
         />
         <Topic
           name={"Topic"}
           topicChange={setTopic}
           selectedSyllabus={syllabus}
-          Icon={<FontAwesomeIcon icon={"play-circle"} className="icon" />}
+          Icon={<FontAwesomeIcon icon={faPlayCircle} className="icon" />}
         />
         <Session
           name={"Lesson"}
@@ -104,7 +105,7 @@ export default function TeacherWizard() {
           selectedSyllabus={syllabus}
           selectedSubject={subject}
           selectedTopic={topic}
-          Icon={<FontAwesomeIcon icon={"play-circle"} className="icon" />}
+          Icon={<FontAwesomeIcon icon={faPlayCircle} className="icon" />}
         />
       </StepWizard>
       <br />

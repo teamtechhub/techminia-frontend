@@ -160,19 +160,21 @@ export default function Video(props) {
   // const renderLoadButton = (url, label) => {
   //   return <button onClick={() => load(url)}>{label}</button>;
   // };
+
+  let isBig = props.isBig || false;
   return (
     <>
       <VideoPlayer
         role="region"
         tabIndex="-1"
-        className="player-wrapper "
-        style={{ width: "100%" }}
+        className={`player-wrapper , ${isBig ? "h-96 " : ""} `}
+        style={{ width: "100%", }}
         // style="padding-top: 42.5781%;"
       >
         <ReactPlayer
           onClick={handlePlayPause}
           ref={ref}
-          className="react-player m-0 p-0"
+          className="react-player  m-0 p-0"
           // style={{ minHeight: "400px" }}
           width="100%"
           height="100%"

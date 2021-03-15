@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import inputIsValid from "./validate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from "@fortawesome/fontawesome";
-import solid from "@fortawesome/fontawesome-free-solid";
+import solid, { faStar, faStarHalf } from "@fortawesome/fontawesome-free-solid";
 import regular from "@fortawesome/fontawesome-free-regular";
 
 fontawesome.library.add(solid, regular);
@@ -57,7 +57,7 @@ export default class StarRating extends Component {
             .fill(null)
             .map((item, i) => {
               return (
-                <FontAwesomeIcon className="star" key={`fs${i}`} icon="star" />
+                <FontAwesomeIcon className={faStar} key={`fs${i}`} icon="star" />
               );
             })
         : "";
@@ -70,9 +70,9 @@ export default class StarRating extends Component {
             .map((item, i) => {
               return (
                 <span key={`hs${i}`} className="fa-layers fa-fw star">
-                  <FontAwesomeIcon icon="star-half" />
+                  <FontAwesomeIcon icon={faStarHalf} />
                   <FontAwesomeIcon
-                    icon={["far", "star-half"]}
+                    icon={[faStar, faStarHalf]}
                     flip="horizontal"
                   />
                 </span>
@@ -88,7 +88,7 @@ export default class StarRating extends Component {
             .map((item, i) => {
               return (
                 <FontAwesomeIcon
-                  className="star"
+                  className={faStar}
                   key={`es${i}`}
                   icon={["far", "star"]}
                 />

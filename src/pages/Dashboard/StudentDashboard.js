@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VideoCast from "components/Video/Video";
 import PaymentModal from "components/PaymentModal";
 import { AuthContext } from "contexts/auth/auth.context";
+import { faPlayCircle } from "@fortawesome/fontawesome-free-solid";
 
 export default function StudentDashboard() {
   const {
@@ -238,7 +239,7 @@ export default function StudentDashboard() {
                           key={i}
                           size="small"
                           onClick={() => setSelectedTeacher(teacher)}
-                          title={teacher.name}
+                          title={teacher.name.replace("Mr.", "")}
                           style={{
                             padding: "2px",
                             fontSize: "13px",
@@ -317,7 +318,7 @@ export default function StudentDashboard() {
                                             >
                                               <h3>
                                                 <FontAwesomeIcon
-                                                  icon={"play-circle"}
+                                                  icon={faPlayCircle}
                                                 />{" "}
                                                 VIEW CLASS
                                               </h3>
