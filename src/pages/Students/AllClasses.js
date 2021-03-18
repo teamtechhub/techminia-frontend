@@ -151,9 +151,9 @@ function AllClasses() {
                   .includes(filteredSubject.id)
               )
               .map((item, index) => (
-                <div key={index}>
+                <div className="my-11" key={index}>
                   <h4>{item.name}</h4>
-                  <p>select teacher</p>
+                  <p>select teacher </p>
                   {teachers &&
                     teachers
                       .filter((filteredTeacher) =>

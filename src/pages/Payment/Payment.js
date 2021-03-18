@@ -209,7 +209,8 @@ export default function Payment() {
 
   return (
     <>
-      {profile.subscription && profile.subscription.state.toString() !== "1" ? (
+      {/* && profile.subscription.state.toString() !== "1"    removed this in code because when subscription is null you can check the state property */}
+      {profile.subscription === null ? (
         <div style={{ padding: "0 0 60px 0" }}>
           <section className="section-plans" id="section-plans">
             <div className="u-center-text u-margin-bottom-big">
@@ -331,6 +332,7 @@ export default function Payment() {
         </div>
       ) : (
         <ProfileCard>
+          {console.log("the profile is ", profile.subscription)}
           <ProfileCardHead className="card-topline">
             <header>Account Details</header>
           </ProfileCardHead>

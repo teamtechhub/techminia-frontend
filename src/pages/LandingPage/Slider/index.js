@@ -6,7 +6,7 @@ import Section from "./Section";
 import AwesomeSlider from "react-awesome-slider";
 import styled from "styled-components";
 import blob from "images/home_page/blob.png";
-import { BannerWrapper, FloatingImage } from "./slider.style";
+import { BannerWrapper, FloatingImage, LeafsImg } from "./slider.style";
 import CustomParticles from "./Particles";
 import Button from "components/Button/Button";
 // import boy from "images/guy-01.png";
@@ -139,16 +139,15 @@ function Slider() {
           width="150px"
         />
       </div>
-      <div
-        style={{
-          position: "absolute",
-          right: 0,
-          top: "540px",
-          zIndex: 0,
-        }}
-      >
-        <img src={leafs} alt="leafs  not found" height="150px" width="150px" />
-      </div>
+      <LeafsImg>
+        <img
+          src={leafs}
+          alt="leafs  not found"
+          height="150px"
+          width="150px"
+          style={{ zIndex: 3 }}
+        />
+      </LeafsImg>
     </BannerWrapper>
     // </CustomParticles>
   );

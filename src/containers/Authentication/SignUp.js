@@ -57,6 +57,7 @@ export default function SignOutModal() {
       intro: `animated intro`,
     },
   });
+  const { teacherAuthState } = authState;
   const setInstance = (SW) => {
     setState({
       ...state,
@@ -579,7 +580,7 @@ export default function SignOutModal() {
                                   /> */}
                                 </>
                               )}
-                              {isTeacher && (
+                              {isTeacher || teacherAuthState ? (
                                 <>
                                   <FormikControl
                                     control="select"
@@ -600,7 +601,7 @@ export default function SignOutModal() {
                                     name="extended_user.tsc_id"
                                   />
                                 </>
-                              )}
+                              ) : null}
                               <HelperText style={{ padding: "20px 0 30px" }}>
                                 By signing up, you agree to Darasa's{" "}
                                 <strong

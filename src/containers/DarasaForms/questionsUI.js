@@ -21,8 +21,12 @@ import { CopyIcon, CloseIcon, DragDropIcon } from "components/AllSvgIcon";
 import { Panel } from "rc-collapse";
 import TextField from "components/forms/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle,faCheckSquare, faEye, faTrash } from '@fortawesome/fontawesome-free-solid'
-
+import {
+  faCheckCircle,
+  faCheckSquare,
+  faEye,
+  faTrash,
+} from "@fortawesome/fontawesome-free-solid";
 
 const typeChooserOptions = [
   // {
@@ -1074,7 +1078,10 @@ export default function QuestionsUI(
                                 textTransform: "none",
                               }}
                               title={
-                                <FontAwesomeIcon icon={faEye} className="icon" />
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  className="icon"
+                                />
                               }
                             />
                             <Button

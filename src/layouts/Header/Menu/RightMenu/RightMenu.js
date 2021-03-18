@@ -27,9 +27,10 @@ export const RightMenu = ({ onLogout, avatar, isAuthenticated, onJoin }) => {
   const path = location.pathname.replace(/\/+$/, "");
   const pathname = path[0] === "/" ? path.substr(1) : path;
   const isAuthPage = pathname === "auth";
+  //added this action to the reducer so that it can set the state of auth teacher when so display the second form of teacher
   const setSignup = () => {
     authDispatch({
-      type: "SIGNUP",
+      type: "SIGNUPTEACHER",
     });
   };
   return (

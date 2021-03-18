@@ -4,6 +4,7 @@ const isBrowser = typeof window !== "undefined";
 
 const INITIAL_STATE = {
   isAuthenticated: isBrowser && !!localStorage.getItem("access_token"),
+
   currentForm: "signIn",
   profile: localStorage.getItem("darasa_auth_profile")
     ? JSON.parse(localStorage.getItem("darasa_auth_profile"))
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
         "extended_profile"
       ]
     : {},
+  teacherAuthState: false,
 };
 
 function reducer(state, action) {
@@ -63,6 +65,12 @@ function reducer(state, action) {
     case "SIGNUP":
       return {
         ...state,
+        currentForm: "signUp",
+      };
+    case "SIGNUPTEACHER":
+      return {
+        ...state,
+        teacherAuthState: true,
         currentForm: "signUp",
       };
     case "COMPLETEGOOGLELOGIN":

@@ -88,11 +88,7 @@ export default function Session({ className, view }) {
   const addAllClasses = ["accordion"];
   console.log(reload);
 
-  const btns = [
-    { title: "Notes" },
-    { title: "Comments" },
-    // { title: "Files" }
-  ];
+  const btns = [{ title: "Notes" }, { title: "Comments" }, { title: "Files" }];
 
   const clsID = match.params.classID;
   const SubID = match.params.subjectID;
@@ -482,7 +478,7 @@ export default function Session({ className, view }) {
                   <ProfileCard>
                     <ProfileCardHead className="card-topline">
                       <header>
-                        {subject.name} ~ {cls.name} by {teacher.name}
+                        {subject.name} ~ {cls.name} ~~ from {"Darasa"}
                       </header>
                       {profile.is_teacher &&
                       profile.extended_profile.id === teacher.id ? (
@@ -500,7 +496,11 @@ export default function Session({ className, view }) {
                     </ProfileCardHead>
                     <ProfileCardBody>
                       {/* <img src={session.video_url} alt="tuition" /> */}
-                      <Video url={session.video_url} playercontrols={false} isBig={true} />
+                      <Video
+                        url={session.video_url}
+                        playercontrols={false}
+                        isBig={true}
+                      />
                     </ProfileCardBody>
                   </ProfileCard>
                 </ProfileContent>
@@ -522,12 +522,13 @@ export default function Session({ className, view }) {
                                     activeButton === item.title
                                       ? "#652e8d"
                                       : "#000",
-                                  padding: "2px",
-                                  fontSize: "13px",
-                                  height: "auto",
+                                  fontSize: "15px",
+                                  padding: "0 12px",
+
                                   margin: "5px",
                                   textTransform: "lowercase",
                                 }}
+                                className=" rounded-2xl "
                               />
                             ))}
                           </header>
@@ -556,9 +557,11 @@ export default function Session({ className, view }) {
                             </Notes>
                           </ProfileCardBody>
                         )}
-                        {/* {activeButton === "Files" && (
-                    <ProfileCardBody>Some Docs</ProfileCardBody>
-                  )} */}
+                        {activeButton === "Files" && (
+                          <ProfileCardBody>
+                            Download attachments coming soon
+                          </ProfileCardBody>
+                        )}
                       </>
                     )}
                   </ProfileCard>

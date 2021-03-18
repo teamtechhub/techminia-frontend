@@ -116,6 +116,8 @@ export const BannerCaption = styled.div`
   margin-bottom: 0px;
   box-sizing: border-box;
   margin-top: 0px;
+  @media only screen and (max-width: 600px) {
+  }
 `;
 
 export const GetStarted = styled.div`
@@ -133,6 +135,16 @@ export const FloatingImage = styled.img`
   @media only screen and (min-width: 1024px) {
     right: 25%;
     bottom: 15%;
+  }
+`;
+
+export const LeafsImg = styled.div`
+  position: absolute;
+  right: 0;
+  top: 540px;
+  z-index: 3;
+  @media only screen and (max-width: 700px) {
+    top: 480px;
   }
 `;
 

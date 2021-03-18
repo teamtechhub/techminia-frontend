@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "contexts/auth/auth.context";
 import { slugify } from "utils";
 import { apiErrorHandler } from "utils";
+import { openModal, closeModal } from "@redq/reuse-modal";
 
 export default function Session(props) {
   const {
@@ -281,6 +282,49 @@ export default function Session(props) {
         alert.error(`${apiErrorHandler(err)}`);
       });
   };
+  const confirmDeleteSession = (sess) => {
+    openModal({
+      show: true,
+      overlayClassName: "quick-view-overlay",
+      closeOnClickOutside: true,
+      component: () => <ConfirmDeleteSessionModal sess={sess} />,
+      closeComponent: "",
+      config: {
+        enableResizing: false,
+        disableDragging: true,
+        className: "quick-view-modal",
+        width: 458,
+        height: "auto",
+      },
+    });
+  };
+
+  const ConfirmDeleteSessionModal = ({ sess }) => (
+    <div className=" w-full h-full m-0 p-0 text-center bg-white shadow-2xl flex flex-col pb-10 rounded-lg">
+      <h4 className="font-bold p-5">
+        Are you sure you want to delete the session
+      </h4>
+      <div className="flex flex-row justify-around">
+        <button
+          className=" rounded-2xl px-8 py-1 outline-none bg-red-600 focus:outline-none hover:bg-red-400 text-white font-bold"
+          onClick={() => {
+            deleteSession(sess);
+            closeModal();
+          }}
+        >
+          yes
+        </button>
+        <button
+          className=" rounded-2xl px-8 py-1 bg-green-600 outline-none focus:outline-none hover:bg-green-400 text-white font-bold"
+          onClick={function () {
+            closeModal();
+          }}
+        >
+          cancel
+        </button>
+      </div>
+    </div>
+  );
 
   if (error) {
     return <Error500 err={error} />;
@@ -290,7 +334,7 @@ export default function Session(props) {
   //Todo check why use memo hook causes the state addlesson not to update after button click
 
   return (
-    <>
+    <div>
       {allSessions.length > 0
         ? allSessions.map((sess, i) => {
             return (
@@ -321,8 +365,8 @@ export default function Session(props) {
                         height: "25px",
                         padding: "0 10px",
                       }}
-                      onClick={() => deleteSession(sess)}
-                      title="Delete"
+                      onClick={() => confirmDeleteSession(sess)}
+                      title="Delete "
                     />
                     <Btn
                       style={{
@@ -440,7 +484,7 @@ export default function Session(props) {
           //   disabled={!formik.isValid}
         />
       )}
-    </>
+    </div>
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

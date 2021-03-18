@@ -35,6 +35,7 @@ export default function EditDeleteSession({ session, setEdit }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sess, setSess] = useState(session);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   console.log("check check", profile, profile.extended_profile);
 
   useEffect(() => {
@@ -141,6 +142,16 @@ export default function EditDeleteSession({ session, setEdit }) {
       });
   };
 
+  const confirmDeleteSession = async (sess) => {
+    if (confirmDelete) {
+      console.log("should delete session");
+      return;
+    } else {
+      console.log("delete denied");
+      return;
+    }
+  };
+
   if (error) {
     return <Error500 err={error} />;
   }
@@ -160,7 +171,7 @@ export default function EditDeleteSession({ session, setEdit }) {
                 height: "25px",
                 padding: "0 10px",
               }}
-              onClick={() => deleteSession(sess)}
+              onClick={() => confirmDeleteSession(sess)}
               title="Delete"
             />
             <Btn

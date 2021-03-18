@@ -49,7 +49,7 @@ function EditorField({
   }, [field.value, form.dirty]);
 
   const isValidLength = (contentState) => {
-    const maxLength = rest.maxLength || 1000;
+    const maxLength = 20000;
     return contentState.getPlainText("").length <= maxLength;
   };
 
