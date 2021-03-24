@@ -175,25 +175,25 @@ export default function SignOutModal() {
     });
     history.push("/auth");
   };
-  const handlePhoneConfirm = () => {
+  const handlePhoneConfirm = (pc, lc) => {
     console.log("login values", phoneValues);
     axiosInstance
-      .post(`/auth/verify-phone/`, phoneValues)
+      .post(`/auth/verify-phone/`, pc)
       .then(async (res) => {
         console.log("phone confirm res", res);
-        handleLogin();
+        await handleLogin(lc);
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 500));
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (lc) => {
     console.log("login values", loginValues);
     axiosInstance
-      .post(`/auth/login/`, loginValues)
+      .post(`/auth/login/`, lc)
       .then(async (res) => {
         console.log("data received", res);
         const userPayload = parseJwt(res.data.token.refresh);
@@ -277,7 +277,8 @@ export default function SignOutModal() {
   const onSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
-    recaptcha();
+    setLoading(true);
+    // recaptcha();
 
     const body = values;
     if (isTeacher) {
@@ -293,6 +294,15 @@ export default function SignOutModal() {
 
     setLoginValues({ login: body.phone_number, password: body.password });
     setPhoneValues({ phone_number: body.phone_number, email: body.email });
+
+    let logincreditials = { login: body.phone_number, password: body.password };
+    let phonecreditials = {
+      phone_number: body.phone_number,
+      email: body.email,
+    };
+
+    console.log("login values ", logincreditials);
+    console.log("phone values", phonecreditials);
 
     axiosInstance
       .post(`/auth/register/`, body)
@@ -313,12 +323,14 @@ export default function SignOutModal() {
           },
         });
 
-        await setOtp(true);
-        await sendOTP(values.phone_number);
-
+        // await setOtp(true);
+        // await sendOTP(values.phone_number);
+        await handlePhoneConfirm(phonecreditials, logincreditials);
+        await new Promise((resolve) => setTimeout(resolve, 300));
         console.log("response", res);
         setValidating(false);
         setSubmitting(false);
+        setLoading(false);
       })
       .catch((err) => {
         if (err.response) {
@@ -439,7 +451,10 @@ export default function SignOutModal() {
           ) : (
             <>
               {loading ? (
-                <LoadingIndicator />
+                <>
+                  <h4>creating account ... just relax..</h4>
+                  <LoadingIndicator />
+                </>
               ) : (
                 <>
                   <img
