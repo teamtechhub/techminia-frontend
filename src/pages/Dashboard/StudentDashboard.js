@@ -120,8 +120,8 @@ export default function StudentDashboard() {
   console.log(selectedSession.length);
 
   const onSelectSession = (session, topic, subject) => {
-    console.log(videoCount);
-    handleModal();
+    // console.log(videoCount);
+    // handleModal();
     if (videoCount === 0) {
       setVideoCount(videoCount + 1);
       setSelectedSession(session);
@@ -271,6 +271,7 @@ export default function StudentDashboard() {
                                       onSelectSession(session, topic, item)
                                     }
                                     key={id}
+                                    className="z-40"
                                   >
                                     <Video style={{ margin: "5px" }}>
                                       <VideoPreview
