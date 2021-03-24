@@ -310,7 +310,7 @@ export default function StudentDashboard() {
                                           <Col2>
                                             <WatchButton
                                               onClick={() =>
-                                                redirectSession(
+                                                onSelectSession(
                                                   session,
                                                   topic,
                                                   item
