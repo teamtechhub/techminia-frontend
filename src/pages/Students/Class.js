@@ -14,6 +14,7 @@ import {
 import { animated } from "react-spring";
 import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { logToConsole } from "utils/logging";
 
 export default function Class() {
   const history = useHistory();
@@ -40,7 +41,7 @@ export default function Class() {
         .then(async (res) => {
           await setTreeItems(res.data.results);
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          console.log(res.data.results);
+          logToConsole(res.data.results);
           setLoading(false);
         });
     }
@@ -59,7 +60,7 @@ export default function Class() {
             treeItems.find((a) => a.attending_teacher.id === filteredTeacher.id)
           )[0]
         );
-        console.log(res.data.results);
+        logToConsole(res.data.results);
         setLoading(false);
       });
     }

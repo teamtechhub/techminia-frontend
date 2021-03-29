@@ -1,6 +1,7 @@
 import React from "react";
 import bbb from "bigbluebutton-js";
 import Button from "components/Button/Button";
+import { logToConsole } from "utils/logging";
 
 export default function BigBlueButton() {
   const api = bbb.api(
@@ -19,7 +20,7 @@ export default function BigBlueButton() {
 
   const getBBB = () => {
     http(meetingCreateUrl).then((result) => {
-      console.log(result);
+      logToConsole(result);
 
       let moderatorUrl = api.administration.join(
         "moderator",
@@ -27,12 +28,12 @@ export default function BigBlueButton() {
         "supersecret"
       );
       let attendeeUrl = api.administration.join("attendee", "1", "secret");
-      console.log(
+      logToConsole(
         `Moderator link: ${moderatorUrl}\nAttendee link: ${attendeeUrl}`
       );
 
       let meetingEndUrl = api.administration.end("1", "supersecret");
-      console.log(`End meeting link: ${meetingEndUrl}`);
+      logToConsole(`End meeting link: ${meetingEndUrl}`);
     });
   };
 

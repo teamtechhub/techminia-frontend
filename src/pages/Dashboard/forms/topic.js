@@ -13,6 +13,8 @@ import Button from "components/Button/Button";
 import { Br } from "styles/pages.style";
 import Error500 from "components/Error/Error500";
 import { tokenConfig } from "utils/axios";
+import { logToConsole } from "utils/logging";
+
 import { useAlert } from "react-alert";
 import {
   WizardCard,
@@ -56,12 +58,12 @@ export default function Topic(props) {
             tokenConfig()
           )
           .then((res) => {
-            console.log("res", res.data);
+            logToConsole("res", res.data);
             setTopic(res.data.results);
             setLoading(false);
           })
           .catch((err) => {
-            console.log("res errors", err.response.data);
+            logToConsole("res errors", err.response.data);
             if (err.response) {
               if (err.response.data.user) {
                 setError(err.response.data);
@@ -70,16 +72,16 @@ export default function Topic(props) {
             } else {
               setError(err);
             }
-            console.log(err.response.data);
+            logToConsole(err.response.data);
             setLoading(false);
           });
       } catch (error) {
-        console.log(error);
+        logToConsole(error);
       }
     }
 
     setEditting(false);
-    console.log("not happening");
+    logToConsole("not happening");
     setInitialValues({
       name: "",
       description: "",
@@ -120,13 +122,13 @@ export default function Topic(props) {
         formData.append("background_image", background_image);
       }
       formData.append("description_json", JSON.stringify(description_json));
-      console.log(values);
+      logToConsole(values);
 
       try {
         axiosInstance
           .post(`/curriculum/topic/`, formData, formTokenConfig())
           .then((res) => {
-            console.log("res", res.data);
+            logToConsole("res", res.data);
             setInitialValues(res.data);
             setActiveTopic(res.data);
             alert.success(`${res.data.name} Created Successfully ✔`);
@@ -137,7 +139,7 @@ export default function Topic(props) {
             setLoading(false);
           })
           .catch((err) => {
-            console.log("res errors", err.response.data);
+            logToConsole("res errors", err.response.data);
             if (err.response) {
               if (err.response.data) {
                 if (err.response.data.message) {
@@ -150,7 +152,7 @@ export default function Topic(props) {
             } else {
               setError(err);
             }
-            console.log(err.response.data);
+            logToConsole(err.response.data);
             setSubmitting(false);
             setLoading(false);
           });
@@ -171,12 +173,12 @@ export default function Topic(props) {
 
       formData.append("syllabus", selectedSyllabus.id);
       formData.append("name", name);
-      console.log(typeof background_image);
+      logToConsole(typeof background_image);
       if (typeof background_image !== "string") {
         formData.append("background_image", background_image);
       }
       formData.append("description_json", JSON.stringify(description_json));
-      console.log(values);
+      logToConsole(values);
       try {
         axiosInstance
           .patch(
@@ -202,12 +204,12 @@ export default function Topic(props) {
                 }
               }
               setErrors(err.response.data);
-              console.log("errors za data");
+              logToConsole("errors za data");
             } else {
               setError(err);
-              console.log("errors general");
+              logToConsole("errors general");
             }
-            console.log(err.response.data);
+            logToConsole(err.response.data);
             setSubmitting(false);
             setLoading(false);
           });

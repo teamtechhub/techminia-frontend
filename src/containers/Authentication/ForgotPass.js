@@ -13,6 +13,8 @@ import {
 } from "./SignInOutForm.style";
 import { AuthContext } from "contexts/auth/auth.context";
 import { axiosInstance } from "utils/axios";
+import { logToConsole } from "utils/logging";
+
 import { useAlert } from "react-alert";
 
 export default function ForgotPassModal() {
@@ -44,19 +46,19 @@ export default function ForgotPassModal() {
       axiosInstance
         .post(`/auth/send-reset-password-link/`, body)
         .then((res) => {
-          console.log("email verification data", res.data);
+          logToConsole("email verification data", res.data);
           alert.success("Email Sent ✔");
           setSuccess(true);
           setSubmitting(false);
         })
         .catch((err) => {
-          console.log("error", err.response);
+          logToConsole("error", err.response);
           alert.error(err.response.data.detail);
 
           setSubmitting(false);
         });
     } catch (error) {
-      console.log("catch error", error);
+      logToConsole("catch error", error);
       setSubmitting(false);
     }
   };

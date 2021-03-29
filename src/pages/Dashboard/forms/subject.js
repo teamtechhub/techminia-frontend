@@ -15,6 +15,7 @@ import {
 } from "../../Profile/Profile.style";
 import { AuthContext } from "contexts/auth/auth.context";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
 
 export default function Subject(props) {
   const {
@@ -38,14 +39,14 @@ export default function Subject(props) {
           teachers: [extendedProfile.id],
         })
         .then((res) => {
-          console.log(res);
+          logToConsole(res);
           classChange(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => logToConsole(err));
     }
     if (activeSubject && activeClass) {
       const check = activeSubject.classes.includes(activeClass.id);
-      console.log(check);
+      logToConsole(check);
       if (!check) {
         axiosInstance
           .post(`/forums/topics/`, {
@@ -62,11 +63,11 @@ export default function Subject(props) {
             classes: [activeClass.id],
           })
           .then((res) => {
-            console.log(res);
+            logToConsole(res);
             subjectChange(res.data);
             alert.success(`${res.data.name} added to ${activeClass.name}`);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => logToConsole(err));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,7 +78,7 @@ export default function Subject(props) {
       axiosInstance
         .get(`/curriculum/subject/`, tokenConfig())
         .then((res) => {
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           setSubjects(res.data.results);
         })
         .catch((err) => {
@@ -93,13 +94,13 @@ export default function Subject(props) {
           }
         });
     } catch (error) {
-      console.log(error);
+      logToConsole(error);
     }
     try {
       axiosInstance
         .get(`/curriculum/class/`, tokenConfig())
         .then((res) => {
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           setClasses(res.data.results);
         })
         .catch((err) => {
@@ -113,7 +114,7 @@ export default function Subject(props) {
           }
         });
     } catch (error) {
-      console.log(error);
+      logToConsole(error);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

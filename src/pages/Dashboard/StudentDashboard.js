@@ -24,6 +24,7 @@ import VideoCast from "components/Video/Video";
 import PaymentModal from "components/PaymentModal";
 import { AuthContext } from "contexts/auth/auth.context";
 import { faPlayCircle } from "@fortawesome/fontawesome-free-solid";
+import { logToConsole } from "utils/logging";
 
 export default function StudentDashboard() {
   const {
@@ -41,12 +42,12 @@ export default function StudentDashboard() {
   const [selectedTeacher, setSelectedTeacher] = useState(false);
   const [videoCount, setVideoCount] = useState(0);
 
-  console.log(selectedTeacher);
+  logToConsole(selectedTeacher);
 
   const titles = [
-    { title: "Year" },
-    { title: "Class" },
-    { title: "Grade" },
+    // { title: "Year" },
+    // { title: "Class" },
+    // { title: "Grade" },
     { title: "Form" },
   ];
   useEffect(() => {
@@ -60,14 +61,23 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     if (selectedClass) {
+      logToConsole("the selected class id is ", selectedClass.id);
       setLoading(true);
       axiosInstance
         .get(`/curriculum/syllabus/?class=${selectedClass.id}`, tokenConfig())
         .then(async (res) => {
           await setTreeItems(res.data.results);
+
+          logToConsole(res.data.results);
+        });
+    } else {
+      axiosInstance
+        .get(`/curriculum/syllabus/?class=${3}`, tokenConfig())
+        .then(async (res) => {
+          await setTreeItems(res.data.results);
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          console.log(res.data.results);
+          logToConsole(res.data.results);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,14 +87,14 @@ export default function StudentDashboard() {
     if (treeItems) {
       axiosInstance.get(`account/teachers/`, tokenConfig()).then((res) => {
         setTeachers(res.data.results);
-        console.log("====== tree items ====", treeItems);
+        logToConsole("====== tree items ====", treeItems);
         setSelectedTeacher(
           res.data.results.filter((filteredTeacher) =>
             treeItems.find((a) => a.attending_teacher.id === filteredTeacher.id)
           )[0]
         );
-        console.log("============", selectedTeacher);
-        console.log(res.data.results);
+        logToConsole("============", selectedTeacher);
+        logToConsole(res.data.results);
         setLoading(false);
       });
     }
@@ -116,11 +126,11 @@ export default function StudentDashboard() {
       `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
     );
   };
-  console.log(selectedSession);
-  console.log(selectedSession.length);
+  logToConsole(selectedSession);
+  logToConsole(selectedSession.length);
 
   const onSelectSession = (session, topic, subject) => {
-    // console.log(videoCount);
+    // logToConsole(videoCount);
     // handleModal();
     if (videoCount === 0) {
       setVideoCount(videoCount + 1);
@@ -134,11 +144,11 @@ export default function StudentDashboard() {
                 `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
               );
             } else {
-              console.log("handlemodal");
+              logToConsole("handlemodal");
               handleModal();
             }
           } else {
-            console.log("handlemodal");
+            logToConsole("handlemodal");
             handleModal();
           }
         }
@@ -149,11 +159,11 @@ export default function StudentDashboard() {
               `/dashboard/classes/${selectedClass.id}/${subject.id}/${selectedTeacher.id}/${topic.id}/${session.id}/`
             );
           } else {
-            console.log("handlemodal");
+            logToConsole("handlemodal");
             handleModal();
           }
         } else {
-          console.log("handlemodal");
+          logToConsole("handlemodal");
           handleModal();
         }
       }
@@ -167,7 +177,7 @@ export default function StudentDashboard() {
   return (
     <>
       <CardWrapper>
-        {titles.map((item, xedni) => (
+        {/* {titles.map((item, xedni) => (
           <Button
             key={xedni}
             onClick={() => {
@@ -181,31 +191,33 @@ export default function StudentDashboard() {
               margin: "5px",
             }}
           />
-        ))}
+        ))} */}
         <br />
         {classes &&
           selectedTitle &&
           classes
             .filter((filteredClass) => filteredClass.title === selectedTitle)
-            .map((cls, idx) => (
-              <Button
-                key={idx}
-                onClick={() => {
-                  setSelectedClass(cls);
-                  setLoading(true);
-                }}
-                style={{
-                  borderRadius: "20px",
-                  backgroundColor: selectedClass
-                    ? selectedClass.name === cls.name
-                      ? "#ec7623"
-                      : "#000"
-                    : "#ec7623",
-                  margin: "5px",
-                }}
-                title={`${cls.name}`}
-              />
-            ))}
+            .map((cls, idx) => {
+              return (
+                <Button
+                  key={idx}
+                  onClick={() => {
+                    setSelectedClass(cls);
+                    setLoading(true);
+                  }}
+                  style={{
+                    borderRadius: "20px",
+                    backgroundColor: selectedClass
+                      ? selectedClass.name === cls.name
+                        ? "#ec7623"
+                        : "#000"
+                      : "#ec7623",
+                    margin: "5px",
+                  }}
+                  title={`${cls.name}`}
+                />
+              );
+            })}
       </CardWrapper>
       {loading ? (
         <LoadingIndicator />

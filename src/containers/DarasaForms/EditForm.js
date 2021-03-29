@@ -17,6 +17,7 @@ import Button from "components/Button/Button";
 import { FormWrapper } from "pages/Profile/Profile.style";
 import { useAlert } from "react-alert";
 import { toFormData } from "utils";
+import { logToConsole } from "utils/logging";
 
 export default function EditForm({ formDetails }) {
   const alert = useAlert();
@@ -34,7 +35,7 @@ export default function EditForm({ formDetails }) {
         formTokenConfig()
       )
       .then((res) => {
-        console.log(res);
+        logToConsole(res);
         alert.success(`${res.data.title} Updated Successfully`);
         setInitialValues(res.data);
       });

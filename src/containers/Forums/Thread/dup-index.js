@@ -27,6 +27,7 @@ import {
 import { apiErrorHandler } from "utils";
 import { getTopic } from "../Topics/services";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
 
 export default function ThreadPage({ anonAsUserObject = false }) {
   const {
@@ -226,7 +227,7 @@ export default function ThreadPage({ anonAsUserObject = false }) {
   const handleAddSubmit = (args) => {
     newPostCall(args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -236,7 +237,7 @@ export default function ThreadPage({ anonAsUserObject = false }) {
   const handleUpdateSubmit = (args) => {
     updatePostCall(args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -246,7 +247,7 @@ export default function ThreadPage({ anonAsUserObject = false }) {
   const handleDeleteSubmit = (args) => {
     deletePostCall(args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -256,7 +257,7 @@ export default function ThreadPage({ anonAsUserObject = false }) {
   const handleVote = (...args) => {
     votePostCall(...args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -265,7 +266,7 @@ export default function ThreadPage({ anonAsUserObject = false }) {
 
   // let comments = []
   let rootComment = null;
-  console.log(posts);
+  logToConsole(posts);
 
   if (posts.length > 0) {
     rootComment = (

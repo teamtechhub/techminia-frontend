@@ -7,12 +7,13 @@ import { openModal } from "@redq/reuse-modal";
 import EmailVerificationModal from "./emailVerificationModal";
 import SignInModal from "./SignIn";
 import { axiosInstance } from "utils/axios";
+import { logToConsole } from "utils/logging";
 
 function EmailVerification() {
   let location = useLocation();
   let history = useHistory();
-  console.log("the locatrion props: ", location);
-  console.log("the history props: ", history);
+  logToConsole("the locatrion props: ", location);
+  logToConsole("the history props: ", history);
   let query = new URLSearchParams(location.search);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -63,7 +64,7 @@ function EmailVerification() {
         axiosInstance
           .post(`/auth/verify-registration/`, body)
           .then(async (res) => {
-            console.log("verification data", res.data);
+            logToConsole("verification data", res.data);
             handleModal(
               "Verification Successful ✔",
               "Login to experience the full benefits of Darasa"
@@ -72,11 +73,11 @@ function EmailVerification() {
             handleLogin();
           })
           .catch((err) => {
-            console.log(err);
+            logToConsole(err);
             setError(err);
           });
       } catch (error) {
-        console.log("catch errors: ", JSON.stringify(error));
+        logToConsole("catch errors: ", JSON.stringify(error));
       }
       setLoading(false);
     }

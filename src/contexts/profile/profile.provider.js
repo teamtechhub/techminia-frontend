@@ -67,7 +67,7 @@ function reducer(state, action) {
 
 export const ProfileProvider = ({ children, initData }) => {
   const [state, dispatch] = useReducer(reducer, { ...initData });
-  // console.log(state, 'profile provider state');
+  // logToConsole(state, 'profile provider state');
 
   return (
     <ProfileContext.Provider value={{ state, dispatch }}>

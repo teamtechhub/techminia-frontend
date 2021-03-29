@@ -17,6 +17,8 @@ import { axiosInstance } from "utils/axios";
 import * as Yup from "yup";
 import StudentForm from "pages/Profile/StudentForm";
 import TeacherForm from "pages/Profile/TeacherForm";
+import { logToConsole } from "utils/logging";
+
 import {
   Button,
   Container,
@@ -51,7 +53,7 @@ export default function CompleteGoogleLogin() {
   const [userProfile, setUserProfile] = useState({});
   // const [updateValues, setUpdateValues] = useState({});
 
-  console.log("update", update);
+  logToConsole("update", update);
 
   useEffect(() => {
     if (redirect) {
@@ -73,7 +75,7 @@ export default function CompleteGoogleLogin() {
     axiosInstance
       .post(`/auth/send-reset-password-link/`, { ga: true, login: email })
       .then(async (res) => {
-        console.log("google email reset", res);
+        logToConsole("google email reset", res);
         const url = new URL(res.data.detail);
         const query = new URLSearchParams(url.search);
         if (
@@ -91,7 +93,7 @@ export default function CompleteGoogleLogin() {
         }
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
       });
   }, []);
 
@@ -101,7 +103,7 @@ export default function CompleteGoogleLogin() {
       {
         size: "invisible",
         // callback: function (response) {
-        //   console.log("It works!");
+        //   logToConsole("It works!");
         // },
       }
     );
@@ -174,23 +176,23 @@ export default function CompleteGoogleLogin() {
   };
 
   const handlePhoneConfirm = () => {
-    console.log("login values", phoneValues);
+    logToConsole("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, phoneValues)
       .then(async (res) => {
-        console.log("phone confirm res", res);
+        logToConsole("phone confirm res", res);
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
       });
   };
   const handleResetPassword = (password, phone_number) => {
     const body = { password: password, ...params };
-    console.log("pass reset values", body);
+    logToConsole("pass reset values", body);
     axiosInstance
       .post(`/auth/reset-password/`, body, tokenConfig())
       .then(async (res) => {
-        console.log("reset password res", res);
+        logToConsole("reset password res", res);
         if (res.status === 200) {
           await setOtp(true);
           await sendOTP(phone_number);
@@ -198,7 +200,7 @@ export default function CompleteGoogleLogin() {
         }
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
         return false;
       });
   };
@@ -206,28 +208,28 @@ export default function CompleteGoogleLogin() {
   const otpSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
-    console.log("otp values", values);
+    logToConsole("otp values", values);
     const code = values.code;
 
     window.confirmationResult = confirmationResult;
     confirmationResult
       .confirm(code)
       .then(async (result) => {
-        console.log("result after successful otp confirm: ", result);
+        logToConsole("result after successful otp confirm: ", result);
         await handlePhoneConfirm();
         setUpdate(true);
         setSubmitting(false);
         setValidating(false);
       })
       .catch((error) => {
-        console.log("error on otp submit: ", error);
+        logToConsole("error on otp submit: ", error);
         if (error.code === "auth/code-expired") {
-          console.log("used up code", error.message);
+          logToConsole("used up code", error.message);
         }
         if ((error.code = "auth/invalid-verification-code")) {
-          console.log("error code", error.code);
+          logToConsole("error code", error.code);
         } else {
-          console.log("Something went wrong, Please check your connection");
+          logToConsole("Something went wrong, Please check your connection");
         }
         setSubmitting(false);
         setValidating(false);
@@ -270,7 +272,7 @@ export default function CompleteGoogleLogin() {
           tokenConfig()
         )
         .then(async (res) => {
-          console.log("data received", res);
+          logToConsole("data received", res);
           setUserProfile(res.data);
           const roles = [];
           if (res.data.is_student) {
@@ -299,7 +301,7 @@ export default function CompleteGoogleLogin() {
               profile: res.data,
             },
           });
-          console.log("response", res);
+          logToConsole("response", res);
           setSubmitting(false);
           setValidating(false);
           localStorage.removeItem("darasa_name");
@@ -310,17 +312,17 @@ export default function CompleteGoogleLogin() {
           setSubmitting(false);
           setValidating(false);
           if (err.response) {
-            console.log(err.response.data);
+            logToConsole(err.response.data);
           } else {
             setError(err);
           }
-          console.log(JSON.stringify(err, null, 4));
+          logToConsole(JSON.stringify(err, null, 4));
           setLoading(false);
         });
     }
 
     if (otp) {
-      console.log("otp is true");
+      logToConsole("otp is true");
     }
 
     return null;
@@ -333,22 +335,22 @@ export default function CompleteGoogleLogin() {
     return <Error500 err={error} />;
   }
   const sendOTP = async (phone_number) => {
-    console.log("phone on sendotp", phone_number);
+    logToConsole("phone on sendotp", phone_number);
     try {
-      console.log("trying to send number");
+      logToConsole("trying to send number");
       const appVerifier = window.recaptchaVerifier;
       firebase
         .auth()
         .signInWithPhoneNumber(phone_number, appVerifier)
         .then(async (confirmationResult) => {
           setConfirmationResult(confirmationResult);
-          console.log("confirmation result", confirmationResult);
+          logToConsole("confirmation result", confirmationResult);
           setValidating(false);
           setVerifyOTP(true);
         });
     } catch (err) {
-      console.log("not trying otp");
-      console.log(err);
+      logToConsole("not trying otp");
+      logToConsole(err);
     }
   };
   return (

@@ -31,6 +31,7 @@ import { Br } from "styles/pages.style";
 import { useAlert } from "react-alert";
 import TeacherForm from "./TeacherForm";
 import StudentForm from "./StudentForm";
+import { logToConsole } from "utils/logging";
 
 function Profile() {
   const {
@@ -136,7 +137,7 @@ function Profile() {
   };
 
   const onSubmit = (values, { setErrors, setSubmitting }) => {
-    console.log(values);
+    logToConsole(values);
     const {
       avatar,
       date_of_birth,
@@ -148,7 +149,7 @@ function Profile() {
       about,
     } = values;
     let formData = new FormData();
-    console.log("type of image", typeof avatar);
+    logToConsole("type of image", typeof avatar);
 
     formData.append("avatar", avatar);
     formData.append("surname", surname);
@@ -165,7 +166,7 @@ function Profile() {
       phone_number.replace(/[*?^${}()]|[-]|[ ]/g, "")
     );
 
-    console.log("body values ", formData, values);
+    logToConsole("body values ", formData, values);
 
     setSubmitting(true);
     setLoading(true);
@@ -174,8 +175,8 @@ function Profile() {
         .patch(`/auth/profile/`, formData, formTokenConfig())
         .then((res) => {
           setSubmitting(false);
-          console.log("res", res.data);
-          console.log("res", res.data.about);
+          logToConsole("res", res.data);
+          logToConsole("res", res.data.about);
           addObjectToLocalStorageObject("darasa_auth_profile", res.data);
           // handleModal("Profile Edited Successfully ✔", "");
           alert.success("Profile Edited Successfully ✔");
@@ -187,7 +188,7 @@ function Profile() {
           } else {
             setError(err);
           }
-          console.log(JSON.stringify(err, 4, null));
+          logToConsole(JSON.stringify(err, 4, null));
           setSubmitting(false);
           setLoading(false);
         });

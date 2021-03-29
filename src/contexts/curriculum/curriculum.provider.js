@@ -20,12 +20,12 @@ function reducer(state, action) {
       return { ...state, [action.payload.field]: action.payload.value };
 
     case "ADD_OR_UPDATE_SUBJECTS":
-        return {
-          ...state,
-          wizard_form: {
-            subject: action.payload.subject,
-          },
-        };
+      return {
+        ...state,
+        wizard_form: {
+          subject: action.payload.subject,
+        },
+      };
 
     case "DELETE_CONTACT":
       return {
@@ -119,7 +119,7 @@ export const CurriculumProvider = ({ children }) => {
     reducer,
     INITIAL_STATE
   );
-  console.log(curriculumState, 'curriculum provider state');
+  logToConsole(curriculumState, "curriculum provider state");
 
   return (
     <CurriculumContext.Provider value={{ curriculumState, curriculumDispatch }}>

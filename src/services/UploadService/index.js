@@ -1,11 +1,12 @@
 import { axiosInstance, formTokenConfig } from "utils/axios";
 
 const axios = require("axios");
+import { logToConsole } from "utils/logging";
 
 class UploadService {
   uploadImage(data) {
     return axios.post("http://localhost:5000/", data, {}).then((res) => {
-      //console.log(res.data)
+      //logToConsole(res.data)
       return res.data;
     });
   }

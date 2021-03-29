@@ -15,10 +15,12 @@ export default function QuestionTab(props) {
   });
   const [formData, setFormData] = useState({});
   const [loadingFormData, setLoadingFormData] = useState(true);
+  import { logToConsole } from "utils/logging";
+
 
   useEffect(() => {
     if (props.formData.questions !== undefined) {
-      //console.log(props.formData.questions.length);
+      //logToConsole(props.formData.questions.length);
       if (props.formData.questions.length === 0) {
         setQuestions([
           {
@@ -36,7 +38,7 @@ export default function QuestionTab(props) {
   }, [props.formData]);
 
   function saveQuestions() {
-    console.log("auto saving questions initiated");
+    logToConsole("auto saving questions initiated");
     var data = {
       formId: formData._id,
       name: formData.name,
@@ -46,7 +48,7 @@ export default function QuestionTab(props) {
 
     formService.autoSave(data).then(
       (result) => {
-        console.log(result);
+        logToConsole(result);
         setQuestions(result.questions);
       },
       (error) => {
@@ -56,13 +58,13 @@ export default function QuestionTab(props) {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        console.log(resMessage);
+        logToConsole(resMessage);
       }
     );
   }
 
   function checkImageHereOrNotForQuestion(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "") {
       return false;
     } else {
@@ -71,7 +73,7 @@ export default function QuestionTab(props) {
   }
 
   function checkImageHereOrNotForOption(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "") {
       return false;
     } else {
@@ -200,9 +202,9 @@ export default function QuestionTab(props) {
         optionText: "Option " + (optionsOfQuestion[i].options.length + 1),
       });
     } else {
-      console.log("Max  5 options ");
+      logToConsole("Max  5 options ");
     }
-    //console.log(optionsOfQuestion);
+    //logToConsole(optionsOfQuestion);
     setQuestions(optionsOfQuestion);
   }
 
@@ -211,7 +213,7 @@ export default function QuestionTab(props) {
     if (optionsOfQuestion[i].options.length > 1) {
       optionsOfQuestion[i].options.splice(j, 1);
       setQuestions(optionsOfQuestion);
-      console.log(i + "__" + j);
+      logToConsole(i + "__" + j);
     }
   }
 

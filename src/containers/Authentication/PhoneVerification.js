@@ -17,6 +17,7 @@ import {
   SubHeading,
   Wrapper,
 } from "./SignInOutForm.style";
+import { logToConsole } from "utils/logging";
 
 export default function PhoneVerification() {
   const { authDispatch } = useContext(AuthContext);
@@ -34,7 +35,7 @@ export default function PhoneVerification() {
       {
         size: "invisible",
         // callback: function (response) {
-        //   console.log("It works!");
+        //   logToConsole("It works!");
         // },
       }
     );
@@ -74,17 +75,17 @@ export default function PhoneVerification() {
   };
 
   const handlePhoneConfirm = () => {
-    console.log("login values", phoneValues);
+    logToConsole("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, phoneValues)
       .then(async (res) => {
-        console.log("phone confirm res", res);
+        logToConsole("phone confirm res", res);
         handleLogin();
 
         await new Promise((resolve) => setTimeout(resolve, 3000));
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
       });
   };
 
@@ -98,24 +99,24 @@ export default function PhoneVerification() {
   const otpSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
-    console.log("otp values", values);
+    logToConsole("otp values", values);
     const code = values.code;
 
     window.confirmationResult = confirmationResult;
     confirmationResult
       .confirm(code)
       .then(async (result) => {
-        console.log("result after successful otp confirm: ", result);
+        logToConsole("result after successful otp confirm: ", result);
         await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
       })
       .catch((error) => {
-        console.log("error on otp submit: ", error);
+        logToConsole("error on otp submit: ", error);
         if ((error.code = "auth/invalid-verification-code")) {
-          console.log("error code", error.code);
+          logToConsole("error code", error.code);
         } else {
-          console.log("Something went wrong, Please check your connection");
+          logToConsole("Something went wrong, Please check your connection");
         }
         setSubmitting(false);
         setValidating(false);
@@ -129,21 +130,21 @@ export default function PhoneVerification() {
       ""
     )}`;
     setPhoneValues({ phone_number: phone_number, email: values.email });
-    console.log("phone on sendotp", phone_number);
+    logToConsole("phone on sendotp", phone_number);
     try {
-      console.log("trying to send number");
+      logToConsole("trying to send number");
       const appVerifier = window.recaptchaVerifier;
       firebase
         .auth()
         .signInWithPhoneNumber(phone_number, appVerifier)
         .then(async (confirmationResult) => {
           setConfirmationResult(confirmationResult);
-          console.log("confirmation result", confirmationResult);
+          logToConsole("confirmation result", confirmationResult);
           setVerifyOTP(true);
         });
     } catch (err) {
-      console.log("not trying otp");
-      console.log(err);
+      logToConsole("not trying otp");
+      logToConsole(err);
     }
   };
   return (

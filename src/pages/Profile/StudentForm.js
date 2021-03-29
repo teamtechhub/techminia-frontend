@@ -15,6 +15,7 @@ import Error500 from "components/Error/Error500";
 import { tokenConfig } from "utils/axios";
 import { AuthContext } from "contexts/auth/auth.context";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
 
 export default function StudentForm({ profile, handleRedirect }) {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -37,13 +38,13 @@ export default function StudentForm({ profile, handleRedirect }) {
       setClasses([{ value: "", key: "Choose Class" }, ...all_classes]);
     });
     if (authState.extendedProfile.length > 0) {
-      console.log("happening");
+      logToConsole("happening");
       setInitialStudentValues(authState.extendedProfile);
 
-      console.log(authState.extendedProfile);
+      logToConsole(authState.extendedProfile);
       setEditting(true);
     } else {
-      console.log("not happening");
+      logToConsole("not happening");
       setInitialStudentValues({
         hobbies: [],
         class_level: "",
@@ -68,7 +69,7 @@ export default function StudentForm({ profile, handleRedirect }) {
     axiosInstance
       .post(`/account/students/`, values, tokenConfig())
       .then((res) => {
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         setInitialStudentValues(res.data);
         alert.success("Profile Created Successfully ✔", "");
         addObjectToLocalStorageObject("darasa_student_profile", res.data);
@@ -77,7 +78,7 @@ export default function StudentForm({ profile, handleRedirect }) {
         handleRedirect();
       })
       .catch((err) => {
-        console.log("res errors", err.response.data);
+        logToConsole("res errors", err.response.data);
         if (err.response) {
           if (err.response.data.user) {
             if (err.response.data.user[0] === "This field must be unique.") {
@@ -93,7 +94,7 @@ export default function StudentForm({ profile, handleRedirect }) {
         } else {
           setError(err);
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
@@ -109,7 +110,7 @@ export default function StudentForm({ profile, handleRedirect }) {
       .then((res) => {
         setSubmitting(false);
         setLoading(false);
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         alert.success("Profile Updated Successfully ✔", "");
         addObjectToLocalStorageObject("darasa_student_profile", res.data);
         authDispatch({
@@ -123,12 +124,12 @@ export default function StudentForm({ profile, handleRedirect }) {
       .catch((err) => {
         if (err.response) {
           setErrors(err.response.data);
-          console.log("errors za data");
+          logToConsole("errors za data");
         } else {
           setError(err);
-          console.log("errors general");
+          logToConsole("errors general");
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });

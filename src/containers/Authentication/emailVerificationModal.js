@@ -1,8 +1,9 @@
 import React from "react";
 import { Wrapper, Container, Heading, SubHeading } from "./SignInOutForm.style";
+import { logToConsole } from "utils/logging";
 
 export default function EmailVerificationModal(text, subtext, fx) {
-  console.log("text", text);
+  logToConsole("text", text);
   return (
     <Wrapper>
       <Container style={{ paddingBottom: 30 }}>

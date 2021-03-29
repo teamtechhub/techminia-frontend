@@ -13,6 +13,8 @@ import { addObjectToLocalStorageObject } from "utils";
 import { AuthContext } from "contexts/auth/auth.context";
 import { apiErrorHandler } from "utils";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
+
 import {
   ProfileCard,
   ProfileContent,
@@ -124,7 +126,7 @@ export default function Payment() {
       }
     };
     mpesaSocket.onclose = function (e) {
-      console.log("mpesa connection closed");
+      logToConsole("mpesa connection closed");
     };
   };
 
@@ -204,7 +206,7 @@ export default function Payment() {
 
         setSubmitting(false);
       })
-      .error((err) => console.log(err));
+      .error((err) => logToConsole(err));
   };
 
   return (
@@ -332,7 +334,7 @@ export default function Payment() {
         </div>
       ) : (
         <ProfileCard>
-          {console.log("the profile is ", profile.subscription)}
+          {logToConsole("the profile is ", profile.subscription)}
           <ProfileCardHead className="card-topline">
             <header>Account Details</header>
           </ProfileCardHead>

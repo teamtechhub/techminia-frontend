@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "constants/constants";
 import Cookies from "js-cookie";
+import { logToConsole } from "utils/logging";
 
 const baseUrl = `${BASE_URL}/api`;
 const accessToken = localStorage.getItem("access_token");
@@ -24,10 +25,10 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (!error.response) {
       // network error
-      console.log("Error: Network Error");
+      logToConsole("Error: Network Error");
     } else {
       const originalRequest = error.config;
-      console.log(originalRequest);
+      logToConsole(originalRequest);
 
       // Prevent infinite loops
       if (
@@ -44,17 +45,17 @@ axiosInstance.interceptors.response.use(
         error.response.statusText === "Unauthorized"
       ) {
         const refreshToken = localStorage.getItem("refresh_token");
-        console.log("trying to refresh token");
+        logToConsole("trying to refresh token");
 
         if (refreshToken) {
           const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
 
           // exp date in token is expressed in seconds, while now() returns milliseconds:
           const now = Math.ceil(Date.now() / 1000);
-          console.log(tokenParts.exp);
+          logToConsole(tokenParts.exp);
 
           if (tokenParts.exp > now) {
-            console.log("refresshing token");
+            logToConsole("refresshing token");
             return await axiosInstance
               .post("/auth/token/refresh/", { refresh: refreshToken })
               .then(async (response) => {
@@ -71,14 +72,14 @@ axiosInstance.interceptors.response.use(
                 return await axiosInstance(originalRequest);
               })
               .catch((err) => {
-                console.log(err);
+                logToConsole(err);
               });
           } else {
-            console.log("Refresh token is expired", tokenParts.exp, now);
+            logToConsole("Refresh token is expired", tokenParts.exp, now);
             window.location.href = "/";
           }
         } else {
-          console.log("Refresh token not available.");
+          logToConsole("Refresh token not available.");
           window.location.href = "/";
         }
       }

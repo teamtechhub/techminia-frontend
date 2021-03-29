@@ -1,4 +1,12 @@
-import { faAlignLeft, faCheck, faCheckCircle, faCheckSquare, faEye, faParagraph, faTrash } from "@fortawesome/fontawesome-free-solid";
+import {
+  faAlignLeft,
+  faCheck,
+  faCheckCircle,
+  faCheckSquare,
+  faEye,
+  faParagraph,
+  faTrash,
+} from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { openModal } from "@redq/reuse-modal";
 import AccordionWrapper from "components/Accordion/Accordion.style";
@@ -33,6 +41,8 @@ import {
   TitleRow,
   TypeChooser,
 } from "./df.style";
+import { logToConsole } from "utils/logging";
+
 // import ImageUplaodModel from "./ImageUploadModel";
 
 export default function QuestionTab() {
@@ -84,7 +94,7 @@ export default function QuestionTab() {
       open: questions.length === 0 ? false : true,
     },
   ];
-  console.log(newQuestion);
+  logToConsole(newQuestion);
   const [formData, setFormData] = useState({});
 
   const [isSelectActive, setIsSelectActive] = useState(true);
@@ -118,9 +128,9 @@ export default function QuestionTab() {
   }, []);
 
   useEffect(() => {
-    console.log("first useEffect()");
+    logToConsole("first useEffect()");
     if (formData.questions !== undefined) {
-      //console.log(props.formData.questions.length);
+      //logToConsole(props.formData.questions.length);
       if (formData.questions.length === 0) {
         setQuestions([
           {
@@ -167,7 +177,7 @@ export default function QuestionTab() {
         ]);
       } else {
         setQuestions(formData.questions);
-        console.log(formData.questions);
+        logToConsole(formData.questions);
         // if(!formData){
         //   axiosInstance
         //   .get(
@@ -218,7 +228,7 @@ export default function QuestionTab() {
         ? await quiz
         : await qs.filter((filteredQS) => filteredQS.open === true)[0];
 
-    console.log(all_data);
+    logToConsole(all_data);
 
     if (type === "edit_question" || all_data.uuid) {
       const formEditData = toFormData(all_data);
@@ -241,7 +251,7 @@ export default function QuestionTab() {
               tokenConfig()
             )
             .then((response) => {
-              console.log("response", response);
+              logToConsole("response", response);
               if (response.status === 200) {
                 alert.success("Question added");
               }
@@ -253,7 +263,7 @@ export default function QuestionTab() {
   useOnClickOutside(ref, () => setState((state) => false));
 
   function saveQuestions() {
-    console.log("auto saving questions initiated");
+    logToConsole("auto saving questions initiated");
     var data = {
       id: formData.id,
       title: formData.title,
@@ -263,7 +273,7 @@ export default function QuestionTab() {
 
     formService.autoSave(data).then(
       (result) => {
-        console.log(result);
+        logToConsole(result);
         setQuestions(result.questions);
       },
       (error) => {
@@ -273,13 +283,13 @@ export default function QuestionTab() {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        console.log(resMessage);
+        logToConsole(resMessage);
       }
     );
   }
 
   function checkImageHereOrNotForQuestion(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "" || gg === null) {
       return false;
     } else {
@@ -288,7 +298,7 @@ export default function QuestionTab() {
   }
 
   function checkImageHereOrNotForOption(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "" || gg === null) {
       return false;
     } else {
@@ -298,7 +308,7 @@ export default function QuestionTab() {
 
   function addMoreQuestionField() {
     handleEditAddQuestion(null, "add_question");
-    console.log("adding more quiz");
+    logToConsole("adding more quiz");
     expandCloseAll();
 
     setQuestions((questions) => [
@@ -348,7 +358,7 @@ export default function QuestionTab() {
   }
 
   async function copyQuestion(i) {
-    console.log("copying", i);
+    logToConsole("copying", i);
     let qs = [...questions];
 
     const mcqOneOptions = [];
@@ -413,8 +423,8 @@ export default function QuestionTab() {
     newQuestion.open = true;
     // await setQuestions((questions) => [...questions, newQuestion]);
     questions.push(newQuestion);
-    console.log(newQuestion);
-    console.log(questions);
+    logToConsole(newQuestion);
+    logToConsole(questions);
   }
 
   function removeImage(i, j) {
@@ -428,10 +438,10 @@ export default function QuestionTab() {
   }
 
   async function deleteQuestion(i) {
-    console.log("deleting");
+    logToConsole("deleting");
     const qs = questions;
     qs[i].open = await false;
-    console.log(qs, i);
+    logToConsole(qs, i);
     if (questions.length > 1) {
       await qs.splice(i, 1);
 
@@ -441,11 +451,11 @@ export default function QuestionTab() {
       setQuestions(qs);
     }
 
-    console.log(qs);
+    logToConsole(qs);
   }
   async function setAnswerKey(i, j) {
     var optionsOfQuestion = [...questions];
-    console.log("setting answer key");
+    logToConsole("setting answer key");
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       optionsOfQuestion[i].mcq_many[j].is_answer = true;
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
@@ -458,7 +468,7 @@ export default function QuestionTab() {
   }
   async function removeAnswerKey(i, j) {
     var optionsOfQuestion = [...questions];
-    console.log("removing answer key");
+    logToConsole("removing answer key");
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       optionsOfQuestion[i].mcq_many[j].is_answer = false;
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
@@ -524,7 +534,7 @@ export default function QuestionTab() {
     var optionsOfQuestion = [...questions];
     optionsOfQuestion[i].question_type = type.key;
     setQuestions(optionsOfQuestion);
-    console.log("the type", type.key);
+    logToConsole("the type", type.key);
   }
   function setImageFieldValue(img) {
     if (typeof img !== "string" && typeof img !== undefined && img !== null) {
@@ -596,7 +606,7 @@ export default function QuestionTab() {
           choice_text: "Option " + (optionsOfQuestion[i].mcq_many.length + 1),
         });
       } else {
-        console.log("Max  5 options ");
+        logToConsole("Max  5 options ");
       }
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
       if (optionsOfQuestion[i].mcq_one.length < 5) {
@@ -604,34 +614,34 @@ export default function QuestionTab() {
           choice_text: "Option " + (optionsOfQuestion[i].mcq_one.length + 1),
         });
       } else {
-        console.log("Max  5 options ");
+        logToConsole("Max  5 options ");
       }
     }
 
-    //console.log(optionsOfQuestion);
+    //logToConsole(optionsOfQuestion);
     setQuestions(optionsOfQuestion);
   }
 
   function removeOption(i, j) {
-    console.log("handling remove opt");
+    logToConsole("handling remove opt");
     var optionsOfQuestion = [...questions];
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       if (optionsOfQuestion[i].mcq_many.length > 1) {
         optionsOfQuestion[i].mcq_many.splice(j, 1);
         setQuestions(optionsOfQuestion);
-        console.log(i + "__" + j);
+        logToConsole(i + "__" + j);
       }
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
       if (optionsOfQuestion[i].mcq_one.length > 1) {
         optionsOfQuestion[i].mcq_one.splice(j, 1);
         setQuestions(optionsOfQuestion);
-        console.log(i + "__" + j);
+        logToConsole(i + "__" + j);
       }
     }
   }
 
   async function expandCloseAll() {
-    console.log("closing all");
+    logToConsole("closing all");
     var qs = questions;
     for (let j = 0; j < qs.length; j++) {
       questions[j].open = false;

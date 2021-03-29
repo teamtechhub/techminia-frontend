@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route, withRouter } from "react-router-dom";
 import decode from "jwt-decode";
 import { millisecondsToDaysHoursMinutesSeconds } from "utils";
+import { logToConsole } from "utils/logging";
 
 const checkAuth = async () => {
   const payload = JSON.parse(localStorage.getItem("darasa_auth_payload"));
@@ -24,7 +25,7 @@ const checkAuth = async () => {
       minutes,
       seconds,
     } = millisecondsToDaysHoursMinutesSeconds(exp);
-    console.log(
+    logToConsole(
       `Token Expires in: ${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`
     );
 

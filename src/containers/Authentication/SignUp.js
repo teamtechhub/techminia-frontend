@@ -27,6 +27,8 @@ import {
   SubHeading,
   Wrapper,
 } from "./SignInOutForm.style";
+import { logToConsole } from "utils/logging";
+
 import { signupValidationSchema } from "./validation.schema";
 import signupImg from "images/signup.jpg";
 import studentsignup from "images/studentsignup.jpg";
@@ -70,7 +72,7 @@ export default function SignOutModal() {
   const captchaRef = React.useRef(null);
 
   useEffect(() => {
-    console.log(match.params.userType);
+    logToConsole(match.params.userType);
     setLoading(false);
     if (match.params.userType) {
       setSwitchTab(false);
@@ -119,7 +121,7 @@ export default function SignOutModal() {
       {
         size: "invisible",
         // callback: function (response) {
-        //   console.log("It works!");
+        //   logToConsole("It works!");
         // },
       }
     );
@@ -176,28 +178,28 @@ export default function SignOutModal() {
     history.push("/auth");
   };
   const handlePhoneConfirm = (pc, lc) => {
-    console.log("login values", phoneValues);
+    logToConsole("login values", phoneValues);
     axiosInstance
       .post(`/auth/verify-phone/`, pc)
       .then(async (res) => {
-        console.log("phone confirm res", res);
+        logToConsole("phone confirm res", res);
         await handleLogin(lc);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
       });
   };
 
   const handleLogin = async (lc) => {
-    console.log("login values", loginValues);
+    logToConsole("login values", loginValues);
     axiosInstance
       .post(`/auth/login/`, lc)
       .then(async (res) => {
-        console.log("data received", res);
+        logToConsole("data received", res);
         const userPayload = parseJwt(res.data.token.refresh);
-        console.log("user payload", userPayload);
+        logToConsole("user payload", userPayload);
         const roles = userPayload.role;
         localStorage.removeItem("darasa_auth_roles");
         addArrayToLocalStorage("darasa_auth_roles", roles);
@@ -238,24 +240,24 @@ export default function SignOutModal() {
             history.push(`/dashboard`);
             await new Promise((resolve) => setTimeout(resolve, 1000));
           });
-        console.log("response", res);
+        logToConsole("response", res);
       })
       .catch((err) => {
-        console.log(err.response);
+        logToConsole(err.response);
       });
   };
 
   const otpSubmit = (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setValidating(true);
-    console.log("otp values", values);
+    logToConsole("otp values", values);
     const code = values.code;
 
     window.confirmationResult = confirmationResult;
     confirmationResult
       .confirm(code)
       .then(async (result) => {
-        console.log("result after successful otp confirm: ", result);
+        logToConsole("result after successful otp confirm: ", result);
         await handlePhoneConfirm();
         setSubmitting(false);
         setValidating(false);
@@ -263,11 +265,11 @@ export default function SignOutModal() {
         alert.success("Account created , now you can login");
       })
       .catch((error) => {
-        console.log("error on otp submit: ", error);
+        logToConsole("error on otp submit: ", error);
         if ((error.code = "auth/invalid-verification-code")) {
-          console.log("error code", error.code);
+          logToConsole("error code", error.code);
         } else {
-          console.log("Something went wrong, Please check your connection");
+          logToConsole("Something went wrong, Please check your connection");
         }
         setSubmitting(false);
         setValidating(false);
@@ -290,7 +292,7 @@ export default function SignOutModal() {
       /[*?^+${}()]|[-]|[ ]/g,
       ""
     )}`;
-    console.log(body);
+    logToConsole(body);
 
     setLoginValues({ login: body.phone_number, password: body.password });
     setPhoneValues({ phone_number: body.phone_number, email: body.email });
@@ -301,13 +303,13 @@ export default function SignOutModal() {
       email: body.email,
     };
 
-    console.log("login values ", logincreditials);
-    console.log("phone values", phonecreditials);
+    logToConsole("login values ", logincreditials);
+    logToConsole("phone values", phonecreditials);
 
     axiosInstance
       .post(`/auth/register/`, body)
       .then(async (res) => {
-        console.log("data received", res);
+        logToConsole("data received", res);
         if (res.data.is_teacher) {
           setIsTeacher(true);
         }
@@ -327,7 +329,7 @@ export default function SignOutModal() {
         // await sendOTP(values.phone_number);
         await handlePhoneConfirm(phonecreditials, logincreditials);
         await new Promise((resolve) => setTimeout(resolve, 300));
-        console.log("response", res);
+        logToConsole("response", res);
         setValidating(false);
         setSubmitting(false);
         setLoading(false);
@@ -335,17 +337,17 @@ export default function SignOutModal() {
       .catch((err) => {
         if (err.response) {
           setErrors(err.response.data);
-          console.log(err.response.data);
+          logToConsole(err.response.data);
         } else {
           setError(err);
         }
-        console.log(JSON.stringify(err, null, 4));
+        logToConsole(JSON.stringify(err, null, 4));
         setLoading(false);
         setValidating(false);
         setSubmitting(false);
       });
     if (otp) {
-      console.log("otp is true");
+      logToConsole("otp is true");
     }
 
     return null;
@@ -357,21 +359,21 @@ export default function SignOutModal() {
     return <Error500 err={error} />;
   }
   const sendOTP = async (phone_number) => {
-    console.log("phone on sendotp", phone_number);
+    logToConsole("phone on sendotp", phone_number);
     try {
-      console.log("trying to send number");
+      logToConsole("trying to send number");
       const appVerifier = window.recaptchaVerifier;
       firebase
         .auth()
         .signInWithPhoneNumber(phone_number, appVerifier)
         .then(async (confirmationResult) => {
           setConfirmationResult(confirmationResult);
-          console.log("confirmation result", confirmationResult);
+          logToConsole("confirmation result", confirmationResult);
           setVerifyOTP(true);
         });
     } catch (err) {
-      console.log("not trying otp");
-      console.log(err);
+      logToConsole("not trying otp");
+      logToConsole(err);
     }
   };
 

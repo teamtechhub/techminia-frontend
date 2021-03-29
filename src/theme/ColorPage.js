@@ -4,6 +4,7 @@ import { splitCamelCase } from "utils";
 import _ from "lodash";
 import styled from "styled-components";
 import css from "@styled-system/css";
+import { logToConsole } from "utils/logging";
 
 export const StyledContainer = styled.div(
   css({
@@ -81,7 +82,7 @@ function ColorPicker() {
         const [active, setActive] = useState(false);
         const handleChange = (e) => {
           //   data[child] = color;
-          console.log(e);
+          logToConsole(e);
           setColor(e.target.value);
           setActive(!active);
         };

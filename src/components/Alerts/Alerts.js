@@ -1,9 +1,10 @@
 import React from "react";
+import { logToConsole } from "utils/logging";
 
 const Alerts = (props) => {
   const { alert, message } = props;
 
-  console.log("showing", message);
+  logToConsole("showing", message);
 
   if (message) {
     if (message.error) {

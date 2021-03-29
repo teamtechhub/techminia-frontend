@@ -8,6 +8,7 @@ import Button from "components/Button/Button";
 import { FieldWrapper, Heading } from "./Update.style";
 import { axiosInstance, tokenConfig } from "utils/axios";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
 
 const ContactValidationSchema = Yup.object().shape({
   contact: Yup.string()
@@ -17,7 +18,7 @@ const ContactValidationSchema = Yup.object().shape({
 });
 
 const CreateOrUpdateContact = ({ item, fetchNew }) => {
-  console.log(item);
+  logToConsole(item);
   const initialValues = {
     id: item.id || null,
     name: item.name || "",
@@ -27,9 +28,9 @@ const CreateOrUpdateContact = ({ item, fetchNew }) => {
   const { dispatch } = useContext(ProfileContext);
   const alert = useAlert();
   const handleSubmit = async (values, { setErrors, setSubmitting }) => {
-    console.log(values);
+    logToConsole(values);
     if (item !== "add-contact-modal") {
-      console.log(item.length);
+      logToConsole(item.length);
       await axiosInstance
         .patch(
           `/account/contact/${item.id}/`,
@@ -50,7 +51,7 @@ const CreateOrUpdateContact = ({ item, fetchNew }) => {
           if (err.response) {
             setErrors(err.response.data);
           }
-          console.log(JSON.stringify(err, 4, null));
+          logToConsole(JSON.stringify(err, 4, null));
           setSubmitting(false);
         });
     } else {
@@ -74,12 +75,12 @@ const CreateOrUpdateContact = ({ item, fetchNew }) => {
           if (err.response) {
             setErrors(err.response.data);
           }
-          console.log(JSON.stringify(err, 4, null));
+          logToConsole(JSON.stringify(err, 4, null));
           setSubmitting(false);
         });
     }
 
-    console.log(values, "formik values");
+    logToConsole(values, "formik values");
   };
   return (
     <Formik

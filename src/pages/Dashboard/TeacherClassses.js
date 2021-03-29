@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "contexts/auth/auth.context";
 import { faPlayCircle } from "@fortawesome/fontawesome-free-solid";
+import { logToConsole } from "utils/logging";
 
 export default function TeacherClassses({ setView }) {
   const history = useHistory();
@@ -32,7 +33,7 @@ export default function TeacherClassses({ setView }) {
   const [loading, setLoading] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(false);
   const [more, setMore] = useState(3);
-  console.log(selectedTeacher);
+  logToConsole(selectedTeacher);
 
   useEffect(() => {
     axiosInstance.get(`/curriculum/class/`).then(async (res) => {
@@ -63,7 +64,7 @@ export default function TeacherClassses({ setView }) {
           await setTreeItems(res.data.results);
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          console.log(res.data.results);
+          logToConsole(res.data.results);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +73,7 @@ export default function TeacherClassses({ setView }) {
   useEffect(() => {
     if (treeItems) {
       axiosInstance.get(`account/teachers/`, tokenConfig()).then((res) => {
-        console.log(res.data.results);
+        logToConsole(res.data.results);
         setLoading(false);
       });
     }

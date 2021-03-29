@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { logToConsole } from "utils/logging";
 
 import FormikControl from "containers/FormikContainer/FormikControl";
 import {
@@ -56,12 +57,12 @@ export default function Syllabus(props) {
             tokenConfig()
           )
           .then((res) => {
-            console.log("res", res.data);
+            logToConsole("res", res.data);
             setSyllabus(res.data.results);
             setLoading(false);
           })
           .catch((err) => {
-            console.log("res errors", err.response.data);
+            logToConsole("res errors", err.response.data);
             if (err.response) {
               if (err.response.data.user) {
                 setError(err.response.data);
@@ -70,16 +71,16 @@ export default function Syllabus(props) {
             } else {
               setError(err);
             }
-            console.log(err.response.data);
+            logToConsole(err.response.data);
             setLoading(false);
           });
       } catch (error) {
-        console.log(error);
+        logToConsole(error);
       }
     }
 
     setEditting(false);
-    console.log("not happening");
+    logToConsole("not happening");
     setInitialValues({
       name: "",
       description: "",
@@ -121,13 +122,13 @@ export default function Syllabus(props) {
       formData.append("background_image", background_image);
     }
     formData.append("description_json", JSON.stringify(description_json));
-    console.log(values);
+    logToConsole(values);
 
     try {
       axiosInstance
         .post(`/curriculum/syllabus/`, formData, formTokenConfig())
         .then((res) => {
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           setInitialValues(res.data);
           setActiveSyllabus(res.data);
           alert.success(`${res.data.name} Created Successfully ✔`);
@@ -138,7 +139,7 @@ export default function Syllabus(props) {
           setLoading(false);
         })
         .catch((err) => {
-          console.log("res errors", err.response.data);
+          logToConsole("res errors", err.response.data);
           if (err.response) {
             if (err.response.data) {
               if (err.response.data.message) {
@@ -151,7 +152,7 @@ export default function Syllabus(props) {
           } else {
             setError(err);
           }
-          console.log(err.response.data);
+          logToConsole(err.response.data);
           setSubmitting(false);
           setLoading(false);
         });
@@ -167,12 +168,12 @@ export default function Syllabus(props) {
     let formData = new FormData();
 
     formData.append("name", name);
-    console.log(typeof background_image);
+    logToConsole(typeof background_image);
     if (typeof background_image !== "string") {
       formData.append("background_image", background_image);
     }
     formData.append("description_json", JSON.stringify(description_json));
-    console.log(values);
+    logToConsole(values);
     try {
       axiosInstance
         .patch(
@@ -198,12 +199,12 @@ export default function Syllabus(props) {
               }
             }
             setErrors(err.response.data);
-            console.log("errors za data");
+            logToConsole("errors za data");
           } else {
             setError(err);
-            console.log("errors general");
+            logToConsole("errors general");
           }
-          console.log(err.response.data);
+          logToConsole(err.response.data);
           setSubmitting(false);
           setLoading(false);
         });

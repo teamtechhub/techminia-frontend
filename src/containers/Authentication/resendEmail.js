@@ -26,16 +26,16 @@ function ResendEmail() {
       axiosInstance
         .post(`/auth/resend-email-verfication-link/`, body)
         .then((res) => {
-          console.log("email verification data", res.data);
+          logToConsole("email verification data", res.data);
           setSuccess(true);
           setSubmitting(false);
         })
         .catch((err) => {
-          console.log("error", err);
+          logToConsole("error", err);
           setSubmitting(false);
         });
     } catch (error) {
-      console.log("catch error", error);
+      logToConsole("catch error", error);
       setSubmitting(false);
     }
   };

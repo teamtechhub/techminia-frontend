@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Button, Container, SubHeading, Wrapper } from "./SignInOutForm.style";
 import FormikControl from "../FormikContainer/FormikControl";
 import { axiosInstance } from "utils/axios";
+import { logToConsole } from "utils/logging";
 
 function PasswordChange() {
   const [reset, setReset] = useState();
@@ -33,12 +34,12 @@ function PasswordChange() {
 
   const onSubmit = async (values, { setErrors, setSubmitting }) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("the values hapa: ", values);
+    logToConsole("the values hapa: ", values);
     try {
       axiosInstance
         .post(`/auth/change-password/`, values)
         .then(async (res) => {
-          console.log("email verification data", res.data);
+          logToConsole("email verification data", res.data);
           setReset("Password Changed Successfully ✔");
           alert.success("Password Changed Successfully ✔");
 
@@ -48,11 +49,11 @@ function PasswordChange() {
         .catch((err) => {
           setReset(null);
           setErrors(err.response.data);
-          console.log("error", err);
+          logToConsole("error", err);
           setSubmitting(false);
         });
     } catch (error) {
-      console.log("catch error", error);
+      logToConsole("catch error", error);
       setSubmitting(false);
     }
   };

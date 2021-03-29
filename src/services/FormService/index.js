@@ -1,5 +1,6 @@
 import axios from "axios";
 const API_URL = "http://localhost:5000/api/form/";
+import { logToConsole } from "utils/logging";
 
 export function getForms(userId) {
   return axios.get(API_URL + "getuserforms/" + userId).then((response) => {
@@ -8,40 +9,40 @@ export function getForms(userId) {
 }
 
 export function createForm(data) {
-  console.log(data);
+  logToConsole(data);
   return axios.post(API_URL + "create", data).then((response) => {
-    console.log(response.data);
+    logToConsole(response.data);
     return response.data;
   });
 }
 
 export function getForm(formId) {
   return axios.get(API_URL + "form/" + formId).then((response) => {
-    //  console.log(response.data);
+    //  logToConsole(response.data);
     return response.data;
   });
 }
 
 export function autoSave(data) {
-  console.log(data);
+  logToConsole(data);
   return axios.put(API_URL + "/editform/", data).then((response) => {
-    console.log(response.data);
+    logToConsole(response.data);
     return response.data;
   });
 }
 
 export function submitResponse(data) {
-  console.log(data);
+  logToConsole(data);
   return axios.post(API_URL + "addresponse", data).then((response) => {
-    console.log(response.data);
+    logToConsole(response.data);
     return response.data;
   });
 }
 
 export function getResponse(formId) {
-  //  console.log(formId);
+  //  logToConsole(formId);
   return axios.get(API_URL + "getresponse/" + formId).then((response) => {
-    // console.log(response.data);
+    // logToConsole(response.data);
     return response.data;
   });
 }

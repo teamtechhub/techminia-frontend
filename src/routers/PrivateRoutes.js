@@ -9,6 +9,7 @@ import { Modal } from "@redq/reuse-modal";
 import DashboardLayout from "layouts/DashboardLayout";
 import NotFound from "pages/NotFound";
 import AppLayout from "layouts/AppLayout";
+import { logToConsole } from "utils/logging";
 
 class PrivateRoutes extends Component {
   state = { allowedRoutes: [] };
@@ -40,7 +41,7 @@ class PrivateRoutes extends Component {
         .substr(1)
         .split(/\//)[0]
         .trim() === "dashboard";
-    console.log(path);
+    logToConsole(path);
     return (
       <>
         {path ? (

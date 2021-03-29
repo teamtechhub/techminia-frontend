@@ -9,6 +9,7 @@ import {
 import React from "react";
 
 import uploadService from "services/UploadService";
+import { logToConsole } from "utils/logging";
 
 function ImageUplaodModel(props) {
   const [image, setImage] = React.useState(undefined);
@@ -19,9 +20,9 @@ function ImageUplaodModel(props) {
   // }
 
   const uploadImage = () => {
-    console.log(props.contextData);
-    console.log(image);
-    console.log(image.size);
+    logToConsole(props.contextData);
+    logToConsole(image);
+    logToConsole(image.size);
 
     if (image.size > 3110670) {
       setImageWarning("File Size is too big");
@@ -32,7 +33,7 @@ function ImageUplaodModel(props) {
       formData.append("myfile", image);
       uploadService.uploadImage(formData).then(
         (data) => {
-          // console.log(data);
+          // logToConsole(data);
           var imageLink = data.host + "/" + data.image;
           props.handleImagePopClose();
           props.updateImageLink(imageLink, props.contextData);

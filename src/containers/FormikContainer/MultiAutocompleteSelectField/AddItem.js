@@ -11,6 +11,7 @@ import Button from "components/Button/Button";
 import { tokenConfig } from "utils/axios";
 import { useAlert } from "react-alert";
 import { Plus } from "components/AllSvgIcon";
+import { logToConsole } from "utils/logging";
 
 function getNameString(args, val) {
   var combo_name = "";
@@ -22,7 +23,7 @@ function getNameString(args, val) {
   return combo_name;
 }
 export default function AddItem(props) {
-  console.log(props);
+  logToConsole(props);
   const {
     apipath,
     title,
@@ -56,8 +57,8 @@ export default function AddItem(props) {
   );
 
   const addNewItem = (values, { setErrors, setSubmitting }) => {
-    console.log("loggin");
-    console.log("the values", values);
+    logToConsole("loggin");
+    logToConsole("the values", values);
     setSubmitting(true);
     setLoading(true);
     const data = arguements ? { ...arguements, ...values } : values;
@@ -65,7 +66,7 @@ export default function AddItem(props) {
     axiosInstance
       .post(apipath, data, tokenConfig())
       .then(async (res) => {
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         await alert.success(
           `${
             collection
@@ -83,7 +84,7 @@ export default function AddItem(props) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log("res errors", err);
+        logToConsole("res errors", err);
         if (err.response) {
           if (err.response.data) {
             setErrors(err.response.data);

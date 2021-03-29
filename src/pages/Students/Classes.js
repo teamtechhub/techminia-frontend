@@ -3,6 +3,7 @@ import { useRouteMatch } from "react-router-dom";
 import AllClasses from "./AllClasses";
 import Class from "./Class";
 import Session from "./Session";
+import { logToConsole } from "utils/logging";
 
 export default function Classes() {
   const match = useRouteMatch();
@@ -37,7 +38,7 @@ export default function Classes() {
       setComponent(<Class view={view} />);
     }
   }, [view, classID, subjectID, teacherID, topicID, sessionID]);
-  console.log(view);
+  logToConsole(view);
 
   return RenderView;
 }

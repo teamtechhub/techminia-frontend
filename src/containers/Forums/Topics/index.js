@@ -18,6 +18,7 @@ import {
   ForumCardHead,
 } from "../styles";
 import LoadingIndicator from "components/LoadingIndicator";
+import { logToConsole } from "utils/logging";
 
 export default function Topics() {
   const [topics, setTopics] = useState([]);
@@ -112,7 +113,7 @@ export default function Topics() {
                 onClick={() => {
                   setNewTopicView(true);
                   setAllForums(false);
-                  console.log("clicked newtopic");
+                  logToConsole("clicked newtopic");
                 }}
               />
               <br />
@@ -128,7 +129,7 @@ export default function Topics() {
                 onClick={() => {
                   setNewTopicView(false);
                   setAllForums(true);
-                  console.log("clicked all forums");
+                  logToConsole("clicked all forums");
                 }}
               />
             </CardRow>

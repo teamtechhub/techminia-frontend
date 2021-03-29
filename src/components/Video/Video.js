@@ -4,6 +4,7 @@ import { VideoPlayer } from "./Video.style";
 import { findDOMNode } from "react-dom";
 import screenfull from "screenfull";
 import Duration from "./Duration";
+import { logToConsole } from "utils/logging";
 
 export default function Video(props) {
   const [player, setPlayer] = useState();
@@ -59,8 +60,8 @@ export default function Video(props) {
     const pp = !state.playing;
 
     setState({ ...state, playing: pp });
-    console.log(pp);
-    console.log(state.playing);
+    logToConsole(pp);
+    logToConsole(state.playing);
   };
 
   // const handleStop = () => {
@@ -103,22 +104,22 @@ export default function Video(props) {
   // };
 
   const handlePlay = () => {
-    console.log("onPlay");
+    logToConsole("onPlay");
     setState({ ...state, playing: true });
   };
 
   const handleEnablePIP = () => {
-    console.log("onEnablePIP");
+    logToConsole("onEnablePIP");
     setState({ ...state, pip: true });
   };
 
   const handleDisablePIP = () => {
-    console.log("onDisablePIP");
+    logToConsole("onDisablePIP");
     setState({ ...state, pip: false });
   };
 
   const handlePause = () => {
-    console.log("onPause");
+    logToConsole("onPause");
     setState({ ...state, playing: false });
   };
 
@@ -136,7 +137,7 @@ export default function Video(props) {
   };
 
   const handleProgress = (videoState) => {
-    console.log("onProgress", videoState);
+    logToConsole("onProgress", videoState);
     // We only want to update time slider if we are not currently seeking
     if (!videoState.seeking) {
       setState({ ...state, ...videoState });
@@ -144,12 +145,12 @@ export default function Video(props) {
   };
 
   const handleEnded = () => {
-    console.log("onEnded");
+    logToConsole("onEnded");
     setState({ ...state, playing: state.loop });
   };
 
   const handleDuration = (duration) => {
-    console.log("onDuration", duration);
+    logToConsole("onDuration", duration);
     setState({ ...state, duration });
   };
 
@@ -168,7 +169,7 @@ export default function Video(props) {
         role="region"
         tabIndex="-1"
         className={`player-wrapper , ${isBig ? "h-96 " : ""} `}
-        style={{ width: "100%", }}
+        style={{ width: "100%" }}
         // style="padding-top: 42.5781%;"
       >
         <ReactPlayer
@@ -191,16 +192,16 @@ export default function Video(props) {
           playbackRate={state.playbackRate}
           volume={state.volume}
           muted={state.muted}
-          onReady={() => console.log("onReady")}
-          onStart={() => console.log("onStart")}
+          onReady={() => logToConsole("onReady")}
+          onStart={() => logToConsole("onStart")}
           onPlay={handlePlay}
           onEnablePIP={handleEnablePIP}
           onDisablePIP={handleDisablePIP}
           onPause={handlePause}
-          onBuffer={() => console.log("onBuffer")}
-          onSeek={(e) => console.log("onSeek", e)}
+          onBuffer={() => logToConsole("onBuffer")}
+          onSeek={(e) => logToConsole("onSeek", e)}
           onEnded={handleEnded}
-          onError={(e) => console.log("onError", e)}
+          onError={(e) => logToConsole("onError", e)}
           onProgress={handleProgress}
           onDuration={handleDuration}
         />

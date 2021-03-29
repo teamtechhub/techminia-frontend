@@ -1,5 +1,5 @@
-import  {FontAwesomeIcon}  from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhone } from '@fortawesome/fontawesome-free-solid'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faPhone } from "@fortawesome/fontawesome-free-solid";
 
 import { closeModal } from "@redq/reuse-modal";
 import Error500 from "components/Error/Error500";
@@ -27,6 +27,7 @@ import {
   Wrapper,
 } from "./SignInOutForm.style";
 import { loginValidationSchema } from "./validation.schema";
+import { logToConsole } from "utils/logging";
 
 export default function SignInModal() {
   const history = useHistory();
@@ -83,7 +84,7 @@ export default function SignInModal() {
     setIsLoading(true);
     setSubmitting(true);
     const body = values;
-    console.log("body", body);
+    logToConsole("body", body);
     if (showPhone) {
       body["login"] = `+${body.login.replace("+", "")}`;
     }
@@ -95,10 +96,10 @@ export default function SignInModal() {
       axiosInstance
         .post(`/auth/login/`, body)
         .then(async (res) => {
-          console.log("data received", res);
+          logToConsole("data received", res);
 
           const userPayload = parseJwt(res.data.token.refresh);
-          console.log("user payload", userPayload);
+          logToConsole("user payload", userPayload);
           const roles = userPayload.role;
           localStorage.removeItem("darasa_auth_roles");
           addArrayToLocalStorage("darasa_auth_roles", roles);
@@ -152,13 +153,13 @@ export default function SignInModal() {
               } else {
                 setError(err);
               }
-              console.log(err.response.status);
+              logToConsole(err.response.status);
               setSubmitting(false);
               setIsLoading(false);
             });
 
           await new Promise((resolve) => setTimeout(resolve, 3000));
-          console.log("response", res);
+          logToConsole("response", res);
           history.push("/dashboard");
         })
         .catch((err) => {
@@ -181,7 +182,7 @@ export default function SignInModal() {
             setError(err);
           }
 
-          console.log(err);
+          logToConsole(err);
           setSubmitting(false);
           setIsLoading(false);
         });
@@ -278,7 +279,8 @@ export default function SignInModal() {
             fullwidth
             title={
               <>
-                <FontAwesomeIcon   icon={faPhone}  className="mr-2"/> Log in using phone
+                <FontAwesomeIcon icon={faPhone} className="mr-2" /> Log in using
+                phone
               </>
             }
             onClick={handlePhoneButtonClick}
@@ -286,7 +288,6 @@ export default function SignInModal() {
               margin: "10px 0",
               background: "#ec7623",
               color: "#ffffff",
-
             }}
           />
         )}
@@ -299,7 +300,8 @@ export default function SignInModal() {
             fullwidth
             title={
               <>
-                <FontAwesomeIcon   icon={faEnvelope} className="mr-2"/> Log in using email
+                <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> Log in
+                using email
               </>
             }
             onClick={handleEmailButtonClick}

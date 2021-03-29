@@ -15,6 +15,7 @@ import Error500 from "components/Error/Error500";
 import { tokenConfig } from "utils/axios";
 import { useAlert } from "react-alert";
 import { CurriculumContext } from "contexts/curriculum/curriculum.context";
+import { logToConsole } from "utils/logging";
 
 export default function Subject(props) {
   const alert = useAlert();
@@ -30,12 +31,12 @@ export default function Subject(props) {
       axiosInstance
         .get(`/curriculum/subject/`, tokenConfig())
         .then((res) => {
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           setSubjects(res.data.results);
           setLoading(false);
         })
         .catch((err) => {
-          console.log("res errors", err.response.data);
+          logToConsole("res errors", err.response.data);
           if (err.response) {
             if (err.response.data.user) {
               setError(err.response.data);
@@ -44,14 +45,14 @@ export default function Subject(props) {
           } else {
             setError(err);
           }
-          console.log(err.response.data);
+          logToConsole(err.response.data);
           setLoading(false);
         });
     } catch (error) {
-      console.log(error);
+      logToConsole(error);
     }
     setEditting(false);
-    console.log("not happening");
+    logToConsole("not happening");
     setInitialValues({
       name: "",
       description: "",
@@ -78,13 +79,13 @@ export default function Subject(props) {
       formData.append("background_image", background_image);
     }
     formData.append("description_json", description_json);
-    console.log(values);
+    logToConsole(values);
 
     try {
       axiosInstance
         .post(`/curriculum/subject/`, formData, tokenConfig())
         .then((res) => {
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           setInitialValues(res.data);
           alert.success(`${res.data.name} Edited Successfully ✔`);
           //   addObjectToLocalStorageObject("darasa_student_profile", res.data);
@@ -92,7 +93,7 @@ export default function Subject(props) {
           setLoading(false);
         })
         .catch((err) => {
-          console.log("res errors", err.response.data);
+          logToConsole("res errors", err.response.data);
           if (err.response) {
             if (err.response.data.user) {
               if (err.response.data.user[0] === "This field must be unique.") {
@@ -108,7 +109,7 @@ export default function Subject(props) {
           } else {
             setError(err);
           }
-          console.log(err.response.data);
+          logToConsole(err.response.data);
           setSubmitting(false);
           setLoading(false);
         });
@@ -126,19 +127,19 @@ export default function Subject(props) {
         .then((res) => {
           setSubmitting(false);
           setLoading(false);
-          console.log("res", res.data);
+          logToConsole("res", res.data);
           alert.success("Subject Updated Successfully ✔", "");
           addObjectToLocalStorageObject("darasa_student_profile", res.data);
         })
         .catch((err) => {
           if (err.response) {
             setErrors(err.response.data);
-            console.log("errors za data");
+            logToConsole("errors za data");
           } else {
             setError(err);
-            console.log("errors general");
+            logToConsole("errors general");
           }
-          console.log(err.response.data);
+          logToConsole(err.response.data);
           setSubmitting(false);
           setLoading(false);
         });

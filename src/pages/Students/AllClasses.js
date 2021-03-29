@@ -14,6 +14,7 @@ import {
 import { animated } from "react-spring";
 import { useHistory } from "react-router-dom";
 import LoadingIndicator from "components/LoadingIndicator";
+import { logToConsole } from "utils/logging";
 
 function AllClasses() {
   const history = useHistory();
@@ -25,7 +26,7 @@ function AllClasses() {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(false);
-  console.log(selectedTeacher);
+  logToConsole(selectedTeacher);
 
   const titles = [
     { title: "Year" },
@@ -44,14 +45,21 @@ function AllClasses() {
 
   useEffect(() => {
     if (selectedClass) {
+      logToConsole("the selected class id is", selectedClass.id);
       setLoading(true);
       axiosInstance
         .get(`/curriculum/syllabus/?class=${selectedClass.id}`, tokenConfig())
         .then(async (res) => {
           await setTreeItems(res.data.results);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          console.log(res.data.results);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        });
+    } else {
+      setLoading(true);
+      axiosInstance
+        .get(`/curriculum/syllabus/?class=${3}`, tokenConfig())
+        .then(async (res) => {
+          await setTreeItems(res.data.results);
+          await new Promise((resolve) => setTimeout(resolve, 500));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,14 +69,14 @@ function AllClasses() {
     if (treeItems) {
       axiosInstance.get(`account/teachers/`, tokenConfig()).then((res) => {
         setTeachers(res.data.results);
-        console.log("====== tree items ====", treeItems);
+        logToConsole("====== tree items ====", treeItems);
         setSelectedTeacher(
           res.data.results.filter((filteredTeacher) =>
             treeItems.find((a) => a.attending_teacher.id === filteredTeacher.id)
           )[0]
         );
-        console.log("============", selectedTeacher);
-        console.log(res.data.results);
+        logToConsole("============", selectedTeacher);
+        logToConsole(res.data.results);
         setLoading(false);
       });
     }
@@ -93,7 +101,7 @@ function AllClasses() {
   return (
     <>
       <CardWrapper>
-        {titles.map((item, xedni) => (
+        {/* {titles.map((item, xedni) => (
           <Button
             key={xedni}
             onClick={() => {
@@ -107,7 +115,7 @@ function AllClasses() {
               margin: "5px",
             }}
           />
-        ))}
+        ))} */}
         <br />
         {!classes && <LoadingIndicator />}
         {classes &&
@@ -166,7 +174,8 @@ function AllClasses() {
                           key={i}
                           size="small"
                           onClick={() => setSelectedTeacher(teacher)}
-                          title={teacher.name}
+                          // title={teacher.name}
+                          title={"Darasa"}
                           style={{
                             padding: "2px",
                             fontSize: "13px",

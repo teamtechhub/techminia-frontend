@@ -14,6 +14,7 @@ import {
 import { animated } from "react-spring";
 import LoadingIndicator from "components/LoadingIndicator";
 import { useHistory } from "react-router-dom";
+import { logToConsole } from "utils/logging";
 
 function Students() {
   const history = useHistory();
@@ -25,7 +26,7 @@ function Students() {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(false);
-  console.log(selectedTeacher);
+  logToConsole(selectedTeacher);
 
   const titles = [
     { title: "Year" },
@@ -48,7 +49,7 @@ function Students() {
         .get(`/curriculum/syllabus/?class=${selectedClass.id}`, tokenConfig())
         .then((res) => {
           setTreeItems(res.data.results);
-          console.log(res.data.results);
+          logToConsole(res.data.results);
           setLoading(false);
         });
     }
@@ -57,7 +58,7 @@ function Students() {
     axiosInstance.get(`account/teachers/`, tokenConfig()).then((res) => {
       setTeachers(res.data.results);
       setSelectedTeacher(res.data.results[0]);
-      console.log(res.data.results);
+      logToConsole(res.data.results);
     });
   }, []);
 

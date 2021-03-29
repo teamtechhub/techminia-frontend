@@ -21,12 +21,15 @@ import { CopyIcon, CloseIcon, DragDropIcon } from "components/AllSvgIcon";
 import { Panel } from "rc-collapse";
 import TextField from "components/forms/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { logToConsole } from "utils/logging";
+
 import {
   faCheckCircle,
   faCheckSquare,
   faEye,
   faTrash,
 } from "@fortawesome/fontawesome-free-solid";
+import LoadingIndicator from "components/LoadingIndicator";
 
 const typeChooserOptions = [
   // {
@@ -88,14 +91,15 @@ export default function QuestionsUI(
   addOption,
   handleImageValueOption,
   setIsSelectActive,
-  isSelectActive
+  isSelectActive,
+  loadaddquestion
 ) {
   const [questions, setQuestions] = useState([]);
   useEffect(() => {
     setQuestions(qns);
   }, [qns]);
   function checkImageHereOrNotForQuestion(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "" || gg === null) {
       return false;
     } else {
@@ -104,7 +108,7 @@ export default function QuestionsUI(
   }
 
   function checkImageHereOrNotForOption(gg) {
-    // console.log(gg);
+    // logToConsole(gg);
     if (gg === undefined || gg === "" || gg === null) {
       return false;
     } else {
@@ -148,7 +152,13 @@ export default function QuestionsUI(
   }
   return (
     <div>
-      {typeChooserOptions &&
+      {loadaddquestion ? (
+        <div>
+          <LoadingIndicator />
+          <h2>Adding a question backend</h2>
+        </div>
+      ) : (
+        typeChooserOptions &&
         questions &&
         questions.length > 0 &&
         questions.map((ques, i) => {
@@ -161,11 +171,11 @@ export default function QuestionsUI(
                   {...provided.dragHandleProps}
                   key={i}
                 >
-                  <div style={{ marginBottom: "15px" }}>
+                  <div style={{ marginBottom: "15px" }} className="relative">
                     <div
                       style={{
                         width: "100%",
-                        marginBottom: "-7px",
+                        marginBottom: "7px",
                         textAlign: "center",
                       }}
                     >
@@ -176,15 +186,21 @@ export default function QuestionsUI(
                         }}
                         fontSize="small"
                       />
+                      <div
+                        onClick={() => handleExpand(i)}
+                        className=" bg-purple-400 absolute right-1 top-1 px-2 rounded-sm "
+                      >
+                        expand
+                      </div>
                     </div>
 
                     <Container
-                      onClick={() => handleExpand(i)}
                       tabindex="0"
                       role="button"
                       aria-disabled="false"
                       aria-expanded="false"
                       elevation="1"
+                      className="relative"
                     >
                       <SideView />
                       <MainContent>
@@ -1159,7 +1175,8 @@ export default function QuestionsUI(
               )}
             </Draggable>
           );
-        })}
+        })
+      )}
     </div>
   );
 }

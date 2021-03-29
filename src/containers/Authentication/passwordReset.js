@@ -15,6 +15,7 @@ import { useTimer } from "utils";
 import { axiosInstance } from "utils/axios";
 import { useAlert } from "react-alert";
 import { AuthContext } from "contexts/auth/auth.context";
+import { logToConsole } from "utils/logging";
 
 function PasswordReset() {
   const location = useLocation();
@@ -31,7 +32,7 @@ function PasswordReset() {
   const [params, setParams] = useState({});
   const { authDispatch } = useContext(AuthContext);
   const alert = useAlert();
-  console.log("reset", reset);
+  logToConsole("reset", reset);
 
   const passwordNotLongEnough = "password must be at least 8 characters";
   const passwordDoNotMatch = "passwords must match";
@@ -80,12 +81,12 @@ function PasswordReset() {
 
   const onSubmit = async (values, { setErrors, setSubmitting }) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("the values hapa: ", values);
+    logToConsole("the values hapa: ", values);
     try {
       axiosInstance
         .post(`/auth/reset-password/`, { password: values.password, ...params })
         .then(async (res) => {
-          console.log("email verification data", res.data);
+          logToConsole("email verification data", res.data);
           setReset("Password Reset Successfully ✔");
           alert.success("Password Reset Successfully ✔");
 
@@ -98,11 +99,11 @@ function PasswordReset() {
         .catch((err) => {
           setReset(null);
           setErrors(err.response.data);
-          console.log("error", err);
+          logToConsole("error", err);
           setSubmitting(false);
         });
     } catch (error) {
-      console.log("catch error", error);
+      logToConsole("catch error", error);
       setSubmitting(false);
     }
   };

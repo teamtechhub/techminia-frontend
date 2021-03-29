@@ -10,6 +10,8 @@ import Button from "components/Button/Button";
 import { Br } from "styles/pages.style";
 import Error500 from "components/Error/Error500";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
+
 import {
   WizardCard,
   WizardLeftSideCard,
@@ -36,7 +38,7 @@ export default function EditDeleteSession({ session, setEdit }) {
   const [loading, setLoading] = useState(false);
   const [sess, setSess] = useState(session);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  console.log("check check", profile, profile.extended_profile);
+  logToConsole("check check", profile, profile.extended_profile);
 
   useEffect(() => {
     setSess(session);
@@ -59,7 +61,7 @@ export default function EditDeleteSession({ session, setEdit }) {
   const onChangeSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setLoading(true);
-    console.log(values);
+    logToConsole(values);
     const { name, notes, video_url, documents } = values;
 
     let formData = new FormData();
@@ -76,13 +78,13 @@ export default function EditDeleteSession({ session, setEdit }) {
           return acc;
         }, [])
       : [];
-    console.log(docs);
+    logToConsole(docs);
 
     formData.append("name", name);
     formData.append("video_url", video_url);
     formData.append("notes", JSON.stringify(notes));
     // formData.append("documents", JSON.stringify(docs));
-    console.log("form data --------: ", [...formData]);
+    logToConsole("form data --------: ", [...formData]);
 
     axiosInstance
       .patch(
@@ -100,7 +102,7 @@ export default function EditDeleteSession({ session, setEdit }) {
             docsFormData.append("saved_file", element.saved_file);
             await axiosInstance
               .post(`/curriculum/files/`, docsFormData, formTokenConfig())
-              .then((res) => console.log("files ----", res.data));
+              .then((res) => logToConsole("files ----", res.data));
           }
         }
         setSubmitting(false);
@@ -119,12 +121,12 @@ export default function EditDeleteSession({ session, setEdit }) {
             }
           }
           setErrors(err.response.data);
-          console.log("errors za data");
+          logToConsole("errors za data");
         } else {
           setError(err);
-          console.log("errors general");
+          logToConsole("errors general");
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
@@ -134,7 +136,7 @@ export default function EditDeleteSession({ session, setEdit }) {
       .delete(`/curriculum/session/${s.id}/`)
       .then((res) => {
         alert.info(`${res.data.name} Deleted`);
-        console.log(res.data);
+        logToConsole(res.data);
         history.push(`/dashboard`);
       })
       .catch((err) => {
@@ -144,10 +146,10 @@ export default function EditDeleteSession({ session, setEdit }) {
 
   const confirmDeleteSession = async (sess) => {
     if (confirmDelete) {
-      console.log("should delete session");
+      logToConsole("should delete session");
       return;
     } else {
-      console.log("delete denied");
+      logToConsole("delete denied");
       return;
     }
   };

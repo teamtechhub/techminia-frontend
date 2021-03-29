@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import { logToConsole } from "utils/logging";
 
 function ErrorHandler({ err }) {
-  console.log("the error", err);
+  logToConsole("the error", err);
   const [message, setMessage] = useState(false);
   const [code, setCode] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log(err);
+    logToConsole(err);
     if (!err.response) {
       // network error
       setError("Error: Network Error. Please report this server error");

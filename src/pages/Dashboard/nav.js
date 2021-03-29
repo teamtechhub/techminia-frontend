@@ -3,11 +3,12 @@ import React from "react";
 import "./nav.scss";
 import { ProfileContent, ProfileCardBody } from "pages/Profile/Profile.style";
 import { WizardCard } from "./Dashboard.style";
+import { logToConsole } from "utils/logging";
 
 const Nav = (props) => {
-  console.log(props);
+  logToConsole(props);
   const dots = [];
-  console.log(props);
+  logToConsole(props);
   for (let i = 1; i <= props.totalSteps; i += 1) {
     const isActive = props.currentStep === i;
     dots.push(

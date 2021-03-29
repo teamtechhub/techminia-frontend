@@ -16,6 +16,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 import { AuthContext } from "contexts/auth/auth.context";
 import PaymentModal from "components/PaymentModal";
 import { openModal } from "@redq/reuse-modal";
+import { logToConsole } from "utils/logging";
 
 export default function DarasaForms() {
   const {
@@ -45,6 +46,7 @@ export default function DarasaForms() {
   };
 
   function createForm() {
+    logToConsole("the button was pressed for adding assesment forms");
     axiosInstance.post(`/form/`, {}, tokenConfig()).then((res) => {
       history.push(`/dashboard/form/${res.data.uuid}/edit`);
     });

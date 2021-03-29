@@ -3,6 +3,8 @@ import _, { isArray, isEqual, isObject, transform } from "lodash";
 import CryptoJS from "crypto-js";
 import AES from "crypto-js/aes";
 import { Base64 } from "js-base64";
+import { logToConsole } from "utils/logging";
+
 
 export const getDBIdFromGraphqlId = (graphqlId, schema) => {
   // This is temporary solution, we will use slugs in the future
@@ -95,7 +97,7 @@ export const objDiff = (originalObject, newObject) => {
 };
 
 export const toFormData = (obj, form, namespace) => {
-  console.log(obj);
+  logToConsole(obj);
   let fd = form || new FormData();
   let formKey;
 
@@ -452,7 +454,7 @@ export const apiErrorHandler = (error) => {
       );
     }
   } catch (error) {
-    console.log(error);
+    logToConsole(error);
     return "Something wrong happened. Please report this.";
   }
 };

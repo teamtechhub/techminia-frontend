@@ -27,6 +27,8 @@ import {
 import { apiErrorHandler } from "utils";
 import { getTopic } from "../Topics/services";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
+
 
 export default function ThreadPage({
   tpcslg,
@@ -34,8 +36,8 @@ export default function ThreadPage({
   minimal = false,
   anonAsUserObject = false,
 }) {
-  console.log(tpcslg);
-  console.log(thID);
+  logToConsole(tpcslg);
+  logToConsole(thID);
   const {
     authState: { isAuthenticated, profile },
     authDispatch,
@@ -225,7 +227,7 @@ export default function ThreadPage({
   const handleAddSubmit = (args) => {
     newPostCall(args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
         setNewPost(res.data);
       })
       .catch((err) => {
@@ -237,7 +239,7 @@ export default function ThreadPage({
     updatePostCall(args)
       .then((res) => {
         setUpdatedPost(res.data);
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -248,7 +250,7 @@ export default function ThreadPage({
     deletePostCall(args)
       .then((res) => {
         setDeletedPost(res.data);
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);
@@ -258,7 +260,7 @@ export default function ThreadPage({
   const handleVote = (...args) => {
     votePostCall(...args)
       .then((res) => {
-        console.log(res.data);
+        logToConsole(res.data);
       })
       .catch((err) => {
         alert.error(`${apiErrorHandler(err)}`);

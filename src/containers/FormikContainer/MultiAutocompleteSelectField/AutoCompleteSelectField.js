@@ -5,6 +5,8 @@ import Button from "components/Button/Button";
 import _ from "lodash";
 import { useAlert } from "react-alert";
 import { filter } from "fuzzaldrin";
+import { logToConsole } from "utils/logging";
+
 
 function stateReducer(state, changes) {
   // this prevents the menu from being closed when the user
@@ -86,7 +88,7 @@ export default function AutoCompleteSelectField(props) {
           itemCount,
           ...rest
         }) => {
-          console.log(rest);
+          logToConsole(rest);
           return (
             <div>
               <div style={{ display: "flex" }}>

@@ -20,6 +20,7 @@ import {
 import { SearchContext } from "contexts/search/search.context";
 import { TreeMenu } from "components/TreeMenu/TreeMenu";
 import { useQuery } from "@apollo/react-hooks";
+import { logToConsole } from "utils/logging";
 
 const GET_CATEGORIES = gql`
   query getCategories($type: String!) {
@@ -48,8 +49,8 @@ const SidebarCategory = ({ deviceType: { mobile, tablet, desktop }, type }) => {
   const selectedQueries = query.get("category");
 
   const onCategoryClick = (slug) => {
-    console.log("category being handled");
-    console.log("the text state", state.text);
+    logToConsole("category being handled");
+    logToConsole("the text state", state.text);
 
     history.push(`${pathname}?category=${slug}`);
   };

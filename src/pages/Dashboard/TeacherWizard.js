@@ -19,6 +19,8 @@ import Topic from "./forms/topic";
 import { axiosInstance, tokenConfig } from "utils/axios";
 import { useHistory } from "react-router-dom";
 import { faBook, faPlayCircle } from "@fortawesome/fontawesome-free-solid";
+import { logToConsole } from "utils/logging";
+
 
 export default function TeacherWizard() {
   const [state, updateState] = useState({
@@ -50,9 +52,9 @@ export default function TeacherWizard() {
 
   // Do something on step change
   const onStepChange = (stats) => {
-    // console.log(stats);
+    // logToConsole(stats);
   };
-  console.log("global state", globalState);
+  logToConsole("global state", globalState);
 
   const setInstance = (SW) => {
     updateState({
@@ -125,7 +127,7 @@ export default function TeacherWizard() {
 const WizardController = ({ SW, globalState }) => {
   const history = useHistory();
   function createForm() {
-    console.log("the button was pressd-- for adding assessment")
+    logToConsole("the button was pressd-- for adding assessment");
     axiosInstance.post(`/form/`, {}, tokenConfig()).then((res) => {
       axiosInstance
         .patch(

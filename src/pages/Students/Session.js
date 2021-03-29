@@ -31,6 +31,7 @@ import EditDeleteSession from "./editDeleteSession";
 import { AuthContext } from "contexts/auth/auth.context";
 import { Btn } from "pages/Dashboard/Dashboard.style";
 import PaymentModal from "components/PaymentModal";
+import { logToConsole } from "utils/logging";
 
 function expandIcon({ isActive }) {
   return (
@@ -86,7 +87,7 @@ export default function Session({ className, view }) {
   const [activeButton, setActiveButton] = useState(false);
   const [edit, setEdit] = useState(false);
   const addAllClasses = ["accordion"];
-  console.log(reload);
+  logToConsole(reload);
 
   const btns = [{ title: "Notes" }, { title: "Comments" }, { title: "Files" }];
 
@@ -106,7 +107,7 @@ export default function Session({ className, view }) {
           .get(`/curriculum/class/${match.params.classID}`, tokenConfig())
           .then((res) => {
             setCls(res.data);
-            console.log(res.data);
+            logToConsole(res.data);
           });
       }
       if (taID) {
@@ -114,7 +115,7 @@ export default function Session({ className, view }) {
           .get(`/account/teachers/${match.params.teacherID}`, tokenConfig())
           .then((res) => {
             setTeacher(res.data);
-            console.log(res.data);
+            logToConsole(res.data);
           });
       }
       if (SubID) {
@@ -122,7 +123,7 @@ export default function Session({ className, view }) {
           .get(`/curriculum/subject/${match.params.subjectID}`, tokenConfig())
           .then((res) => {
             setSubject(res.data);
-            console.log(res.data);
+            logToConsole(res.data);
           });
       }
       if (tpcID) {
@@ -130,7 +131,7 @@ export default function Session({ className, view }) {
           .get(`/curriculum/topic/${match.params.topicID}`, tokenConfig())
           .then((res) => {
             setTopic(res.data);
-            console.log(res.data);
+            logToConsole(res.data);
           });
       }
 
@@ -139,7 +140,7 @@ export default function Session({ className, view }) {
           .get(`/curriculum/session/${match.params.sessionID}`, tokenConfig())
           .then((res) => {
             setSession(res.data);
-            console.log(res.data);
+            logToConsole(res.data);
           });
       }
       if (clsID && SubID) {
@@ -150,7 +151,7 @@ export default function Session({ className, view }) {
           )
           .then((res) => {
             setTreeItems(res.data.results);
-            console.log(res.data.results);
+            logToConsole(res.data.results);
           });
       }
       if (view === "subject" && treeItems) {
@@ -158,7 +159,7 @@ export default function Session({ className, view }) {
           .get(`account/teachers/`, tokenConfig())
           .then((res) => {
             setTeacher(res.data.results);
-            console.log("====== tree items ====", treeItems);
+            logToConsole("====== tree items ====", treeItems);
             setSelectedTeacher(
               res.data.results.filter((filteredTeacher) =>
                 treeItems.find(
@@ -166,7 +167,7 @@ export default function Session({ className, view }) {
                 )
               )[0]
             );
-            console.log(res.data.results);
+            logToConsole(res.data.results);
           });
       }
       setLoading(false);
@@ -204,7 +205,7 @@ export default function Session({ className, view }) {
   }
 
   const handleModal = () => {
-    console.log("modal clicked but nothing happens");
+    logToConsole("modal clicked but nothing happens");
     openModal({
       show: true,
       overlayClassName: "quick-view-overlay",

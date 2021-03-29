@@ -9,6 +9,7 @@ import { addArrayToLocalStorage, parseJwt } from "utils";
 import { useHistory } from "react-router-dom";
 import { tokenConfig } from "utils/axios";
 import { addObjectToLocalStorageObject } from "utils";
+import { logToConsole } from "utils/logging";
 
 function GoogleSocialAuth() {
   const { state, authDispatch } = useContext(AuthContext);
@@ -16,21 +17,21 @@ function GoogleSocialAuth() {
   const history = useHistory();
   const alert = useAlert();
   // const googleResponse = (response) => {
-  //   console.log(response);
+  //   logToConsole(response);
   // };
   const googleLogin = async (accesstoken) => {
     setIsLoading(true);
-    console.log(accesstoken);
-    console.log(accesstoken.accessToken);
+    logToConsole(accesstoken);
+    logToConsole(accesstoken.accessToken);
 
     await axiosInstance
       .post(`/google/`, {
         access_token: accesstoken.accessToken,
       })
       .then(async (res) => {
-        console.log("google response from django", res);
+        logToConsole("google response from django", res);
         const userPayload = parseJwt(res.data.refresh_token);
-        console.log("user payload", userPayload);
+        logToConsole("user payload", userPayload);
         const roles = userPayload.role;
         if (roles) {
           localStorage.removeItem("darasa_auth_roles");
@@ -46,8 +47,8 @@ function GoogleSocialAuth() {
         await localStorage.setItem("darasa_name", res.data.user.first_name);
         setIsLoading(false);
         axiosInstance.get("/auth/profile/", tokenConfig()).then((res) => {
-          console.log(res);
-          console.log(res.data.phone_number);
+          logToConsole(res);
+          logToConsole(res.data.phone_number);
           if (res.data.phone_number) {
             const roles = [];
             if (res.data.is_student) {
@@ -85,7 +86,7 @@ function GoogleSocialAuth() {
           }
         });
 
-        console.log(res);
+        logToConsole(res);
         return await res.status;
       })
       .catch((err) => {
@@ -94,13 +95,13 @@ function GoogleSocialAuth() {
           if (err.response.data) {
             if (err.response.data.non_field_errors) {
               alert.error(err.response.data.non_field_errors[0]);
-              console.log(err.response.data.non_field_errors[0]);
+              logToConsole(err.response.data.non_field_errors[0]);
             }
-            console.log(err.response.data);
+            logToConsole(err.response.data);
           }
-          console.log(err.response);
+          logToConsole(err.response);
         }
-        console.log(err);
+        logToConsole(err);
       });
   };
   return (

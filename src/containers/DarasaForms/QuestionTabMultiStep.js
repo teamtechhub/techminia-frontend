@@ -18,6 +18,7 @@ import {
   AnswersLink,
   AnswerFeedback,
 } from "./df.style";
+import { logToConsole } from "utils/logging";
 
 export default function QuestionTabWizard({ form }) {
   const [state, setState] = useState({
@@ -94,7 +95,7 @@ export default function QuestionTabWizard({ form }) {
     }
 
     axiosInstance.post(`/response/`, data, tokenConfig()).then((res) => {
-      console.log(res);
+      logToConsole(res);
     });
   };
   const answerArray = (q) => {
@@ -124,7 +125,7 @@ export default function QuestionTabWizard({ form }) {
     switch (q.question_type) {
       case "mcq_one":
         const mcq_one = q.mcq_one.find((fq) => fq.is_answer === true);
-        console.log(mcq_one);
+        logToConsole(mcq_one);
         return mcq_one !== undefined
           ? mcq_one.id && selectedAnswer.id
             ? mcq_one.id === selectedAnswer.id
@@ -132,7 +133,7 @@ export default function QuestionTabWizard({ form }) {
           : false;
       // return parseInt(q.answer_key) === parseInt(selectedAnswer.id);
       case "mcq_many":
-        console.log("====================", selectedAnswers);
+        logToConsole("====================", selectedAnswers);
         const mcq_many =
           selectedAnswers &&
           q.mcq_many.filter(
@@ -163,7 +164,7 @@ export default function QuestionTabWizard({ form }) {
   };
 
   const onStepChange = (stats) => {
-    // console.log(stats);
+    // logToConsole(stats);
   };
   const setInstance = (SW) => {
     setState({

@@ -1,16 +1,17 @@
 import { BASE_URL } from "constants/constants";
 import React from "react";
 import FacebookLogin from "react-facebook-login";
+import { logToConsole } from "utils/logging";
 
 function FacebookSocialAuth() {
   const fbResponse = (response) => {
-    console.log(response);
+    logToConsole(response);
   };
   const fbResponse = async (accesstoken) => {
     let res = await axios.post(`${BASE_URL}/rest-auth/facebook/`, {
       access_token: accesstoken,
     });
-    console.log(res);
+    logToConsole(res);
     return await res.status;
   };
   return (

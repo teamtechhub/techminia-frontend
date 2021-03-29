@@ -12,6 +12,7 @@ import {
   ProfileCardHead,
 } from "../Profile/Profile.style";
 import { useRouteMatch } from "react-router-dom";
+import { logToConsole } from "utils/logging";
 
 function expandIcon({ isActive }) {
   return (
@@ -62,19 +63,19 @@ export default function ClassView(className) {
       .get(`/curriculum/class/${match.params.classID}`)
       .then((res) => {
         setCls(res.data.results);
-        console.log(res.data.results);
+        logToConsole(res.data.results);
       });
     axiosInstance
       .get(`/curriculum/subject/${match.params.subjectID}`)
       .then((res) => {
         setSubject(res.data.results);
-        console.log(res.data.results);
+        logToConsole(res.data.results);
       });
     axiosInstance
       .get(`/curriculum/session/${match.params.sessionID}`)
       .then((res) => {
         setSubject(res.data.results);
-        console.log(res.data.results);
+        logToConsole(res.data.results);
       });
   }, []);
 
@@ -87,7 +88,7 @@ export default function ClassView(className) {
         )
         .then((res) => {
           setTreeItems(res.data.results);
-          console.log(res.data.results);
+          logToConsole(res.data.results);
           setLoading(false);
         });
     }

@@ -9,6 +9,7 @@ import Button from "components/Button/Button";
 import { AuthContext } from "contexts/auth/auth.context";
 import QuestionTabWizard from "./QuestionTabMultiStep";
 import PaymentModal from "components/PaymentModal";
+import { logToConsole } from "utils/logging";
 
 export default function ViewForm() {
   const {
@@ -28,7 +29,7 @@ export default function ViewForm() {
         setLoading(false);
       });
   }, [match.params.formID]);
-  console.log(form);
+  logToConsole(form);
 
   function editForm() {
     history.push(`/dashboard/form/${match.params.formID}/edit`);

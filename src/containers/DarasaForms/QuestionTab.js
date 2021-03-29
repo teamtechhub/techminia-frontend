@@ -16,6 +16,7 @@ import { tokenConfig } from "utils/axios";
 import { axiosInstance } from "utils/axios";
 import questionsUI from "./questionsUI";
 import { Container } from "./df.style";
+import { logToConsole } from "utils/logging";
 
 // import ImageUplaodModel from "./ImageUploadModel";
 
@@ -27,6 +28,8 @@ export default function QuestionTab({ formDetails }) {
   const [loadForm, setLoadForm] = useState(false);
   const [oldQuestions, setOldQuestions] = useState(formDetails.questions);
   const [isSelectActive, setIsSelectActive] = useState(false);
+  //loding to add question state
+  const [loadaddquestion, setLoadaddquestion] = useState(false);
   // Popover State
   const [state, setState] = useState(false);
   // Ref
@@ -89,9 +92,9 @@ export default function QuestionTab({ formDetails }) {
   };
 
   useEffect(() => {
-    console.log("first useEffect()");
+    logToConsole("first useEffect()");
     if (formDetails.questions !== undefined) {
-      //console.log(props.formData.questions.length);
+      //logToConsole(props.formData.questions.length);
       if (formDetails.questions.length === 0) {
         setQuestions([newQuestion]);
       } else {
@@ -118,8 +121,8 @@ export default function QuestionTab({ formDetails }) {
   const updateQuestions = async (d, res) => {
     const qs = questions;
     let newQ = { ...res, open: false };
-    console.log(qs);
-    console.log(indexOf(qs, d));
+    logToConsole(qs);
+    logToConsole(indexOf(qs, d));
     await qs.splice(indexOf(qs, d), 1);
     await setQuestions((qs) => [...qs, newQ, newQuestion]);
     // await setQuestions((questions) => [...questions, newQuestion])
@@ -145,14 +148,16 @@ export default function QuestionTab({ formDetails }) {
       all_data.order = (await indexOf(qs, all_data)) + 1;
       if (type === "edit_question") {
         if (all_data.id) {
-          axiosInstance
+          await axiosInstance
             .patch(`/question/${all_data.id}/`, formData, formTokenConfig())
             .then(async (res) => {
               updateQuestions(all_data, res.data);
               alert.success(`${res.data.question} Saved`);
+              alert.success("patch was called because there was id");
             });
+          return;
         } else {
-          axiosInstance
+          await axiosInstance
             .post(`/question/`, formData, formTokenConfig())
             .then(async (res) => {
               axiosInstance
@@ -162,25 +167,35 @@ export default function QuestionTab({ formDetails }) {
                   tokenConfig()
                 )
                 .then((response) => {
-                  console.log("response", response);
+                  logToConsole("response", response);
                   if (response.status === 200) {
                     updateQuestions(all_data, res.data);
+
                     alert.success("Question added");
+                    alert.success(
+                      "ken debugging  edit question question added"
+                    );
                   }
                 });
             });
+
+          return;
         }
       } else if (type === "add_question") {
         if (qs.filter((filteredQS) => filteredQS.open === true).length !== 0) {
+          setLoadaddquestion(true);
           if (all_data.id) {
-            axiosInstance
+            await axiosInstance
               .patch(`/question/${all_data.id}/`, formData, formTokenConfig())
               .then(async (res) => {
                 updateQuestions(all_data, res.data);
+                setLoadaddquestion(false);
                 alert.success("Question Editted");
               });
+
+            return;
           } else {
-            axiosInstance
+            await axiosInstance
               .post(`/question/`, formData, formTokenConfig())
               .then((res) => {
                 axiosInstance
@@ -190,13 +205,16 @@ export default function QuestionTab({ formDetails }) {
                     tokenConfig()
                   )
                   .then((response) => {
-                    console.log("response", response);
+                    logToConsole("response", response);
                     if (response.status === 200) {
                       updateQuestions(all_data, res.data);
+                      setLoadaddquestion(false);
                       alert.success("Question added");
+                      alert.success("ken debugging question added");
                     }
                   });
               });
+            return;
           }
         }
       }
@@ -206,7 +224,7 @@ export default function QuestionTab({ formDetails }) {
   useOnClickOutside(ref, () => setState(false));
 
   async function saveQuestions() {
-    console.log("auto saving questions initiated");
+    logToConsole("auto saving questions initiated");
 
     for (let q = 0; q < questions.length; q++) {
       const element = await questions[q];
@@ -242,7 +260,7 @@ export default function QuestionTab({ formDetails }) {
   }
 
   async function copyQuestion(i) {
-    console.log("copying", i);
+    logToConsole("copying", i);
     let qs = [...questions];
 
     const mcqOneOptions = [];
@@ -306,8 +324,8 @@ export default function QuestionTab({ formDetails }) {
     newQuestion.open = true;
     // await setQuestions((questions) => [...questions, newQuestion]);
     questions.push(newQuestion);
-    console.log(newQuestion);
-    console.log(questions);
+    logToConsole(newQuestion);
+    logToConsole(questions);
   }
 
   function removeImage(i, j) {
@@ -320,25 +338,24 @@ export default function QuestionTab({ formDetails }) {
     setQuestions(optionsOfQuestion);
   }
 
-  async function deleteQuestion(i) {
-    console.log("deleting");
+  function deleteQuestion(i) {
+    logToConsole("deleting");
     const qs = questions;
-    qs[i].open = await false;
-    console.log(qs, i);
-    if (questions.length > 1) {
-      await qs.splice(i, 1);
-
+    qs[i].open = false;
+    logToConsole(qs, i);
+    if (questions.length >= i) {
+      qs.splice(i, 1);
       setQuestions(qs);
       expandCloseAll();
     } else {
       setQuestions(qs);
     }
 
-    console.log(qs);
+    alert.success(`question ${i} deleted successfully`);
   }
   async function setAnswerKey(i, j) {
     var optionsOfQuestion = [...questions];
-    console.log("setting answer key");
+    logToConsole("setting answer key");
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       optionsOfQuestion[i].mcq_many[j].is_answer = true;
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
@@ -351,7 +368,7 @@ export default function QuestionTab({ formDetails }) {
   }
   async function removeAnswerKey(i, j) {
     var optionsOfQuestion = [...questions];
-    console.log("removing answer key");
+    logToConsole("removing answer key");
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       optionsOfQuestion[i].mcq_many[j].is_answer = false;
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
@@ -488,7 +505,7 @@ export default function QuestionTab({ formDetails }) {
           choice_text: "Option " + (optionsOfQuestion[i].mcq_many.length + 1),
         });
       } else {
-        console.log("Max  5 options ");
+        logToConsole("Max  5 options ");
       }
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
       if (optionsOfQuestion[i].mcq_one.length < 5) {
@@ -496,34 +513,34 @@ export default function QuestionTab({ formDetails }) {
           choice_text: "Option " + (optionsOfQuestion[i].mcq_one.length + 1),
         });
       } else {
-        console.log("Max  5 options ");
+        logToConsole("Max  5 options ");
       }
     }
 
-    //console.log(optionsOfQuestion);
+    //logToConsole(optionsOfQuestion);
     setQuestions(optionsOfQuestion);
   }
 
   function removeOption(i, j) {
-    console.log("handling remove opt");
+    logToConsole("handling remove opt");
     var optionsOfQuestion = [...questions];
     if (optionsOfQuestion[i].question_type === "mcq_many") {
       if (optionsOfQuestion[i].mcq_many.length > 1) {
         optionsOfQuestion[i].mcq_many.splice(j, 1);
         setQuestions(optionsOfQuestion);
-        console.log(i + "__" + j);
+        logToConsole(i + "__" + j);
       }
     } else if (optionsOfQuestion[i].question_type === "mcq_one") {
       if (optionsOfQuestion[i].mcq_one.length > 1) {
         optionsOfQuestion[i].mcq_one.splice(j, 1);
         setQuestions(optionsOfQuestion);
-        console.log(i + "__" + j);
+        logToConsole(i + "__" + j);
       }
     }
   }
 
   async function expandCloseAll() {
-    console.log("closing all");
+    logToConsole("closing all");
     var qs = questions;
     for (let j = 0; j < qs.length; j++) {
       questions[j].open = false;
@@ -532,16 +549,11 @@ export default function QuestionTab({ formDetails }) {
   }
 
   async function handleExpand(i) {
+    alert.success("handle expand called");
     let qs = [...questions];
     [].splice();
 
-    if (qs[i].open === false && qs[i].id) {
-      await handleEditAddQuestion(
-        qs.find((filteredQS) => filteredQS.open === true),
-        "edit_question"
-      );
-    }
-
+    //close other expanded questions with a loop
     for (let j = 0; j < qs.length; j++) {
       if (i === j) {
         qs[i].open = true;
@@ -549,6 +561,14 @@ export default function QuestionTab({ formDetails }) {
         qs[j].open = false;
       }
     }
+
+    if (qs[i].open === true && qs[i].id) {
+      await handleEditAddQuestion(
+        qs.find((filteredQS) => filteredQS.open === true),
+        "edit_question"
+      );
+    }
+
     setQuestions(qs);
   }
 
@@ -596,7 +616,8 @@ export default function QuestionTab({ formDetails }) {
                   handleImageValueOption,
 
                   setIsSelectActive,
-                  isSelectActive
+                  isSelectActive,
+                  loadaddquestion
                 )}
 
                 {provided.placeholder}

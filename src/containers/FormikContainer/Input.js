@@ -7,7 +7,8 @@ import PhoneInput from "react-phone-input-2";
 import { themeGet } from "@styled-system/theme-get";
 import ReactCodeInput from "react-code-input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye , faEyeSlash } from '@fortawesome/fontawesome-free-solid'
+import { faEye, faEyeSlash } from "@fortawesome/fontawesome-free-solid";
+import { logToConsole } from "utils/logging";
 
 
 function setImageFieldValue(img) {
@@ -36,7 +37,7 @@ function Input(props) {
           {({ form, field }) => {
             const { setFieldValue } = form;
             const { value } = field;
-            console.log(field, form);
+            logToConsole(field, form);
             return (
               <Uploader
                 id={name}

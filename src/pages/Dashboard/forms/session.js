@@ -22,6 +22,8 @@ import { AuthContext } from "contexts/auth/auth.context";
 import { slugify } from "utils";
 import { apiErrorHandler } from "utils";
 import { openModal, closeModal } from "@redq/reuse-modal";
+import { logToConsole } from "utils/logging";
+
 
 export default function Session(props) {
   const {
@@ -78,8 +80,8 @@ export default function Session(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    console.log("session reload");
-    console.log("new sessions", allSessions);
+    logToConsole("session reload");
+    logToConsole("new sessions", allSessions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allSessions]);
 
@@ -109,7 +111,7 @@ export default function Session(props) {
   const onAddSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setLoading(true);
-    console.log(values);
+    logToConsole(values);
     const { name, notes, video_url, documents } = values;
 
     let formData = new FormData();
@@ -126,7 +128,7 @@ export default function Session(props) {
           return acc;
         }, [])
       : [];
-    console.log(docs);
+    logToConsole(docs);
 
     formData.append("topic", selectedTopic ? selectedTopic.id : null);
     formData.append("video_url", video_url);
@@ -136,7 +138,7 @@ export default function Session(props) {
     axiosInstance
       .post(`/curriculum/session/`, formData, formTokenConfig())
       .then((res) => {
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         if (docs.length && docs.length > 0) {
           for (let i = 0; i < docs.length; i++) {
             let docsFormData = new FormData();
@@ -146,11 +148,11 @@ export default function Session(props) {
             docsFormData.append("saved_file", element.saved_file);
             axiosInstance
               .post(`/curriculum/files/`, docsFormData, formTokenConfig())
-              .then((res) => console.log("files ----", res.data));
+              .then((res) => logToConsole("files ----", res.data));
           }
         }
         const tpcslg = slugify(selectedSubject.name + " " + selectedClass.name);
-        console.log(tpcslg);
+        logToConsole(tpcslg);
         axiosInstance
           .post(`/forums/threads/`, {
             content: `${res.data.name}`,
@@ -197,7 +199,7 @@ export default function Session(props) {
   const onChangeSubmit = async (values, { setErrors, setSubmitting }) => {
     setSubmitting(true);
     setLoading(true);
-    console.log(values);
+    logToConsole(values);
     const { name, notes, video_url, documents } = values;
 
     let formData = new FormData();
@@ -214,13 +216,13 @@ export default function Session(props) {
           return acc;
         }, [])
       : null;
-    console.log(docs);
+    logToConsole(docs);
 
     formData.append("name", name);
     formData.append("video_url", video_url);
     formData.append("notes", JSON.stringify(notes));
     // formData.append("documents", JSON.stringify(docs));
-    console.log("form data --------: ", [...formData]);
+    logToConsole("form data --------: ", [...formData]);
 
     axiosInstance
       .patch(
@@ -238,7 +240,7 @@ export default function Session(props) {
             docsFormData.append("saved_file", element.saved_file);
             await axiosInstance
               .post(`/curriculum/files/`, docsFormData, formTokenConfig())
-              .then((res) => console.log("files ----", res.data));
+              .then((res) => logToConsole("files ----", res.data));
           }
         }
         setSubmitting(false);
@@ -259,12 +261,12 @@ export default function Session(props) {
             }
           }
           setErrors(err.response.data);
-          console.log("errors za data");
+          logToConsole("errors za data");
         } else {
           setError(err);
-          console.log("errors general");
+          logToConsole("errors general");
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
@@ -475,9 +477,9 @@ export default function Session(props) {
         <Button
           size="small"
           onClick={() => {
-            console.log("button clickedto add video");
+            logToConsole("button clickedto add video");
             setAddLesson((l) => true);
-            console.log(`the value of add lesson is ${addLesson}`);
+            logToConsole(`the value of add lesson is ${addLesson}`);
           }}
           title={"Add Lesson"}
           style={{ width: "100%", fontSize: 15, color: "#fff" }}

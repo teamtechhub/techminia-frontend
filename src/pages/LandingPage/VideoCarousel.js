@@ -19,6 +19,7 @@ import VideoCast from "components/Video/Video";
 import tuit from "images/tuit.png";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "contexts/auth/auth.context";
+import { logToConsole } from "utils/logging";
 
 // const videos = [
 //   {
@@ -132,7 +133,7 @@ function VideoCarousel({ deviceType }) {
     authDispatch,
   } = useContext(AuthContext);
   const [selectedVideo, setSelectedVideo] = useState(false);
-  console.log(selectedVideo);
+  logToConsole(selectedVideo);
   const selectVideo = (v) => {
     if (selectedVideo === false) {
       setSelectedVideo(v);

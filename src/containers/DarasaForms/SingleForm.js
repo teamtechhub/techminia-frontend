@@ -5,6 +5,7 @@ import { axiosInstance, tokenConfig } from "utils/axios";
 import EditForm from "./EditForm";
 import ViewForm from "./ViewForm";
 import { AuthContext } from "contexts/auth/auth.context";
+import { logToConsole } from "utils/logging";
 
 export default function SingleForm() {
   const match = useRouteMatch();
@@ -26,7 +27,7 @@ export default function SingleForm() {
     if (formId !== undefined) {
       axiosInstance.get(`/form/${match.params.formID}/`, tokenConfig()).then(
         async (data) => {
-          // console.log(data);
+          // logToConsole(data);
           await setFormDetails(data.data);
           setLoading(false);
         },
@@ -38,7 +39,7 @@ export default function SingleForm() {
             error.message ||
             error.toString();
           setLoading(false);
-          console.log(resMessage);
+          logToConsole(resMessage);
         }
       );
     }

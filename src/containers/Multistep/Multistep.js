@@ -2,6 +2,8 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import "./animate.custom.css";
+import { logToConsole } from "utils/logging";
+
 import "./styles.css";
 
 export default class StepWizard extends PureComponent {
@@ -107,7 +109,7 @@ export default class StepWizard extends PureComponent {
       return;
     }
 
-    // console.log(change, active, next);
+    // logToConsole(change, active, next);
 
     const { classes } = this.state;
     const transitions = this.getTransitions();

@@ -11,6 +11,7 @@ import Error500 from "components/Error/Error500";
 import { tokenConfig } from "utils/axios";
 import { AuthContext } from "contexts/auth/auth.context";
 import { useAlert } from "react-alert";
+import { logToConsole } from "utils/logging";
 
 export default function TeacherForm({ profile, handleRedirect }) {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -23,13 +24,13 @@ export default function TeacherForm({ profile, handleRedirect }) {
   useEffect(() => {
     setTimeout(() => {
       if (authState.extendedProfile.length > 0) {
-        console.log("happening");
+        logToConsole("happening");
         setInitialTeacherValues(authState.extendedProfile);
 
-        console.log(authState.extendedProfile);
+        logToConsole(authState.extendedProfile);
         setEditting(true);
       } else {
-        console.log("not happening");
+        logToConsole("not happening");
         setInitialTeacherValues({
           document_id: "",
           tsc_id: "",
@@ -59,14 +60,14 @@ export default function TeacherForm({ profile, handleRedirect }) {
   const onTeacherAddSubmit = async (values, { setErrors, setSubmitting }) => {
     setLoading(true);
     setSubmitting(true);
-    console.log("ta values", values);
+    logToConsole("ta values", values);
     values["user"] = localStorage.getItem("darasa_auth_profile")
       ? profile.id
       : "";
     axiosInstance
       .post(`/account/teachers/`, values, tokenConfig())
       .then((res) => {
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         alert.success("Profile Updated Successfully ✔", "");
         addObjectToLocalStorageObject("darasa_teacher_profile", res.data);
         authDispatch({
@@ -85,12 +86,12 @@ export default function TeacherForm({ profile, handleRedirect }) {
       .catch((err) => {
         if (err.response) {
           setErrors(err.response.data);
-          console.log("errors za data");
+          logToConsole("errors za data");
         } else {
           setError(err);
-          console.log("errors general");
+          logToConsole("errors general");
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
@@ -102,7 +103,7 @@ export default function TeacherForm({ profile, handleRedirect }) {
       .patch(`/account/teachers/profile/`, values, tokenConfig())
       .then((res) => {
         setSubmitting(false);
-        console.log("res", res.data);
+        logToConsole("res", res.data);
         authDispatch({
           type: "UPDATE",
           payload: {
@@ -117,7 +118,7 @@ export default function TeacherForm({ profile, handleRedirect }) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log("res errors", err.response.data);
+        logToConsole("res errors", err.response.data);
         if (err.response) {
           if (err.response.data.user) {
             if (err.response.data.user[0] === "This field must be unique.") {
@@ -133,7 +134,7 @@ export default function TeacherForm({ profile, handleRedirect }) {
         } else {
           setError(err);
         }
-        console.log(err.response.data);
+        logToConsole(err.response.data);
         setSubmitting(false);
         setLoading(false);
       });
